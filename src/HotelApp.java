@@ -92,6 +92,9 @@ public class HotelApp {
                 continue;
             }
 
+            //Just a commint
+            // so
+
             switch (choice) {
                 case 1: {
                     break;
