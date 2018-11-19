@@ -5,7 +5,7 @@ public class HotelLogic {
 
     public Customer getCustomer(String ssn) {
 
-        return new Customer("", "", "", "");
+        return new Customer("", "", "", "", "");
     }
 
     public ArrayList<Customer> getCustomers() {
