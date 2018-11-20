@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 
 public class HotelApp {
 
+    // Main application
+
     private Scanner sc = new Scanner(System.in);
     private ArrayList<String> customerTextLines = new ArrayList<>();
     private ArrayList<Customer> customerArrayList = new ArrayList<>();
