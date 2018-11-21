@@ -21,7 +21,7 @@ public class HotelLogic {
         for (Person user:users) {
             if(user.getUserName().equals(userName) && user.getPassword().equals(passWord)){
                 if(user.getClass().equals(Employee.class)){
-                    emplyeeMenu();
+                    employeeMenu();
                     break;
                 }else if(user.getClass().equals(Customer.class)){
                     customerMenu();
@@ -38,8 +38,12 @@ public class HotelLogic {
     }
 
     // customer & employee menu
-    protected void customerMenu(){}
-    protected void emplyeeMenu(){}
+    protected void customerMenu(){
+        // direct user to basic menu class
+    }
+    protected void employeeMenu(){
+        //direct user to employeemenu class
+    }
 
     // Method to generate random users & rooms for testing menus & logic
     private void createTestInfo(){
@@ -47,4 +51,12 @@ public class HotelLogic {
             order to check functionality that edits data
          */
     }
+
+    private void saveUsersToFile(){
+        // save user objects to file
+    }
+    private void readUsersFromFile(){
+        // read user objects from file
+    }
+
 }
