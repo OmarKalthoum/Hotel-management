@@ -1,17 +1,28 @@
-public class Employee {
-    private String name;
-    private String password;
+public class Employee extends Person{
+    private int employeeNbr;
+    private String position;
 
-    public Employee(String name, String password) {
-        this.name = name;
-        this.password = password;
+    public Employee(String ssn, String name, String address, String telephonNumber, String userName, String password, int employeeNbr, String position) {
+        super(ssn, name, address, telephonNumber, userName, password);
+        this.employeeNbr = employeeNbr;
+        this.position = position;
     }
 
-    public String getName() {
-        return name;
+    protected int getEmployeeNbr() {
+        return employeeNbr;
     }
 
-    public String getPassword() {
-        return password;
+    protected void setEmployeeNbr(int employeeNbr) {
+        this.employeeNbr = employeeNbr;
     }
+
+    protected String getPosition() {
+        return position;
+    }
+
+    protected void setPosition(String position) {
+        this.position = position;
+    }
+
+
 }

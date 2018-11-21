@@ -1,24 +1,20 @@
-public class Customer {
+import java.util.LinkedList;
 
-    private String ssn;
-    private String name;
-    private String address;
-    private String telephonNumber;
-    private String password;
+public class Customer extends Person{
 
-    public Customer(String ssn, String name, String address, String telephonNumber, String password) {
-        this.ssn = ssn;
-        this.name = name;
-        this.address = address;
-        this.telephonNumber = telephonNumber;
-        this.password = password;
+    public Customer(String ssn, String name, String address, String telephonNumber, String userName, String password) {
+        super(ssn, name, address, telephonNumber, userName, password);
     }
 
-    public String getName() {
-        return name;
+    private LinkedList<Booking> customerBookings = new LinkedList<>();
+
+    protected LinkedList<Booking> getCustomerBookings() {
+        return customerBookings;
     }
 
-    public String getPassword() {
-        return password;
+    protected void addCustomerBookings(Booking booking) {
+        customerBookings.add(booking);
     }
+
+
 }

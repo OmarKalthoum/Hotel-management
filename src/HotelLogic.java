@@ -1,53 +1,50 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class HotelLogic {
 
+    private String userName, passWord;
+    private Scanner scan;
+    private LinkedList<Person> users = new LinkedList<>();
 
-    public Customer getCustomer(String ssn) {
-
-        return new Customer("", "", "", "", "");
+    public HotelLogic(Scanner scan){
+        this.scan = scan;
     }
 
-    public ArrayList<Customer> getCustomers() {
+    // Login user and check for user type
+    protected void loginUser() throws Exception {
+        System.out.println("UserName: ");
+        userName = scan.nextLine();
+        System.out.println("PassWord: ");
+        passWord = scan.nextLine();
 
-        return new ArrayList<Customer>();
+        for (Person user:users) {
+            if(user.getUserName().equals(userName) && user.getPassword().equals(passWord)){
+                if(user.getClass().equals(Employee.class)){
+                    emplyeeMenu();
+                    break;
+                }else if(user.getClass().equals(Customer.class)){
+                    customerMenu();
+                    break;
+                }else if(userName.equals("ROOTADMINUSER") && passWord.equals("habibi")){
+                    createTestInfo();
+                    loginUser();
+                }else{
+                    //something terribly worng
+                    throw new Exception("something went terribly wrong in menu loginUser()");
+                }
+            }
+        }
     }
 
-    public Room getRoom(int rommNbr) {
+    // customer & employee menu
+    protected void customerMenu(){}
+    protected void emplyeeMenu(){}
 
-        return new Room(0, 0, false, 0, false);
+    // Method to generate random users & rooms for testing menus & logic
+    private void createTestInfo(){
+        /* create a bunch of users, employees, rooms & stuff in
+            order to check functionality that edits data
+         */
     }
-
-    public ArrayList<Room> getRooms() {
-
-        return new ArrayList<Room>();
-    }
-
-    public ArrayList<Room> getAvailableRooms() {
-
-        return new ArrayList<Room>();
-    }
-
-    public boolean addCustomer(Customer customer) {
-
-        return false;
-    }
-    public boolean addRoom(Room room){
-
-        return  false;
-    }
-    public boolean chechInCustomer(String ssn, Booking booking){
-
-        return false;
-    }
-    public boolean chechoutCustomer(String ssn, int bookingNbr){
-
-        return false;
-    }
-    public boolean editBooking(String ssn, Booking booking){
-
-        return false;
-    }
-
-
 }
