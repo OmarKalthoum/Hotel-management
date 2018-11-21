@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8cc210f1-fc46-4840-a6cb-af32b44bccf3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerLogin.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerLogin.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmployeeLogin.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EmployeeLogin.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Hotel Management/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Hotel Management/Customer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Hotel Management/HotelApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Hotel Management/HotelApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Hotel Management/HotelLogic.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Hotel Management/HotelLogic.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HotelApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HotelApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HotelLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HotelLogic.java" afterDir="false" />
-    </list>
+    <list default="true" id="8cc210f1-fc46-4840-a6cb-af32b44bccf3" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,13 +55,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="8" />
-          <entry key="java" value="7059" />
+          <entry key="java" value="7061" />
           <entry key="txt" value="279" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7059" />
+          <entry key="JAVA" value="7061" />
           <entry key="PLAIN_TEXT" value="287" />
         </counts>
       </usages-collector>
@@ -85,8 +75,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/HotelApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+            <state relative-caret-position="357">
+              <caret line="21" column="32" selection-end-line="270" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#readEmployeeList#0;class#HotelApp#0" />
@@ -178,8 +168,8 @@
         <option value="$PROJECT_DIR$/EmployeeLogin.txt" />
         <option value="$PROJECT_DIR$/src/Customer.java" />
         <option value="$PROJECT_DIR$/src/HotelLogic.java" />
-        <option value="$PROJECT_DIR$/src/HotelApp.java" />
         <option value="$PROJECT_DIR$/CustomerLogin.txt" />
+        <option value="$PROJECT_DIR$/src/HotelApp.java" />
       </list>
     </option>
   </component>
@@ -275,15 +265,16 @@
       <workItem from="1542711549520" duration="212000" />
       <workItem from="1542713252233" duration="1301000" />
       <workItem from="1542715632912" duration="11599000" />
-      <workItem from="1542788000971" duration="5974000" />
+      <workItem from="1542788000971" duration="6495000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46845000" />
+    <option name="totallyTimeSpent" value="47366000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.71816283" visible="true" weight="0.27114093" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -294,7 +285,7 @@
       <window_info id="Favorites" order="6" sideWeight="0.28183717" side_tool="true" visible="true" weight="0.27114093" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" visible="true" weight="0.32056737" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49932885" visible="true" weight="0.32056737" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -302,7 +293,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32907802" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.50067115" side_tool="true" visible="true" weight="0.32056737" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067115" side_tool="true" weight="0.32056737" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32907802" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -452,8 +443,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/HotelApp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+        <state relative-caret-position="357">
+          <caret line="21" column="32" selection-end-line="270" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#readEmployeeList#0;class#HotelApp#0" />
