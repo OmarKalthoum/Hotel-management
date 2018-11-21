@@ -1,1 +1,4 @@
 199201021323%%%John Andersson%%%Skolgatan 24%%%0724121234%%%19823
+197611234545%%%Adam Jönsson%%%Vångavägen 26%%%0725323534%%%89890
+198203421689%%%Erica Svensson%%%Albogatan 1%%%0747542345%%%12895
+test%%%test%%%test%%%test%%%test

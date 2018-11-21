@@ -14,11 +14,20 @@ public class Customer {
         this.password = password;
     }
 
+    public String getSsn() {
+        return ssn;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String toString(){
+        return "Name: " + name + "\nSocial security number: " + ssn + "\nAddress: " + address + "\nPhone Number: " + telephonNumber + "\n\n";
     }
 }

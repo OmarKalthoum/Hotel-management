@@ -9,8 +9,7 @@ public class HotelLogic {
     }
 
     public ArrayList<Customer> getCustomers() {
-
-        return new ArrayList<Customer>();
+        return new ArrayList<>();
     }
 
     public Room getRoom(int rommNbr) {
@@ -32,19 +31,23 @@ public class HotelLogic {
 
         return false;
     }
-    public boolean addRoom(Room room){
 
-        return  false;
-    }
-    public boolean chechInCustomer(String ssn, Booking booking){
+    public boolean addRoom(Room room) {
 
         return false;
     }
-    public boolean chechoutCustomer(String ssn, int bookingNbr){
+
+    public boolean chechInCustomer(String ssn, Booking booking) {
 
         return false;
     }
-    public boolean editBooking(String ssn, Booking booking){
+
+    public boolean chechoutCustomer(String ssn, int bookingNbr) {
+
+        return false;
+    }
+
+    public boolean editBooking(String ssn, Booking booking) {
 
         return false;
     }
