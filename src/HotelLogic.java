@@ -43,12 +43,21 @@ public class HotelLogic {
 
     // customer & employee menu
     protected void customerMenu(Customer owner){
-        HCmenu customer = new HCmenu(scan, owner, books, rooms);
-        customer.customerMenu();
+
     }
     protected void employeeMenu(){
         //direct user to employeemenu class
     }
+
+    /*
+    * Jag ändrade mig angående designen.
+    * Det blir mest bara krångligt att använda sig av en menu klass och det
+    * blir svårare att spara listor och uppdatera dem från underklasser.
+    * Tror det blir bättre om vi kör hela menyn och funktionaliteten i en och samma klass
+    * så gör vi det enkelt för oss :)
+    *
+    * Det som är kvar är att lägga in metoder för requirements här under
+    * */
 
     // Method to generate random users & rooms for testing menus & logic
     private void createTestInfo() {
