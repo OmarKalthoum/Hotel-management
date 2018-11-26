@@ -7,12 +7,50 @@ public class Room {
     private boolean isBooked;
 
     public Room(int rommNumber, int numberOfBeds, boolean hasBalcony, double pricePerNight, boolean isBooked) {
-        this.rommNumber = rommNumber;
-        this.numberOfBeds = numberOfBeds;
-        this.hasBalcony = hasBalcony;
-        this.pricePerNight = pricePerNight;
-        this.isBooked = isBooked;
+        this.setRommNumber(rommNumber);
+        this.setNumberOfBeds(numberOfBeds);
+        this.setHasBalcony(hasBalcony);
+        this.setPricePerNight(pricePerNight);
+        this.setBooked(isBooked);
     }
 
+    protected int getRommNumber() {
+        return rommNumber;
+    }
 
+    protected void setRommNumber(int rommNumber) {
+        this.rommNumber = rommNumber;
+    }
+
+    protected int getNumberOfBeds() {
+        return numberOfBeds;
+    }
+
+    protected void setNumberOfBeds(int numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
+    }
+
+    protected boolean isHasBalcony() {
+        return hasBalcony;
+    }
+
+    protected void setHasBalcony(boolean hasBalcony) {
+        this.hasBalcony = hasBalcony;
+    }
+
+    protected double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    protected void setPricePerNight(double pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
+
+    protected boolean isBooked() {
+        return isBooked;
+    }
+
+    protected void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 }

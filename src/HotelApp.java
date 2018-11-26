@@ -1,11 +1,17 @@
+<<<<<<< HEAD
+=======
 import java.io.*;
 import java.util.ArrayList;
+>>>>>>> master
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 
 public class HotelApp {
 
+<<<<<<< HEAD
+    private Scanner scan = new Scanner(System.in);
+    private HotelLogic hotelCL;
+=======
     private Scanner sc = new Scanner(System.in);
     private ArrayList<String> customerTextLines = new ArrayList<>();
     private ArrayList<Customer> customerArrayList = new ArrayList<>();
@@ -13,9 +19,20 @@ public class HotelApp {
     private ArrayList<String> employeeTextLines = new ArrayList<>();
     private ArrayList<Employee> employeeArrayList = new ArrayList<>();
     private HotelLogic hotelLogic = new HotelLogic();
+>>>>>>> master
 
     public static void main(String[] args) {
+        HotelApp main = new HotelApp();
+        main.mainMenu();
+    }
 
+<<<<<<< HEAD
+    public void mainMenu(){
+
+        String option;
+
+        while(true) {
+=======
         HotelApp hotelApp = new HotelApp();
         try {
             hotelApp.readCustomerList();
@@ -46,8 +63,26 @@ public class HotelApp {
             }
         }
     }
+>>>>>>> master
 
+            System.out.println("*** Welcome to Hotel California! ***\n\n" +
+                    "Please choose an option from the menu:\n" +
+                    "1. Login User\n" +
+                    "2. Show Hotel Information\n" +
+                    "3. Exit System\n");
 
+<<<<<<< HEAD
+            option = scan.nextLine();
+
+            switch (option) {
+                case "1":
+                    hotelCL = new HotelLogic(scan);
+                    try {
+                        hotelCL.loginUser();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+=======
     public void employeeMode() throws IOException {
         byte choice = 0;
         while (choice != 11) {
@@ -137,27 +172,30 @@ public class HotelApp {
                     break;
                 }
                 case 7: {
+>>>>>>> master
                     break;
-                }
-                case 8: {
+                case "2":
+                    showHotelInfo();
                     break;
-                }
-                case 9: {
-                    break;
-                }
-                case 10: {
-                    System.out.println("Exiting the employee mode\n\n\n\n");
-                    choice = 11;
-                    break;
-                }
-                default: {
-                    System.out.println("| Please choose a number from the menu! |\n");
 
-                }
+                case "3":
+                    System.exit(1);
+                    break;
+                default:
+                    System.out.println("Option Not available, please choose an option from menu");
+                    break;
             }
         }
     }
 
+<<<<<<< HEAD
+    public void showHotelInfo(){
+        /*
+        Skriv lite basic info om Hotellet
+         */
+    }
+
+=======
     public void customerMode() {
         byte choice = 0;
 
@@ -215,8 +253,10 @@ public class HotelApp {
                 }
             }
         }
+>>>>>>> master
 
-    }
+    /*
+    Refactoring this to Logic class since List of users is moved there and general logic is more appropiate
 
 
     public void readCustomerList() throws IOException {
@@ -265,6 +305,8 @@ public class HotelApp {
             employeeArrayList.add(employee);
         }
     }
+
+    */
 
 }
 

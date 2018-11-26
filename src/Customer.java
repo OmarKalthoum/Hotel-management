@@ -1,33 +1,35 @@
-public class Customer {
+import java.util.LinkedList;
 
-    private String ssn;
-    private String name;
-    private String address;
-    private String telephonNumber;
-    private String password;
+public class Customer extends Person{
 
-    public Customer(String ssn, String name, String address, String telephonNumber, String password) {
-        this.ssn = ssn;
-        this.name = name;
-        this.address = address;
-        this.telephonNumber = telephonNumber;
-        this.password = password;
+    public Customer(String ssn, String name, String address, String telephonNumber, String userName, String password) {
+        super(ssn, name, address, telephonNumber, userName, password);
     }
 
+<<<<<<< HEAD
+    private LinkedList<Booking> customerBookings = new LinkedList<>();
+
+    protected LinkedList<Booking> getCustomerBookings() {
+        return customerBookings;
+=======
     public String getSsn() {
         return ssn;
     }
 
     public String getName() {
         return name;
+>>>>>>> master
     }
 
-    public String getPassword() {
-        return password;
+    protected void addCustomerBookings(Booking booking) {
+        customerBookings.add(booking);
     }
 
+<<<<<<< HEAD
+=======
     @Override
     public String toString(){
         return "Name: " + name + "\nSocial security number: " + ssn + "\nAddress: " + address + "\nPhone Number: " + telephonNumber + "\n\n";
     }
+>>>>>>> master
 }
