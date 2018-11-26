@@ -6,15 +6,15 @@ public class Customer extends Person{
         super(ssn, name, address, telephonNumber, userName, password);
     }
 
-    private LinkedList<Booking> customerBookings = new LinkedList<>();
+    private LinkedList<Integer> customerBookings = new LinkedList<>();
 
-    protected LinkedList<Booking> getCustomerBookings() {
+    protected LinkedList<Integer> getCustomerBookings() {
         return customerBookings;
 
     }
 
-    protected void addCustomerBookings(Booking booking) {
-        customerBookings.add(booking);
+    protected void addCustomerBookings(int bookingId) {
+        customerBookings.add(bookingId);
     }
 
 }

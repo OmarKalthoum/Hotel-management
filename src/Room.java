@@ -1,6 +1,6 @@
 public class Room {
 
-    private int rommNumber;
+    private int roomNumber;
     private int numberOfBeds;
     private boolean hasBalcony;
     private double pricePerNight;
@@ -15,11 +15,11 @@ public class Room {
     }
 
     protected int getRommNumber() {
-        return rommNumber;
+        return roomNumber;
     }
 
     protected void setRommNumber(int rommNumber) {
-        this.rommNumber = rommNumber;
+        this.roomNumber = rommNumber;
     }
 
     protected int getNumberOfBeds() {

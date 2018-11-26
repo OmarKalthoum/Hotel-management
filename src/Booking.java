@@ -3,15 +3,29 @@ import java.util.Date;
 public class Booking {
 
     private int bookId;
+    private static int counter = 1;
     private Date checkinDate;
     private Date checkoutDate;
     private double totalPrice;
     private boolean isCanceled;
+    private int roomNbr;
 
     public Booking(Date checkinDate, Date checkoutDate, double totalPrice){
         this.setCheckinDate(checkinDate);
         this.setCheckoutDate(checkoutDate);
         this.setTotalPrice(totalPrice);
+        bookId = counter;
+        counter++;
+    }
+
+    public Booking(){}
+
+    public int getRoomNbr() {
+        return roomNbr;
+    }
+
+    public void setRoomNbr(int roomNbr) {
+        this.roomNbr = roomNbr;
     }
 
     protected int getBookId() {

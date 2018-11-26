@@ -41,7 +41,7 @@ public class HotelApp {
                     break;
 
                 case "3":
-                    System.exit(1);
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Option Not available, please choose an option from menu");
@@ -56,59 +56,6 @@ public class HotelApp {
         Skriv lite basic info om Hotellet
          */
     }
-
-    /*
-    Refactoring this to Logic class since List of users is moved there and general logic is more appropiate
-
-
-    public void readCustomerList() throws IOException {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("CustomerLogin.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String line = "";
-        while (line != null) {
-            line = br.readLine();
-            if (line != null) {
-                customerTextLines.add(line);
-            }
-        }
-        br.close();
-        for (String separate : customerTextLines) {
-            String[] item = separate.split(Pattern.quote("%%%"));
-            Customer customer = new Customer(item[0], item[1], item[2], item[3], item[4]);
-            customerArrayList.add(customer);
-            //The statement below does not seem to work!!
-            // hotelLogic.addCustomer(new Customer(item[0], item[1], item[2], item[3], item[4]));
-        }
-
-    }
-
-    public void readEmployeeList() throws IOException {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("EmployeeLogin.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String line = "";
-        while (line != null) {
-            line = br.readLine();
-            if (line != null) {
-                employeeTextLines.add(line);
-            }
-        }
-        br.close();
-        for (String separate : employeeTextLines) {
-            String[] item = separate.split(Pattern.quote("%%%"));
-            Employee employee = new Employee(item[0], item[1]);
-            employeeArrayList.add(employee);
-        }
-    }
-
-    */
 
 }
 

@@ -5,7 +5,9 @@ public class HotelLogic {
 
     private String userName, passWord;
     private Scanner scan;
-    private LinkedList<Person> users = new LinkedList<>();
+    protected LinkedList<Person> users = new LinkedList<>();
+    protected LinkedList<Booking> books = new LinkedList<>();
+    protected LinkedList<Room> rooms = new LinkedList<>();
 
     public HotelLogic(Scanner scan){
         this.scan = scan;
@@ -20,11 +22,13 @@ public class HotelLogic {
 
         for (Person user:users) {
             if(user.getUserName().equals(userName) && user.getPassword().equals(passWord)){
+
                 if(user.getClass().equals(Employee.class)){
                     employeeMenu();
                     break;
                 }else if(user.getClass().equals(Customer.class)){
-                    customerMenu();
+                    Customer owner = (Customer) user;
+                    customerMenu(owner);
                     break;
                 }else if(userName.equals("ROOTADMINUSER") && passWord.equals("habibi")){
                     createTestInfo();
@@ -38,8 +42,9 @@ public class HotelLogic {
     }
 
     // customer & employee menu
-    protected void customerMenu(){
-        // direct user to basic menu class
+    protected void customerMenu(Customer owner){
+        HCmenu customer = new HCmenu(scan, owner, books, rooms);
+        customer.customerMenu();
     }
     protected void employeeMenu(){
         //direct user to employeemenu class
@@ -52,4 +57,27 @@ public class HotelLogic {
          */
     }
 
+    public LinkedList<Person> getUsers() {
+        return users;
+    }
+
+    public void setUsers(LinkedList<Person> users) {
+        this.users = users;
+    }
+
+    public LinkedList<Booking> getBooks() {
+        return books;
+    }
+
+    public void setBooks(LinkedList<Booking> books) {
+        this.books = books;
+    }
+
+    public LinkedList<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(LinkedList<Room> rooms) {
+        this.rooms = rooms;
+    }
 }
