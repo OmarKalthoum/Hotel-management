@@ -1,69 +1,23 @@
-<<<<<<< HEAD
-=======
 import java.io.*;
 import java.util.ArrayList;
->>>>>>> master
-import java.util.Scanner;
 
+import java.util.Scanner;
 
 public class HotelApp {
 
-<<<<<<< HEAD
     private Scanner scan = new Scanner(System.in);
     private HotelLogic hotelCL;
-=======
-    private Scanner sc = new Scanner(System.in);
-    private ArrayList<String> customerTextLines = new ArrayList<>();
-    private ArrayList<Customer> customerArrayList = new ArrayList<>();
-
-    private ArrayList<String> employeeTextLines = new ArrayList<>();
-    private ArrayList<Employee> employeeArrayList = new ArrayList<>();
-    private HotelLogic hotelLogic = new HotelLogic();
->>>>>>> master
 
     public static void main(String[] args) {
         HotelApp main = new HotelApp();
         main.mainMenu();
     }
 
-<<<<<<< HEAD
     public void mainMenu(){
 
         String option;
 
         while(true) {
-=======
-        HotelApp hotelApp = new HotelApp();
-        try {
-            hotelApp.readCustomerList();
-            hotelApp.readEmployeeList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        while (true) {
-
-            System.out.print("Username: ");
-            String name = hotelApp.sc.nextLine();
-            System.out.print("Password: ");
-            String password = hotelApp.sc.nextLine();
-
-            for (int i = 0; i < hotelApp.employeeArrayList.size(); i++) {
-                if (name.equalsIgnoreCase(hotelApp.employeeArrayList.get(i).getName()) && password.equalsIgnoreCase(hotelApp.employeeArrayList.get(i).getPassword())) {
-                    try {
-                        hotelApp.employeeMode();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            for (int j = 0; j < hotelApp.customerArrayList.size(); j++) {
-                if (name.equalsIgnoreCase(hotelApp.customerArrayList.get(j).getName()) && password.equalsIgnoreCase(hotelApp.customerArrayList.get(j).getPassword())) {
-                    hotelApp.customerMode();
-                }
-            }
-        }
-    }
->>>>>>> master
 
             System.out.println("*** Welcome to Hotel California! ***\n\n" +
                     "Please choose an option from the menu:\n" +
@@ -71,7 +25,6 @@ public class HotelApp {
                     "2. Show Hotel Information\n" +
                     "3. Exit System\n");
 
-<<<<<<< HEAD
             option = scan.nextLine();
 
             switch (option) {
@@ -82,97 +35,6 @@ public class HotelApp {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-=======
-    public void employeeMode() throws IOException {
-        byte choice = 0;
-        while (choice != 11) {
-
-            System.out.println("\n\n*** Welcome to the Hotel California *** ");
-            System.out.println("\t\t\t|Employee|\n");
-            System.out.println("[1]  Add a new customer");
-            System.out.println("[2]  Remove a customer");
-            System.out.println("[3]  View all customers");
-
-            System.out.println("[4]  Add a new room");
-            System.out.println("[5]  Remove a room");
-            System.out.println("[6]  View all rooms including availability status");
-            System.out.println("[7]  View available rooms");
-            System.out.println("[8]  Edit the information of an existing room");
-
-            System.out.println("[9]  Search for a particular booking");
-            System.out.println("[10] Exit the employee mode");
-            System.out.print("\nYour choice: ");
-
-            try {
-                choice = sc.nextByte();
-                sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("| Please choose a number from the menu! |\n");
-                sc.next();
-                continue;
-            }
-            switch (choice) {
-
-                case 1: {
-                    System.out.print("Name: ");
-                    String name = sc.nextLine();
-                    System.out.print("Ssn: ");
-                    String ssn = sc.nextLine();
-                    System.out.print("Address: ");
-                    String address = sc.nextLine();
-                    System.out.print("Phone number: ");
-                    String phoneNumber = sc.nextLine();
-                    System.out.print("Password: ");
-                    String password = sc.nextLine();
-
-                    File file = new File("CustomerLogin.txt");
-                    FileWriter fWriter = new FileWriter(file, true);
-                    BufferedWriter bWriter = new BufferedWriter(fWriter);
-                    bWriter.write("\n" + ssn + "%%%" + name + "%%%" + address + "%%%" + phoneNumber + "%%%" + password);
-                    bWriter.close();
-                    customerArrayList.add(new Customer(ssn, name, address, phoneNumber, password));
-                    break;
-                }
-                case 2: {
-                    //Need also to delete the customer object from the file "CustomerLogin"
-                    System.out.println("Index\t\tName\t\t\tSocial Security Number");
-                    System.out.println("-----\t\t----\t\t\t----------------------");
-                    for (int i = 0; i < customerArrayList.size(); i++) {
-                        System.out.println("[" + i + "]\t\t" + customerArrayList.get(i).getName() + "\t\t" + customerArrayList.get(i).getSsn());
-                    }
-                    System.out.println("[" + customerArrayList.size() + "]" + "\t\tExit deleting");
-                    while (true) {
-                        System.out.print("\nThe index to remove: ");
-                        int indexToRemove = sc.nextInt();
-                        if (indexToRemove < customerArrayList.size()) {
-                            System.out.println("The customer with the name \"" + customerArrayList.get(indexToRemove).getName() + "\" has been removed");
-                            customerArrayList.remove(indexToRemove);
-                            break;
-                        } else if (indexToRemove == customerArrayList.size()) {
-                            break;
-                        } else {
-                            System.out.println("Choose an index from the list!");
-                        }
-                    }
-                    break;
-                }
-                case 3: {
-                    for (Customer c : customerArrayList) {
-                        System.out.println(c.toString());
-                    }
-                    break;
-                }
-                case 4: {
-                    break;
-                }
-                case 5: {
-                    break;
-                }
-                case 6: {
-                    break;
-                }
-                case 7: {
->>>>>>> master
                     break;
                 case "2":
                     showHotelInfo();
@@ -188,72 +50,12 @@ public class HotelApp {
         }
     }
 
-<<<<<<< HEAD
+
     public void showHotelInfo(){
         /*
         Skriv lite basic info om Hotellet
          */
     }
-
-=======
-    public void customerMode() {
-        byte choice = 0;
-
-        while (choice != -1) {
-            System.out.println("\n\n*** Welcome to the Hotel California *** ");
-            System.out.println("\t\t\t|Customer|\n");
-            System.out.println("[1] Make a booking and Check-in");
-            System.out.println("[2] Check-out");
-            System.out.println("[3] View current and previous bookings");
-            System.out.println("[4] View a list of all available rooms in a requested period");
-            System.out.println("[5] View bookings´ history");
-            System.out.println("[6] Edit profile");
-            System.out.println("[7] Edit information of a particular booking");
-            System.out.println("{8] Exit");
-            System.out.print("\nYour choice: ");
-            try {
-                choice = sc.nextByte();
-                sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("| Please choose a number from the menu |\n");
-                sc.next();
-                continue;
-            }
-
-            switch (choice) {
-                case 1: {
-                    break;
-                }
-                case 2: {
-                    break;
-                }
-                case 3: {
-                    break;
-                }
-                case 4: {
-                    break;
-                }
-                case 5: {
-                    break;
-                }
-                case 6: {
-                    break;
-                }
-                case 7: {
-                    break;
-                }
-                case 8: {
-                    System.out.println("Thank you for dealing with Hotel California\n\n");
-                    choice = -1;
-                    break;
-                }
-                default: {
-                    System.out.println("| Please choose a number from the menu! |\n");
-                    break;
-                }
-            }
-        }
->>>>>>> master
 
     /*
     Refactoring this to Logic class since List of users is moved there and general logic is more appropiate
