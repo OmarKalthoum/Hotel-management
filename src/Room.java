@@ -14,7 +14,6 @@ public class Room {
         this.setBooked(isBooked);
     }
 
-
     protected int getRommNumber() {
         return rommNumber;
     }

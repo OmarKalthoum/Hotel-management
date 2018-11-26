@@ -52,11 +52,5 @@ public class HotelLogic {
          */
     }
 
-    private void saveUsersToFile(){
-        // save user objects to file
-    }
-    private void readUsersFromFile(){
-        // read user objects from file
-    }
 
 }

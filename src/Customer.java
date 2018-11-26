@@ -16,5 +16,4 @@ public class Customer extends Person{
         customerBookings.add(booking);
     }
 
-
 }
