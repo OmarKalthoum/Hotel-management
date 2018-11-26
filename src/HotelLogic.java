@@ -56,28 +56,4 @@ public class HotelLogic {
             order to check functionality that edits data
          */
     }
-
-    public LinkedList<Person> getUsers() {
-        return users;
-    }
-
-    public void setUsers(LinkedList<Person> users) {
-        this.users = users;
-    }
-
-    public LinkedList<Booking> getBooks() {
-        return books;
-    }
-
-    public void setBooks(LinkedList<Booking> books) {
-        this.books = books;
-    }
-
-    public LinkedList<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(LinkedList<Room> rooms) {
-        this.rooms = rooms;
-    }
 }

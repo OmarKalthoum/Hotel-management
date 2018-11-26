@@ -16,11 +16,8 @@ public class employeMenu extends HCmenu {
     protected void removeRoom(){}
     protected void viewRooms(){}
     protected void editRoomInfo(){}
-    protected void addCustomer(){
-
-
-    }
-    protected void removeCustomer(){}
+    protected void addCustomer(){}
+    protected void removeCustomer(){    }
     protected void viewAllCustomers(){}
     protected void viewUnoccupiedRooms(){}
     protected void searchForBooking(){}
