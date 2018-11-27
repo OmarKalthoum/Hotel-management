@@ -1,6 +1,3 @@
-import java.io.*;
-import java.util.ArrayList;
-
 import java.util.Scanner;
 
 public class HotelApp {
@@ -13,17 +10,17 @@ public class HotelApp {
         main.mainMenu();
     }
 
-    public void mainMenu(){
+    public void mainMenu() {
 
         String option;
 
-        while(true) {
+        while (true) {
 
-            System.out.println("*** Welcome to Hotel California! ***\n\n" +
+            System.out.print("*** Welcome to Hotel California! ***\n\n" +
                     "Please choose an option from the menu:\n" +
                     "1. Login User\n" +
                     "2. Show Hotel Information\n" +
-                    "3. Exit System\n");
+                    "3. Exit System\n\nYour choice: ");
 
             option = scan.nextLine();
 
@@ -51,7 +48,7 @@ public class HotelApp {
     }
 
 
-    public void showHotelInfo(){
+    public void showHotelInfo() {
         /*
         Skriv lite basic info om Hotellet
          */

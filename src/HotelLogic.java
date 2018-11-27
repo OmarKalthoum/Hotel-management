@@ -9,31 +9,31 @@ public class HotelLogic {
     protected LinkedList<Booking> books = new LinkedList<>();
     protected LinkedList<Room> rooms = new LinkedList<>();
 
-    public HotelLogic(Scanner scan){
+    public HotelLogic(Scanner scan) {
         this.scan = scan;
     }
 
     // Login user and check for user type
     protected void loginUser() throws Exception {
-        System.out.println("UserName: ");
+        System.out.print("UserName: ");
         userName = scan.nextLine();
-        System.out.println("PassWord: ");
+        System.out.print("PassWord: ");
         passWord = scan.nextLine();
 
-        for (Person user:users) {
-            if(user.getUserName().equals(userName) && user.getPassword().equals(passWord)){
+        for (Person user : users) {
+            if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
 
-                if(user.getClass().equals(Employee.class)){
+                if (user.getClass().equals(Employee.class)) {
                     employeeMenu();
                     break;
-                }else if(user.getClass().equals(Customer.class)){
+                } else if (user.getClass().equals(Customer.class)) {
                     Customer owner = (Customer) user;
                     customerMenu(owner);
                     break;
-                }else if(userName.equals("ROOTADMINUSER") && passWord.equals("habibi")){
+                } else if (userName.equals("ROOTADMINUSER") && passWord.equals("habibi")) {
                     createTestInfo();
                     loginUser();
-                }else{
+                } else {
                     //something terribly worng
                     throw new Exception("something went terribly wrong in menu loginUser()");
                 }
@@ -42,27 +42,240 @@ public class HotelLogic {
     }
 
     // customer & employee menu
-    protected void customerMenu(Customer owner){
+    protected void customerMenu(Customer owner) {
+        int choice = 0;
+        while (choice != -1) {
+
+            System.out.print("[1] Booking options \n[2] Check in / Check out\n[3] View available rooms\n[4] Customer information\n[5] Exit customer mode\n\nYour choice: ");
+            choice = scan.nextInt();
+            switch (choice) {
+                case 1: {
+                    while (choice != -2) {
+
+                        System.out.print("\n[1] New booking\n[2] Edit booking\n[3] Print booking\n[4] Print booking history" +
+                                "\n[5] Back to the main menu\n\nYour choice: ");
+                        choice = scan.nextInt();
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                break;
+                            }
+                            case 4: {
+                                break;
+                            }
+                            case 5: {
+                                choice = -2;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    while (choice != -3) {
+
+                        System.out.print("\n[1] Check in\n[2] Check out\n[3] Back to the main menu\n\nYour choice:  ");
+                        choice = scan.nextInt();
+
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                choice = -3;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+
+                    break;
+                }
+                case 4: {
+                    while (choice != -4) {
+
+                        System.out.print("\n[1] View customer information\n[2] Edit customer information\n" +
+                                "[3] View current booking\n[4] View booking history\n[5] Back to the main menu\n\nYour choice: ");
+                        choice = scan.nextInt();
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                break;
+                            }
+                            case 4:{
+                                break;
+                            }
+                            case 5:{
+                                choice = -4;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    choice = -1;
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
 
     }
-    protected void employeeMenu(){
-        //direct user to employeemenu class
+
+    protected void employeeMenu() {
+        int choice = 0;
+        while (choice != -1) {
+
+            System.out.print("[1] Room options \n[2] User options\n[3] Bookings\n[4] Customer menu administration\n" +
+                    "[5] Exit employee mode\n\nYour choice: ");
+            choice = scan.nextInt();
+            switch (choice) {
+                case 1: {
+                    while (choice != -2) {
+
+                        System.out.print("\n[1] Add a room\n[2] Remove a room\n[3] View all rooms\n[4] View all available rooms" +
+                                "\n[5] Edit room info\n[6] Back to the main menu\n\nYour choice: ");
+                        choice = scan.nextInt();
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                break;
+                            }
+                            case 4: {
+                                break;
+                            }
+                            case 5: {
+                                break;
+                            }
+                            case 6: {
+                                choice = -2;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    while (choice != -3) {
+
+
+                        System.out.print("\n[1] Add customer\n[2] Remove customer\n[3] edit customer's information\n" +
+                                "[4] View all customers\n[5] Back to the main menu\n\nYour choice:  ");
+                        choice = scan.nextInt();
+
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                break;
+                            }
+                            case 4: {
+                                break;
+                            }
+                            case 5: {
+                                choice = -3;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+                    while (choice != -4) {
+
+
+                        System.out.print("\n[1] Search for a specific booking\n[2] Cancel a booking\n[3] Back to the main menu\n\nYour choice: ");
+                        choice = scan.nextInt();
+                        switch (choice) {
+                            case 1: {
+                                break;
+                            }
+                            case 2: {
+                                break;
+                            }
+                            case 3: {
+                                choice = -4;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                case 4: {
+                    break;
+                }
+                case 5: {
+                    choice = -1;
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+
+        /*
+         * Jag ändrade mig angående designen.
+         * Det blir mest bara krångligt att använda sig av en menu klass och det
+         * blir svårare att spara listor och uppdatera dem från underklasser.
+         * Tror det blir bättre om vi kör hela menyn och funktionaliteten i en och samma klass
+         * så gör vi det enkelt för oss :)
+         *
+         * Det som är kvar är att lägga in metoder för requirements här under
+         * */
+
+        // Method to generate random users & rooms for testing menus & logic
+
     }
 
-    /*
-    * Jag ändrade mig angående designen.
-    * Det blir mest bara krångligt att använda sig av en menu klass och det
-    * blir svårare att spara listor och uppdatera dem från underklasser.
-    * Tror det blir bättre om vi kör hela menyn och funktionaliteten i en och samma klass
-    * så gör vi det enkelt för oss :)
-    *
-    * Det som är kvar är att lägga in metoder för requirements här under
-    * */
-
-    // Method to generate random users & rooms for testing menus & logic
     private void createTestInfo() {
         /* create a bunch of users, employees, rooms & stuff in
-            order to check functionality that edits data
-         */
+            order to check functionality that edits data*/
+
     }
 }
