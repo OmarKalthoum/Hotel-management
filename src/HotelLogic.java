@@ -189,7 +189,13 @@ public class HotelLogic {
                     "[4] Customer menu administration\n" +
                     "[5] Exit employee mode\n\n" +
                     "Your choice: ");
-            choice = scan.nextInt();
+            try {
+                choice = scan.nextInt();
+            } catch (Exception e) {
+                System.out.println("Please choose a number from the menu");
+                scan.next();
+                continue;
+            }
             switch (choice) {
                 case 1: {
                     while (choice != -2) {
@@ -201,7 +207,14 @@ public class HotelLogic {
                                 "[5] Edit room info\n" +
                                 "[6] Back to the main menu\n\n" +
                                 "Your choice: ");
-                        choice = scan.nextInt();
+                        try {
+                            choice = scan.nextInt();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu");
+                            scan.next();
+                            continue;
+                        }
+
                         switch (choice) {
                             case 1: {
                                 addNewRoom();
@@ -220,6 +233,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 5: {
+                                editRoom();
                                 break;
                             }
                             case 6: {
@@ -227,6 +241,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu");
                                 break;
                             }
                         }
@@ -243,7 +258,13 @@ public class HotelLogic {
                                 "[4] View all customers\n" +
                                 "[5] Back to the main menu\n\n" +
                                 "Your choice:  ");
-                        choice = scan.nextInt();
+                        try {
+                            choice = scan.nextInt();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu");
+                            scan.next();
+                            continue;
+                        }
 
                         switch (choice) {
                             case 1: {
@@ -280,7 +301,13 @@ public class HotelLogic {
                                 "[2] Cancel a booking\n" +
                                 "[3] Back to the main menu\n\n" +
                                 "Your choice: ");
-                        choice = scan.nextInt();
+                        try {
+                            choice = scan.nextInt();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu");
+                            scan.next();
+                            continue;
+                        }
                         switch (choice) {
                             case 1: {
                                 break;
@@ -365,7 +392,7 @@ public class HotelLogic {
                 scan.next();
                 continue;
             }
-            if (roomNumber > rooms.size() ) {
+            if (roomNumber > rooms.size() || roomNumber <= 0) {
                 System.out.println("Please choose an available room number!");
             } else {
                 rooms.remove(rooms.get(roomNumber - 1));
@@ -382,7 +409,7 @@ public class HotelLogic {
         DecimalFormat df = new DecimalFormat("#.##");
         for (int i = 0; i < rooms.size(); i++) {
             System.out.println(
-                    (i + 1+ "\t\t" +
+                    (i + 1 + "\t\t" +
                             rooms.get(i).getNumberOfBeds() + "\t\t" +
                             df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                             rooms.get(i).isHasBalcony()));
@@ -390,18 +417,69 @@ public class HotelLogic {
     }
 
     private void viewJustAvailableRooms() {
- /*       System.out.println("Listing all available rooms at Hotel California\n\n");
+        System.out.println("Listing all available rooms at Hotel California\n");
         System.out.println("Room\tBeds\tPrice/Night\tBalcony\n\n");
         for (int i = 0; i < rooms.size(); i++) {
-            if (rooms.get(i).isBooked()) {
+            if (!rooms.get(i).isBooked()) {
                 DecimalFormat df = new DecimalFormat("#.##");
                 System.out.println(
-                        rooms.get(i).getRommNumber() + "\t\t" +
+                        i + 1 + "\t\t" +
                                 rooms.get(i).getNumberOfBeds() + "\t\t" +
                                 df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                                 rooms.get(i).isHasBalcony());
             }
-        }*/
+        }
+    }
+
+    private void editRoom() {
+
+        while (true) {
+            viewAllRooms();
+            int roomNumber;
+
+            System.out.print("Write the number of the room that you want to edit: ");
+            try {
+                roomNumber = scan.nextInt() - 1;
+                scan.nextLine();
+            } catch (Exception e) {
+                System.out.println("Please choose an available room number!");
+                scan.next();
+                continue;
+            }
+            if (roomNumber > rooms.size() || roomNumber <= 0) {
+                System.out.println("Please choose an available room number!");
+            } else {
+                System.out.println("You are editing the room number " + roomNumber + 1);
+                System.out.print("Enter the number of beds: ");
+                while (true) {
+                    try {
+                        rooms.get(roomNumber).setNumberOfBeds(scan.nextInt());
+                        break;
+                    } catch (Exception e) {
+                        System.out.print("Please write only the number of beds: ");
+                        scan.next();
+                    }
+                }
+                scan.nextLine();
+                System.out.print("Has the room a balcony: (Y/N): ");
+                if (scan.nextLine().equalsIgnoreCase("y")) {
+                    rooms.get(roomNumber).setHasBalcony(true);
+                }
+                System.out.print("How much costs the room per night? ");
+                while (true) {
+                    try {
+                        rooms.get(roomNumber).setPricePerNight(scan.nextInt());
+                        break;
+                    } catch (Exception e) {
+                        System.out.print("Please write only the cost of the room per night: ");
+                        scan.next();
+                    }
+                }
+                scan.nextLine();
+                break;
+            }
+        }
+
     }
 
     private void addNewCustomer() {

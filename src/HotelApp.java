@@ -22,7 +22,14 @@ public class HotelApp {
                     "3. Exit System\n\n" +
                     "Your choice: ");
 
-            option = scan.nextLine();
+            try {
+                option = scan.nextLine();
+            } catch (Exception e) {
+                System.out.println("Please choose a number from the menu");
+                scan.next();
+                continue;
+            }
+
 
             switch (option) {
                 case "1":
@@ -38,9 +45,6 @@ public class HotelApp {
 
                 case "3":
                     System.exit(0);
-                    break;
-                default:
-                    System.out.println("Option Not available, please choose an option from menu");
                     break;
             }
         }
