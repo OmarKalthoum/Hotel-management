@@ -41,7 +41,7 @@ public class HotelLogic {
         }
     }
 
-    // customer & employee menu
+    // Customer & employee menu
     protected void customerMenu(Customer owner) {
         int choice = 0;
         while (choice != -1) {
