@@ -205,6 +205,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 2: {
+                                removeRoom();
                                 break;
                             }
                             case 3: {
@@ -382,5 +383,27 @@ public class HotelLogic {
 
     }
 
+    private void removeRoom(){
+        int RoomNumber;
+        System.out.println("Enter Roomnumber and press Enter. (This room will be removed from record)\n" +
+                "select 0 to abort.\n");
+
+        while(!scan.hasNextInt()){
+            scan.next();
+        }
+        RoomNumber = scan.nextInt();
+
+        if (RoomNumber == 0){
+            return;
+        }
+
+        for (Room r : rooms){
+            if (r.getRommNumber() == RoomNumber){
+                    rooms.remove(r);
+                System.out.println("Room Number " + RoomNumber + " has been removed");
+                return;
+            }
+        }
+    }
 }
 
