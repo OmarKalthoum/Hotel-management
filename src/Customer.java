@@ -2,9 +2,10 @@ import java.util.LinkedList;
 
 public class Customer extends Person{
 
-    public Customer(String ssn, String name, String address, String telephonNumber, String userName, String password) {
-        super(ssn, name, address, telephonNumber, userName, password);
+    public Customer(String ssn, String name, String address, String telephoneNumber, String userName, String password) {
+        super(ssn, name, address, telephoneNumber, userName, password);
     }
+
 
     private LinkedList<Integer> customerBookings = new LinkedList<>();
 

@@ -22,23 +22,23 @@ public class HotelLogic {
         passWord = scan.nextLine();
 
 
-            for (Person user : users) {
-                if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
+        for (Person user : users) {
+            if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
 
-                    if (user.getClass().equals(Employee.class)) {
-                        employeeMenu();
-                        break;
-                    } else if (user.getClass().equals(Customer.class)) {
-                        Customer owner = (Customer) user;
-                        customerMenu(owner);
-                        break;
-                    } else {
-                        //something terribly worng
-                        throw new Exception("something went terribly wrong in menu loginUser()");
-                    }
+                if (user.getClass().equals(Employee.class)) {
+                    employeeMenu();
+                    break;
+                } else if (user.getClass().equals(Customer.class)) {
+                    Customer owner = (Customer) user;
+                    customerMenu(owner);
+                    break;
+                } else {
+                    //something terribly worng
+                    throw new Exception("something went terribly wrong in menu loginUser()");
                 }
             }
         }
+    }
 
 
     // customer & employee menu
@@ -53,7 +53,7 @@ public class HotelLogic {
                     "[5] Exit customer mode\n\n" +
                     "Your choice: ");
 
-            while(!scan.hasNextInt()){
+            while (!scan.hasNextInt()) {
                 scan.next();
             }
 
@@ -70,7 +70,7 @@ public class HotelLogic {
                                 "[5] Back to the main menu\n\n" +
                                 "Your choice: ");
 
-                        while(!scan.hasNextInt()){
+                        while (!scan.hasNextInt()) {
                             scan.next();
                         }
 
@@ -152,10 +152,10 @@ public class HotelLogic {
                             case 3: {
                                 break;
                             }
-                            case 4:{
+                            case 4: {
                                 break;
                             }
-                            case 5:{
+                            case 5: {
                                 choice = -4;
                                 break;
                             }
@@ -235,7 +235,7 @@ public class HotelLogic {
                         System.out.print("\n" +
                                 "[1] Add customer\n" +
                                 "[2] Remove customer\n" +
-                                "[3] edit customer's information\n" +
+                                "[3] Edit customer's information\n" +
                                 "[4] View all customers\n" +
                                 "[5] Back to the main menu\n\n" +
                                 "Your choice:  ");
@@ -243,6 +243,7 @@ public class HotelLogic {
 
                         switch (choice) {
                             case 1: {
+                                addNewCustomer();
                                 break;
                             }
                             case 2: {
@@ -252,6 +253,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 4: {
+                                viewAllCustomers();
                                 break;
                             }
                             case 5: {
@@ -316,12 +318,44 @@ public class HotelLogic {
 
         users.add(emp1);
 
-        Customer cust1 = new Customer("0000", "xxx", "xxx"
+        Customer cust1 = new Customer("0000", "yyy", "xxx"
                 , "xxx", "yyy"
                 , "yyy");
         users.add(cust1);
 
-        }
+    }
+
+    private void addNewCustomer() {
+        scan.nextLine();
+        System.out.println("Enter your full name : ");
+        String name = scan.nextLine();
+        System.out.println("Enter your social security-number :");
+        String ssn = scan.nextLine();
+        System.out.println("Enter your phone-number : ");
+        String phoneNumber = scan.nextLine();
+        System.out.println("Enter your address : ");
+        String address = scan.nextLine();
+        System.out.println("Enter your username : ");
+        String userName = scan.nextLine();
+        System.out.println("Enter your password : ");
+        String password = scan.nextLine();
+        Customer customer = new Customer(ssn, name, address, phoneNumber, userName, password);
+        users.add(customer);
+        System.out.println("Customer-account created! ");
+        System.out.println();
 
     }
+
+    private void viewAllCustomers() {
+        System.out.println("Registered customers : ");
+        for (Person p : users) {
+            if (p.getClass().equals(Customer.class)) {
+                System.out.println(p.getName());
+            }
+        }
+
+
+    }
+
+}
 
