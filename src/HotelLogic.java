@@ -46,14 +46,34 @@ public class HotelLogic {
         int choice = 0;
         while (choice != -1) {
 
-            System.out.print("[1] Booking options \n[2] Check in / Check out\n[3] View available rooms\n[4] Customer information\n[5] Exit customer mode\n\nYour choice: ");
+            System.out.print("[1] Booking options \n" +
+                    "[2] Check in / Check out\n" +
+                    "[3] View available rooms\n" +
+                    "[4] Customer information\n" +
+                    "[5] Exit customer mode\n\n" +
+                    "Your choice: ");
+
+            while(!scan.hasNextInt()){
+                scan.next();
+            }
+
             choice = scan.nextInt();
             switch (choice) {
                 case 1: {
                     while (choice != -2) {
 
-                        System.out.print("\n[1] New booking\n[2] Edit booking\n[3] Print booking\n[4] Print booking history" +
-                                "\n[5] Back to the main menu\n\nYour choice: ");
+                        System.out.print("\n" +
+                                "[1] New booking\n" +
+                                "[2] Edit booking\n" +
+                                "[3] Print booking\n" +
+                                "[4] Print booking history\n" +
+                                "[5] Back to the main menu\n\n" +
+                                "Your choice: ");
+
+                        while(!scan.hasNextInt()){
+                            scan.next();
+                        }
+
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
@@ -82,7 +102,11 @@ public class HotelLogic {
                 case 2: {
                     while (choice != -3) {
 
-                        System.out.print("\n[1] Check in\n[2] Check out\n[3] Back to the main menu\n\nYour choice:  ");
+                        System.out.print("\n" +
+                                "[1] Check in\n" +
+                                "[2] Check out\n" +
+                                "[3] Back to the main menu\n\n" +
+                                "Your choice:  ");
                         choice = scan.nextInt();
 
                         switch (choice) {
@@ -110,8 +134,13 @@ public class HotelLogic {
                 case 4: {
                     while (choice != -4) {
 
-                        System.out.print("\n[1] View customer information\n[2] Edit customer information\n" +
-                                "[3] View current booking\n[4] View booking history\n[5] Back to the main menu\n\nYour choice: ");
+                        System.out.print("\n" +
+                                "[1] View customer information\n" +
+                                "[2] Edit customer information\n" +
+                                "[3] View current booking\n" +
+                                "[4] View booking history\n" +
+                                "[5] Back to the main menu\n\n" +
+                                "Your choice: ");
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
@@ -153,15 +182,25 @@ public class HotelLogic {
         int choice = 0;
         while (choice != -1) {
 
-            System.out.print("[1] Room options \n[2] User options\n[3] Bookings\n[4] Customer menu administration\n" +
-                    "[5] Exit employee mode\n\nYour choice: ");
+            System.out.print("" +
+                    "[1] Room options \n" +
+                    "[2] User options\n" +
+                    "[3] Bookings\n" +
+                    "[4] Customer menu administration\n" +
+                    "[5] Exit employee mode\n\n" +
+                    "Your choice: ");
             choice = scan.nextInt();
             switch (choice) {
                 case 1: {
                     while (choice != -2) {
 
-                        System.out.print("\n[1] Add a room\n[2] Remove a room\n[3] View all rooms\n[4] View all available rooms" +
-                                "\n[5] Edit room info\n[6] Back to the main menu\n\nYour choice: ");
+                        System.out.print("\n[1] Add a room\n" +
+                                "[2] Remove a room\n" +
+                                "[3] View all rooms\n" +
+                                "[4] View all available rooms\n" +
+                                "[5] Edit room info\n" +
+                                "[6] Back to the main menu\n\n" +
+                                "Your choice: ");
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
@@ -193,9 +232,13 @@ public class HotelLogic {
                 case 2: {
                     while (choice != -3) {
 
-
-                        System.out.print("\n[1] Add customer\n[2] Remove customer\n[3] edit customer's information\n" +
-                                "[4] View all customers\n[5] Back to the main menu\n\nYour choice:  ");
+                        System.out.print("\n" +
+                                "[1] Add customer\n" +
+                                "[2] Remove customer\n" +
+                                "[3] edit customer's information\n" +
+                                "[4] View all customers\n" +
+                                "[5] Back to the main menu\n\n" +
+                                "Your choice:  ");
                         choice = scan.nextInt();
 
                         switch (choice) {
@@ -225,8 +268,11 @@ public class HotelLogic {
                 case 3: {
                     while (choice != -4) {
 
-
-                        System.out.print("\n[1] Search for a specific booking\n[2] Cancel a booking\n[3] Back to the main menu\n\nYour choice: ");
+                        System.out.print("\n" +
+                                "[1] Search for a specific booking\n" +
+                                "[2] Cancel a booking\n" +
+                                "[3] Back to the main menu\n\n" +
+                                "Your choice: ");
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
@@ -258,24 +304,12 @@ public class HotelLogic {
                 }
             }
         }
-
-        /*
-         * Jag ändrade mig angående designen.
-         * Det blir mest bara krångligt att använda sig av en menu klass och det
-         * blir svårare att spara listor och uppdatera dem från underklasser.
-         * Tror det blir bättre om vi kör hela menyn och funktionaliteten i en och samma klass
-         * så gör vi det enkelt för oss :)
-         *
-         * Det som är kvar är att lägga in metoder för requirements här under
-         * */
-
-        // Method to generate random users & rooms for testing menus & logic
-
     }
 
     private void createTestInfo() {
         /* create a bunch of users, employees, rooms & stuff in
             order to check functionality that edits data*/
+        }
 
     }
-}
+
