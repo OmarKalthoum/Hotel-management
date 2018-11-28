@@ -11,6 +11,7 @@ public class HotelLogic {
 
     public HotelLogic(Scanner scan) {
         this.scan = scan;
+        createTestInfo();
     }
 
     // Login user and check for user type
@@ -20,26 +21,28 @@ public class HotelLogic {
         System.out.print("PassWord: ");
         passWord = scan.nextLine();
 
-        for (Person user : users) {
-            if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
 
-                if (user.getClass().equals(Employee.class)) {
-                    employeeMenu();
-                    break;
-                } else if (user.getClass().equals(Customer.class)) {
-                    Customer owner = (Customer) user;
-                    customerMenu(owner);
-                    break;
-                } else if (userName.equals("ROOTADMINUSER") && passWord.equals("habibi")) {
-                    createTestInfo();
-                    employeeMenu();
-                } else {
-                    //something terribly worng
-                    throw new Exception("something went terribly wrong in menu loginUser()");
+            for (Person user : users) {
+                if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
+
+                    if (user.getClass().equals(Employee.class)) {
+                        employeeMenu();
+                        break;
+                    } else if (user.getClass().equals(Customer.class)) {
+                        Customer owner = (Customer) user;
+                        customerMenu(owner);
+                        break;
+                    } else if (userName.equals("ROOTADMINUSER") && passWord.equals("habibi")) {
+
+                        employeeMenu();
+                    } else {
+                        //something terribly worng
+                        throw new Exception("something went terribly wrong in menu loginUser()");
+                    }
                 }
             }
         }
-    }
+
 
     // customer & employee menu
     protected void customerMenu(Customer owner) {
@@ -309,6 +312,15 @@ public class HotelLogic {
     private void createTestInfo() {
         /* create a bunch of users, employees, rooms & stuff in
             order to check functionality that edits data*/
+
+        Employee emp1 = new Employee("0000", "xxx", "xxx"
+                , "xxx", "xxx"
+                , "xxx", 1, "xxx");
+
+        users.add(emp1);
+
+
+
         }
 
     }
