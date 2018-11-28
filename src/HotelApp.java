@@ -27,7 +27,6 @@ public class HotelApp {
             switch (option) {
                 case "1":
                     try {
-                        System.out.println("login attempt");
                         hotelCL.loginUser();
                     } catch (Exception e) {
                         e.printStackTrace();
