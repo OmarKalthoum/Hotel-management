@@ -5,17 +5,16 @@ public class Room {
     private boolean hasBalcony;
     private double pricePerNight;
     private boolean isBooked;
-    private static int counter = 1;
 
 
-    public Room(int numberOfBeds, boolean hasBalcony, double pricePerNight) {
+    public Room(int roomNumber, int numberOfBeds, boolean hasBalcony, double pricePerNight) {
+        this.setRommNumber(roomNumber);
         this.setNumberOfBeds(numberOfBeds);
         this.setHasBalcony(hasBalcony);
         this.setPricePerNight(pricePerNight);
         this.setBooked(isBooked);
-        roomNumber = counter;
-        counter++;
     }
+
 
     protected int getRommNumber() {
         return roomNumber;
@@ -56,4 +55,5 @@ public class Room {
     protected void setBooked(boolean booked) {
         isBooked = booked;
     }
+
 }
