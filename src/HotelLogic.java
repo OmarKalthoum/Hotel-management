@@ -32,9 +32,6 @@ public class HotelLogic {
                         Customer owner = (Customer) user;
                         customerMenu(owner);
                         break;
-                    } else if (userName.equals("ROOTADMINUSER") && passWord.equals("habibi")) {
-
-                        employeeMenu();
                     } else {
                         //something terribly worng
                         throw new Exception("something went terribly wrong in menu loginUser()");
@@ -319,7 +316,10 @@ public class HotelLogic {
 
         users.add(emp1);
 
-
+        Customer cust1 = new Customer("0000", "xxx", "xxx"
+                , "xxx", "yyy"
+                , "yyy");
+        users.add(cust1);
 
         }
 
