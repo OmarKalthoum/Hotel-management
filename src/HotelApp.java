@@ -13,7 +13,6 @@ public class HotelApp {
     public void mainMenu() {
 
         String option;
-
         while (true) {
 
             System.out.print("*** Welcome to Hotel California! ***\n\n" +

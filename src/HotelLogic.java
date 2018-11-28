@@ -32,7 +32,7 @@ public class HotelLogic {
                     break;
                 } else if (userName.equals("ROOTADMINUSER") && passWord.equals("habibi")) {
                     createTestInfo();
-                    loginUser();
+                    employeeMenu();
                 } else {
                     //something terribly worng
                     throw new Exception("something went terribly wrong in menu loginUser()");
