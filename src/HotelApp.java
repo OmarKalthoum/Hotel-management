@@ -48,9 +48,12 @@ public class HotelApp {
 
 
     public void showHotelInfo() {
-        /*
-        Skriv lite basic info om Hotellet
-         */
+
+        System.out.println("        Welcome to the Hotel California!\n" +
+                "        Hotel California is located on the side of a dark desert highway. The warm smell of colitas\n" +
+                "        rising up through the air. It´s a lovely place with plenty of room, any time of year!");
+        System.out.println();
+
     }
 
 }
