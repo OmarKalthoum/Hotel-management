@@ -10,7 +10,7 @@ public class Booking {
     private boolean isCanceled;
     private int roomNbr;
 
-    public Booking(Date checkinDate, Date checkoutDate, double totalPrice){
+    public Booking(Date checkinDate, Date checkoutDate, int roomNbr, double totalPrice){
         this.setCheckinDate(checkinDate);
         this.setCheckoutDate(checkoutDate);
         this.setTotalPrice(totalPrice);
