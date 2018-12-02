@@ -1,12 +1,14 @@
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.text.*;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class HotelLogic {
 
     private String userName, passWord;
+    private Date checkinDate, checkoutDate;
     private Scanner scan;
     protected LinkedList<Person> users = new LinkedList<>();
     protected LinkedList<Booking> books = new LinkedList<>();
@@ -77,6 +79,32 @@ public class HotelLogic {
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                String date;
+                                //Error handling date = ""
+                                date = scan.nextLine();
+                                System.out.println("Enter checkin date (Format yyyy-mm-dd):");
+                                date = scan.nextLine();
+                                try {
+                                    checkinDate = dateFormat.parse(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Enter checkout date (Format yyyy-mm-dd):");
+                                date = scan.nextLine();
+                                try {
+                                    checkoutDate = dateFormat.parse(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Enter room number:");
+                                int roomNbr = scan.nextInt();
+                                System.out.println("Enter price:");
+                                double price = scan.nextDouble();
+                                Booking newBooking = new Booking(checkinDate, checkoutDate, roomNbr, price);
+                                books.add(newBooking);
+                                ReadWrite rw = new ReadWrite();
+                                rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
                                 break;
                             }
                             case 2: {
@@ -378,28 +406,6 @@ public class HotelLogic {
         rooms.add(new Room(roomNumber, bedsQuantity, hasBalcony, cost));
         System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
 
-    }
-
-    private void removeRoom() {
-        while (true) {
-            viewAllRooms();
-            int roomNumber;
-            System.out.print("\nWrite the room index that you would like to delete: ");
-            try {
-                roomNumber = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please choose an available room number!");
-                scan.next();
-                continue;
-            }
-            if (roomNumber > rooms.size() || roomNumber <= 0) {
-                System.out.println("Please choose an available room number!");
-            } else {
-                rooms.remove(rooms.get(roomNumber - 1));
-                System.out.println("The room with the number: " + roomNumber + " has been removed");
-                break;
-            }
-        }
     }
 
     private void viewAllRooms() {
