@@ -10,13 +10,13 @@ public class HotelLogic {
     private String userName, passWord;
     private Date checkinDate, checkoutDate;
     private Scanner scan;
-    protected LinkedList<Person> users = new LinkedList<>();
-    protected LinkedList<Booking> books = new LinkedList<>();
-    protected LinkedList<Room> rooms = new LinkedList<>();
+    private LinkedList<Person> users = new LinkedList<>();
+    private LinkedList<Booking> books = new LinkedList<>();
+    private LinkedList<Room> rooms = new LinkedList<>();
 
     public HotelLogic(Scanner scan) {
         this.scan = scan;
-        createTestInfo();
+        load();
     }
 
     // Login user and check for user type
@@ -644,14 +644,14 @@ public class HotelLogic {
         /* create a bunch of users, employees, rooms & stuff in
             order to check functionality that edits data*/
 
-        Employee emp1 = new Employee("0000", "xxx", "xxx"
-                , "xxx", "xxx"
-                , "xxx", 1, "xxx");
+        Employee emp1 = new Employee("999999-9999", "MyHomieThaEmployee", "EmployeTown @ da EmployeHouse 99"
+                , "077-7777777", "xxx"
+                , "xxx", 1, "Top Dawgh");
 
         users.add(emp1);
 
-        Customer cust1 = new Customer("0000", "yyy", "xxx"
-                , "xxx", "yyy"
+        Customer cust1 = new Customer("121212-1212", "Goldmember James", "who gives a ***"
+                , "070-121212121", "yyy"
                 , "yyy");
         users.add(cust1);
 
@@ -669,8 +669,23 @@ public class HotelLogic {
             rooms.add(room);
         }
 
+        save();
+
     }
 
+    private void load (){
+        ReadWrite rw = new ReadWrite();
+        users = rw.readUsers();
+        books = rw.readBookings();
+        rooms = rw.readRooms();
+    }
+
+    protected void save(){
+        ReadWrite rw = new ReadWrite();
+        rw.saveUsers(users);
+        rw.saveBookings(books);
+        rw.saveRooms(rooms);
+    }
 
 }
 

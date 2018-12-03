@@ -44,6 +44,7 @@ public class HotelApp {
                     break;
 
                 case "3":
+                    hotelCL.save();
                     System.exit(0);
                     break;
             }
