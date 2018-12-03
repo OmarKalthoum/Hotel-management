@@ -543,13 +543,17 @@ public class HotelLogic {
         System.out.println("Registered customers:\n");
         for (Person p : users) {
             if (p.getClass().equals(Customer.class)) {
-                System.out.println("[" + counter + "]\t" + p.getName());
+                System.out.println("Customer [" + counter + "]");
+                System.out.println("Name: "+p.getName());
+                System.out.println("SSN: "+p.getSsn());
+                System.out.println("Phone-number: "+p.getContactNBR());
+                System.out.println("Address: "+p.getAddress());
+                System.out.println("Username: "+p.getUserName());
+                System.out.println();
                 counter++;
             }
         }
         System.out.println("-------------------------------------------------------");
-
-
     }
 
     private void removeCustomer() {
@@ -650,6 +654,11 @@ public class HotelLogic {
                 , "xxx", "yyy"
                 , "yyy");
         users.add(cust1);
+
+        Customer cust2 = new Customer("999999-9999", "Hans Eklund", "tjenagatan 1827 198287 Härnösand"
+                , "0777-777777", "Kajsasasa"
+                , "yyy");
+        users.add(cust2);
 
 
         double ppn;
