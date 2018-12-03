@@ -79,7 +79,32 @@ public class HotelLogic {
                         choice = scan.nextInt();
                         switch (choice) {
                             case 1: {
-                                addNewBooking(owner);
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                String date;
+                                //Error handling date = ""
+                                date = scan.nextLine();
+                                System.out.println("Enter checkin date (Format yyyy-mm-dd):");
+                                date = scan.nextLine();
+                                try {
+                                    checkinDate = dateFormat.parse(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Enter checkout date (Format yyyy-mm-dd):");
+                                date = scan.nextLine();
+                                try {
+                                    checkoutDate = dateFormat.parse(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Enter room number:");
+                                int roomNbr = scan.nextInt();
+                                System.out.println("Enter price:");
+                                double price = scan.nextDouble();
+                                Booking newBooking = new Booking(checkinDate, checkoutDate, roomNbr, price);
+                                books.add(newBooking);
+                                ReadWrite rw = new ReadWrite();
+                                rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
                                 break;
                             }
                             case 2: {
@@ -341,37 +366,6 @@ public class HotelLogic {
                 }
             }
         }
-    }
-
-    private void addNewBooking(Customer owner) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date;
-        //Error handling date = ""
-        date = scan.nextLine();
-        System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
-        date = scan.nextLine();
-        try {
-            checkinDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
-        date = scan.nextLine();
-        try {
-            checkoutDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Enter room number:");
-        int roomNbr = scan.nextInt();
-        System.out.println("Enter price:");
-        double price = scan.nextDouble();
-        Booking newBooking = new Booking(checkinDate, checkoutDate, roomNbr);
-        newBooking.setTotalPrice(price);
-        owner.addCustomerBookings(newBooking.getBookId());
-        books.add(newBooking);
-        ReadWrite rw = new ReadWrite();
-        rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
     }
 
     private void addNewRoom() {
