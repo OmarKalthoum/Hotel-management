@@ -67,8 +67,8 @@ public class HotelLogic {
                         System.out.print("\n" +
                                 "[1] New booking\n" +
                                 "[2] Edit booking\n" +
-                                "[3] Print booking\n" +
-                                "[4] Print booking history\n" +
+                                "[3] View booking\n" +
+                                "[4] View booking history\n" +
                                 "[5] Back to the main menu\n\n" +
                                 "Your choice: ");
 
@@ -434,13 +434,15 @@ public class HotelLogic {
     }
 
     private void viewAllRooms() {
+        Room temp;
 
         System.out.println("Listing all registered rooms at Hotel California\n\n");
         System.out.println("Room\tBeds\tPrice/Night\tBalcony\n\n");
         DecimalFormat df = new DecimalFormat("#.##");
         for (int i = 0; i < rooms.size(); i++) {
+            temp = rooms.get(i);
             System.out.println(
-                    (i + 1 + "\t\t" +
+                    (temp.getRommNumber() + 1 + "\t\t" +
                             rooms.get(i).getNumberOfBeds() + "\t\t" +
                             df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                             rooms.get(i).isHasBalcony()));
