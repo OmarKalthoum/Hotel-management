@@ -374,7 +374,7 @@ public class HotelLogic {
     private void addNewRoom() {
 
         boolean hasBalcony = false;
-        int roomNumber = rooms.size() + 1;
+        int roomNumber = rooms.size()+1;
         System.out.println("\nAdding a new Room: ");
         System.out.println("The room number is gonna be : " + roomNumber);
 
@@ -406,7 +406,7 @@ public class HotelLogic {
                 scan.next();
             }
         }
-        rooms.add(new Room(roomNumber, bedsQuantity, hasBalcony, cost));
+        rooms.add(new Room(roomNumber-1, bedsQuantity, hasBalcony, cost));
         System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
 
     }
@@ -439,8 +439,10 @@ public class HotelLogic {
         System.out.println("Listing all registered rooms at Hotel California\n\n");
         System.out.println("Room\tBeds\tPrice/Night\tBalcony\n\n");
         DecimalFormat df = new DecimalFormat("#.##");
+        String ppn;
         for (int i = 0; i < rooms.size(); i++) {
             temp = rooms.get(i);
+
             System.out.println(
                     (temp.getRommNumber() + 1 + "\t\t" +
                             rooms.get(i).getNumberOfBeds() + "\t\t" +
