@@ -1,8 +1,5 @@
 import java.text.*;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Date;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class HotelLogic {
@@ -20,15 +17,16 @@ public class HotelLogic {
     }
 
     // Login user and check for user type
-    protected void loginUser() throws Exception {
+    protected void loginUser() {
 
         System.out.print("UserName: ");
         userName = scan.nextLine();
         System.out.print("PassWord: ");
         passWord = scan.nextLine();
-
+        int checkLogIn = 1;
         for (Person user : users) {
             if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
+                checkLogIn++;
                 if (user.getClass().equals(Employee.class)) {
                     employeeMenu();
                     break;
@@ -37,9 +35,12 @@ public class HotelLogic {
                     customerMenu(owner);
                     break;
                 }
-            } else {
-                System.out.println("Login Failed\n");
+
             }
+        }
+        if (checkLogIn == 1) {
+            System.out.println("Login Failed\nPlease try again");
+
         }
     }
 
@@ -48,7 +49,7 @@ public class HotelLogic {
         int choice = 0;
         while (choice != -1) {
 
-            System.out.print("[1] Booking options \n" +
+            System.out.print("\n[1] Booking options \n" +
                     "[2] Check in / Check out\n" +
                     "[3] View available rooms\n" +
                     "[4] Customer information\n" +
@@ -187,7 +188,7 @@ public class HotelLogic {
 
             System.out.print("\n" +
                     "[1] Room options \n" +
-                    "[2] User options\n" +
+                    "[2] Customer options\n" +
                     "[3] Bookings\n" +
                     "[4] Customer menu administration\n" +
                     "[5] Exit employee mode\n\n" +
@@ -375,12 +376,12 @@ public class HotelLogic {
         rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
     }
 
-        //Room methods
+    //Room methods
 
     private void addNewRoom() {
 
         boolean hasBalcony = false;
-        int roomNumber = rooms.size()+1;
+        int roomNumber = rooms.size() + 1;
         System.out.println("\nAdding a new Room: ");
         System.out.println("The room number is gonna be : " + roomNumber);
 
@@ -412,28 +413,37 @@ public class HotelLogic {
                 scan.next();
             }
         }
-        rooms.add(new Room(roomNumber-1, bedsQuantity, hasBalcony, cost));
+        rooms.add(new Room(roomNumber - 1, bedsQuantity, hasBalcony, cost));
         System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
 
     }
 
     private void removeRoom() {
         while (true) {
-            viewAllRooms();
-            int roomNumber;
-            System.out.print("\nWrite the room index that you would like to delete: ");
-            try {
-                roomNumber = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please choose an available room number!");
-                scan.next();
-                continue;
-            }
-            if (roomNumber > rooms.size() || roomNumber <= 0) {
-                System.out.println("Please choose an available room number!");
-            } else {
-                rooms.remove(rooms.get(roomNumber - 1));
-                System.out.println("The room with the number: " + roomNumber + " has been removed");
+            if (rooms.size() > 0) {
+
+                viewAllRooms();
+                int roomNumber;
+                System.out.print("\nWrite the room index that you would like to delete or 0 to abort: ");
+                try {
+                    roomNumber = scan.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Please choose an available room number!");
+                    scan.next();
+                    continue;
+                }
+                if (roomNumber > rooms.size() || roomNumber < 0) {
+                    System.out.println("Please choose an available room number!");
+                } else if (roomNumber == 0) {
+                    break;
+                } else {
+                    rooms.remove(rooms.get(roomNumber - 1));
+                    System.out.println("The room with the number: " + roomNumber + " has been removed");
+                    break;
+                }
+
+            } else if (rooms.size() == 0) {
+                System.out.println("There are no room left in the hotel to delete!");
                 break;
             }
         }
@@ -441,27 +451,36 @@ public class HotelLogic {
 
     private void viewAllRooms() {
         Room temp;
-
-        System.out.println("Listing all registered rooms at Hotel California\n\n");
-        System.out.println("Room\tBeds\tPrice/Night\tBalcony\n\n");
         DecimalFormat df = new DecimalFormat("#.##");
-        String ppn;
+        int counter = 1;
         for (int i = 0; i < rooms.size(); i++) {
+            if (counter == 1) {
+                System.out.println("Listing all registered rooms at Hotel California\n");
+                System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                counter++;
+            }
             temp = rooms.get(i);
-
             System.out.println(
                     (temp.getRommNumber() + 1 + "\t\t" +
                             rooms.get(i).getNumberOfBeds() + "\t\t" +
                             df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                             rooms.get(i).isHasBalcony()));
         }
+        if (counter == 1) {
+            System.out.println("There are no rooms to view!");
+        }
     }
 
     private void viewJustAvailableRooms() {
-        System.out.println("Listing all available rooms at Hotel California\n");
-        System.out.println("Room\tBeds\tPrice/Night\tBalcony\n\n");
+        int counter = 1;
+
         for (int i = 0; i < rooms.size(); i++) {
             if (!rooms.get(i).isBooked()) {
+                if (counter == 1) {
+                    System.out.println("Listing all available rooms at Hotel California\n");
+                    System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                    counter++;
+                }
                 DecimalFormat df = new DecimalFormat("#.##");
                 System.out.println(
                         i + 1 + "\t\t" +
@@ -470,55 +489,66 @@ public class HotelLogic {
                                 rooms.get(i).isHasBalcony());
             }
         }
+        if (counter == 1) {
+            System.out.println("There are nona available rooms at Hotel California!");
+        }
     }
 
     private void editRoom() {
 
         while (true) {
-            viewAllRooms();
-            int roomNumber;
+            if (rooms.size() > 0) {
+                viewAllRooms();
+                int roomNumber;
 
-            System.out.print("Write the number of the room that you want to edit: ");
-            try {
-                roomNumber = scan.nextInt() - 1;
-                scan.nextLine();
-            } catch (Exception e) {
-                System.out.println("Please choose an available room number!");
-                scan.next();
-                continue;
-            }
-            if (roomNumber > rooms.size() || roomNumber <= 0) {
-                System.out.println("Please choose an available room number!");
-            } else {
-                System.out.println("You are editing the room number " + roomNumber + 1);
-                System.out.print("Enter the number of beds: ");
-                while (true) {
-                    try {
-                        rooms.get(roomNumber).setNumberOfBeds(scan.nextInt());
-                        break;
-                    } catch (Exception e) {
-                        System.out.print("Please write only the number of beds: ");
-                        scan.next();
+                System.out.print("Write the number of the room that you want to edit or 0 to abort: ");
+                try {
+                    roomNumber = scan.nextInt();
+                    scan.nextLine();
+                } catch (Exception e) {
+                    System.out.println("Please choose an available room number!");
+                    scan.next();
+                    continue;
+                }
+                if (roomNumber > rooms.size() || roomNumber < 0) {
+                    System.out.println("Please choose an available room number!");
+                } else if (roomNumber == 0) {
+                    break;
+                } else {
+                    System.out.println("You are editing the room number " + roomNumber);
+                    System.out.print("Enter the number of beds: ");
+                    while (true) {
+                        try {
+                            rooms.get(roomNumber - 1).setNumberOfBeds(scan.nextInt());
+                            break;
+                        } catch (Exception e) {
+                            System.out.print("Please write only the number of beds: ");
+                            scan.next();
+                        }
                     }
-                }
-                scan.nextLine();
-                System.out.print("Has the room a balcony: (Y/N): ");
-                if (scan.nextLine().equalsIgnoreCase("y")) {
-                    rooms.get(roomNumber).setHasBalcony(true);
-                }
-                System.out.print("How much costs the room per night? ");
-                while (true) {
-                    try {
-                        rooms.get(roomNumber).setPricePerNight(scan.nextInt());
-                        break;
-                    } catch (Exception e) {
-                        System.out.print("Please write only the cost of the room per night: ");
-                        scan.next();
+                    scan.nextLine();
+                    System.out.print("Has the room a balcony: (Y/N): ");
+                    if (scan.nextLine().equalsIgnoreCase("y")) {
+                        rooms.get(roomNumber - 1).setHasBalcony(true);
                     }
+                    System.out.print("How much costs the room per night? ");
+                    while (true) {
+                        try {
+                            rooms.get(roomNumber - 1).setPricePerNight(scan.nextInt());
+                            break;
+                        } catch (Exception e) {
+                            System.out.print("Please write only the cost of the room per night: ");
+                            scan.next();
+                        }
+                    }
+                    scan.nextLine();
+                    break;
                 }
-                scan.nextLine();
+            } else if (rooms.size() == 0) {
+                System.out.println("There are no room to edit!");
                 break;
             }
+
         }
 
     }
@@ -548,99 +578,127 @@ public class HotelLogic {
 
     private void viewAllCustomers() {
         int counter = 1;
-        System.out.println("Registered customers:\n");
+
         for (Person p : users) {
             if (p.getClass().equals(Customer.class)) {
+                if (counter == 1) {
+                    System.out.println("Registered customers:\n");
+                }
                 System.out.println("Customer [" + counter + "]");
-                System.out.println("Name: "+p.getName());
-                System.out.println("SSN: "+p.getSsn());
-                System.out.println("Phone-number: "+p.getContactNBR());
-                System.out.println("Address: "+p.getAddress());
-                System.out.println("Username: "+p.getUserName());
+                System.out.println("Name: " + p.getName());
+                System.out.println("SSN: " + p.getSsn());
+                System.out.println("Phone-number: " + p.getContactNBR());
+                System.out.println("Address: " + p.getAddress());
+                System.out.println("Username: " + p.getUserName());
                 System.out.println();
                 counter++;
             }
+
         }
-        System.out.println("-------------------------------------------------------");
+        if (counter != 1) {
+            System.out.println("-------------------------------------------------------");
+        }
+        if (counter == 1) {
+            System.out.println("There are none registered customer to view");
+        }
+
     }
 
     private void removeCustomer() {
-        while (true) {
-            viewAllCustomers();
-            int removeCustomer;
-            System.out.print("Choose the customer number that you want to delete: ");
-            try {
-                removeCustomer = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please choose an available customer number!");
-                scan.next();
-                continue;
+        int counter = 1;
+        for (Person customer : users) {
+
+            if (customer.getClass().equals(Customer.class)) {
+                counter++;
+                viewAllCustomers();
+                int removeCustomer;
+                System.out.print("Choose the customer number that you want to delete or 0 to abort: ");
+                try {
+                    removeCustomer = scan.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Please choose an available customer number!");
+                    scan.next();
+                    continue;
+                }
+                if (removeCustomer > users.size() || removeCustomer < 0) {
+                    System.out.println("Please choose an available customer number!");
+                } else if (removeCustomer == 0) {
+                    break;
+                } else {
+                    System.out.println("The customer " + users.get(removeCustomer).getName() + " has been deleted!");
+                    users.remove(users.get(removeCustomer));
+                    break;
+                }
             }
-            if (removeCustomer > users.size() || removeCustomer <= 0) {
-                System.out.println("Please choose an available room number!");
-            } else {
-                System.out.println("The customer " + users.get(removeCustomer).getName() + " has been deleted!");
-                users.remove(users.get(removeCustomer));
-                break;
-            }
+        }
+        if (counter == 1) {
+            System.out.println("There are none registered customer to delete!");
+
         }
     }
 
-    private void editCustomer(){
-        while (true) {
-            viewAllCustomers();
-            int customerNumber;
+    private void editCustomer() {
+        for (Person customer : users) {
 
-            System.out.print("Write the number of the customer that you want to edit: ");
-            try {
-                customerNumber = scan.nextInt();
-                scan.nextLine();
-            } catch (Exception e) {
-                System.out.println("Please choose an available customer number!");
-                scan.next();
-                continue;
-            }
-            if (customerNumber  > users.size() -1 || customerNumber <= 0) {
-                System.out.println("Please choose an available customer number!");
+            if (customer.getClass().equals(Customer.class)) {
+                viewAllCustomers();
+                int customerNumber;
+
+                System.out.print("Write the number of the customer that you want to edit or 0 to abort: ");
+                try {
+                    customerNumber = scan.nextInt();
+                    scan.nextLine();
+                } catch (Exception e) {
+                    System.out.println("Please choose an available customer number!");
+                    scan.next();
+                    continue;
+                }
+                if (customerNumber > users.size() - 1 || customerNumber < 0) {
+                    System.out.println("Please choose an available customer number!");
+                } else if (customerNumber == 0) {
+                    break;
+                } else {
+                    System.out.println("You are editing the customer number " + customerNumber);
+                    System.out.print("Enter your full name or 0 to go the next step: ");
+                    String name = scan.nextLine();
+                    if (!name.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setName(name);
+                    }
+
+                    System.out.print("Enter your social security-number or 0 to go the next step: ");
+                    String ssn = scan.nextLine();
+                    if (!ssn.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setSsn(ssn);
+                    }
+
+                    System.out.print("Enter your phone-number or 0 to go the next step: ");
+                    String number = scan.nextLine();
+                    if (!number.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setContactNBR(number);
+                    }
+
+                    System.out.print("Enter your address or 0 to go the next step: ");
+                    String address = scan.nextLine();
+                    if (!address.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setAddress(address);
+                    }
+
+                    System.out.print("Enter your username or 0 to go the next step: ");
+                    String userName = scan.nextLine();
+                    if (!userName.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setUserName(userName);
+                    }
+
+                    System.out.print("Enter your password or 0 to go the next step: ");
+                    String password = scan.nextLine();
+                    if (!password.equalsIgnoreCase("0")) {
+                        users.get(customerNumber).setPassword(password);
+                    }
+                    System.out.println("\nCustomer's information are now updated");
+                    break;
+                }
             } else {
-                System.out.println("You are editing the customer number " + customerNumber);
-                System.out.print("Enter your full name or 0 to go the next step: ");
-                String name = scan.nextLine();
-                if (!name.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setName(name);
-                }
-
-                System.out.print("Enter your social security-number or 0 to go the next step: ");
-                String ssn = scan.nextLine();
-                if (!ssn.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setSsn(ssn);
-                }
-
-                System.out.print("Enter your phone-number or 0 to go the next step: ");
-                String number = scan.nextLine();
-                if ( !number.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setContactNBR(number);
-                }
-
-                System.out.print("Enter your address or 0 to go the next step: ");
-                String address = scan.nextLine();
-                if (!address.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setAddress(address);
-                }
-
-                System.out.print("Enter your username or 0 to go the next step: ");
-                String userName = scan.nextLine();
-                if (!userName.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setUserName(userName);
-                }
-
-                System.out.print("Enter your password or 0 to go the next step: ");
-                String password = scan.nextLine();
-                if (!password.equalsIgnoreCase("0")){
-                    users.get(customerNumber).setPassword(password);
-                }
-                System.out.println("\nCustomer's information are now updated");
-                break;
+                System.out.println("There are none registered customer to edit! ");
             }
         }
 
@@ -681,14 +739,14 @@ public class HotelLogic {
 
     }
 
-    private void load (){
+    private void load() {
         ReadWrite rw = new ReadWrite();
         users = rw.readUsers();
         books = rw.readBookings();
         rooms = rw.readRooms();
     }
 
-    protected void save(){
+    protected void save() {
         ReadWrite rw = new ReadWrite();
         rw.saveUsers(users);
         rw.saveBookings(books);
