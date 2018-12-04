@@ -83,7 +83,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 2: {
-                                editbooking(owner);
+                                editBooking(owner);
                                 break;
                             }
                             case 3: {
@@ -352,7 +352,7 @@ public class HotelLogic {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
         //Error handling date = ""
-        date = scan.nextLine();
+        scan.nextLine();
         System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
         date = scan.nextLine();
         try {
@@ -385,6 +385,7 @@ public class HotelLogic {
         int bookId;
         int choice = 0;
         int price;
+        int roomNbr;
         System.out.println("Enter booking id:");
         bookId = scan.nextInt();
         while(choice != -1) {
@@ -406,7 +407,7 @@ public class HotelLogic {
             switch(choice) {
                 case 1: {
                     //Error handling date = ""
-                    date = scan.nextLine();
+                    scan.nextLine();
                     System.out.println("Enter new check in date:");
                     date = scan.nextLine();
                     try {
@@ -427,18 +428,28 @@ public class HotelLogic {
                     } catch(ParseException e) {
                         e.printStackTrace();
                     }
-                    books.get(bookId).setCheckinDate(checkoutDate);
+                    books.get(bookId).setCheckoutDate(checkoutDate);
                     break;
                 }
                 case 3: {
                     System.out.println("Enter total price:");
                     price = scan.nextInt();
+                    books.get(bookId).setTotalPrice(price);
                     break;
                 }
                 case 4: {
+                    if(books.get(bookId).isCanceled() == true) {
+                        books.get(bookId).setCanceled(false);
+                    } else {
+                        books.get(bookId).setCanceled(true);
+                    }
+                    System.out.println("Changed status!");
                     break;
                 }
                 case 5: {
+                    System.out.println("Enter new room number:");
+                    roomNbr = scan.nextInt();
+                    books.get(bookId).setRoomNbr(roomNbr);
                     break;
                 }
                 case 6: {
@@ -446,7 +457,6 @@ public class HotelLogic {
                     break;
                 }
             }
-
         }
     }
 
