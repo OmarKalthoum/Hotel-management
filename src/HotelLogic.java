@@ -375,6 +375,8 @@ public class HotelLogic {
         rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
     }
 
+        //Room methods
+
     private void addNewRoom() {
 
         boolean hasBalcony = false;
