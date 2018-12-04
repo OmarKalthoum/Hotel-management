@@ -11,7 +11,6 @@ public class Customer extends Person{
 
     protected LinkedList<Integer> getCustomerBookings() {
         return customerBookings;
-
     }
 
     protected void addCustomerBookings(int bookingId) {
