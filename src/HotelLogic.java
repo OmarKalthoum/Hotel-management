@@ -83,9 +83,11 @@ public class HotelLogic {
                                 break;
                             }
                             case 2: {
+                                editbooking(owner);
                                 break;
                             }
                             case 3: {
+
                                 break;
                             }
                             case 4: {
@@ -344,6 +346,8 @@ public class HotelLogic {
         }
     }
 
+    //Booking methods
+
     private void addNewBooking(Customer owner) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
@@ -373,6 +377,77 @@ public class HotelLogic {
         books.add(newBooking);
         ReadWrite rw = new ReadWrite();
         rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
+    }
+
+    private void editBooking(Customer owner) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date;
+        int bookId;
+        int choice = 0;
+        int price;
+        System.out.println("Enter booking id:");
+        bookId = scan.nextInt();
+        while(choice != -1) {
+            System.out.print("\n" +
+                    "[1] Check in date\n" +
+                    "[2] Check out date\n" +
+                    "[3] Total price\n" +
+                    "[4] Status \n" +
+                    "[5] Room number \n" +
+                    "[6] Back to menu \n" +
+                    "Your choice: ");
+            try {
+            choice = scan.nextInt();
+            } catch (Exception e) {
+            System.out.println("Please choose a number from the menu");
+            scan.next();
+            continue;
+            }
+            switch(choice) {
+                case 1: {
+                    //Error handling date = ""
+                    date = scan.nextLine();
+                    System.out.println("Enter new check in date:");
+                    date = scan.nextLine();
+                    try {
+                        checkinDate = dateFormat.parse(date);
+                    } catch(ParseException e) {
+                        e.printStackTrace();
+                    }
+                    books.get(bookId).setCheckinDate(checkinDate);
+                    break;
+                }
+                case 2: {
+                    //Error handling date = ""
+                    date = scan.nextLine();
+                    System.out.println("Enter new check out date:");
+                    date = scan.nextLine();
+                    try {
+                        checkoutDate = dateFormat.parse(date);
+                    } catch(ParseException e) {
+                        e.printStackTrace();
+                    }
+                    books.get(bookId).setCheckinDate(checkoutDate);
+                    break;
+                }
+                case 3: {
+                    System.out.println("Enter total price:");
+                    price = scan.nextInt();
+                    break;
+                }
+                case 4: {
+                    break;
+                }
+                case 5: {
+                    break;
+                }
+                case 6: {
+                    choice = -1;
+                    break;
+                }
+            }
+
+        }
     }
 
         //Room methods
