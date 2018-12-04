@@ -35,7 +35,6 @@ public class HotelLogic {
                     customerMenu(owner);
                     break;
                 }
-
             }
         }
         if (checkLogIn == 1) {
@@ -45,7 +44,8 @@ public class HotelLogic {
     }
 
     // Customer & employee menu
-    protected void customerMenu(Customer owner) {
+
+    private void customerMenu(Customer owner) {
         int choice = 0;
         while (choice != -1) {
 
@@ -146,11 +146,14 @@ public class HotelLogic {
                                 "[5] Back to the main menu\n\n" +
                                 "Your choice: ");
                         choice = scan.nextInt();
+                        scan.nextLine();
                         switch (choice) {
                             case 1: {
+                                viewCurrentCustomer(owner);
                                 break;
                             }
                             case 2: {
+                                editCustomerByCustomer(owner);
                                 break;
                             }
                             case 3: {
@@ -182,7 +185,7 @@ public class HotelLogic {
 
     }
 
-    protected void employeeMenu() {
+    private void employeeMenu() {
         int choice = 0;
         while (choice != -1) {
 
@@ -345,6 +348,8 @@ public class HotelLogic {
         }
     }
 
+    //Booking methods
+
     private void addNewBooking(Customer owner) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
@@ -421,9 +426,9 @@ public class HotelLogic {
     private void removeRoom() {
         while (true) {
             if (rooms.size() > 0) {
-
                 viewAllRooms();
                 int roomNumber;
+
                 System.out.print("\nWrite the room index that you would like to delete or 0 to abort: ");
                 try {
                     roomNumber = scan.nextInt();
@@ -534,7 +539,7 @@ public class HotelLogic {
                     System.out.print("How much costs the room per night? ");
                     while (true) {
                         try {
-                            rooms.get(roomNumber - 1).setPricePerNight(scan.nextInt());
+                            rooms.get(roomNumber - 1).setPricePerNight(scan.nextDouble());
                             break;
                         } catch (Exception e) {
                             System.out.print("Please write only the cost of the room per night: ");
@@ -701,6 +706,52 @@ public class HotelLogic {
                 System.out.println("There are none registered customer to edit! ");
             }
         }
+
+    }
+
+    private void editCustomerByCustomer(Customer owner) {
+
+        //Not allowed to change the ssn
+        System.out.print("Enter your full name or 0 to go the next step: ");
+        String name = scan.nextLine();
+        if (!name.equalsIgnoreCase("0")) {
+            owner.setName(name);
+        }
+
+        System.out.print("Enter your phone-number or 0 to go the next step: ");
+        String number = scan.nextLine();
+        if (!number.equalsIgnoreCase("0")) {
+            owner.setContactNBR(number);
+        }
+
+        System.out.print("Enter your address or 0 to go the next step: ");
+        String address = scan.nextLine();
+        if (!address.equalsIgnoreCase("0")) {
+            owner.setAddress(address);
+        }
+        System.out.print("Enter your username or 0 to go the next step: ");
+        String userName = scan.nextLine();
+        if (!userName.equalsIgnoreCase("0")) {
+            owner.setUserName(userName);
+        }
+
+        System.out.print("Enter your password or 0 to go the next step: ");
+        String password = scan.nextLine();
+        if (!password.equalsIgnoreCase("0")) {
+            owner.setPassword(password);
+        }
+        System.out.println("\nYour information are now updated");
+    }
+
+    private void viewCurrentCustomer(Customer owner) {
+
+        System.out.println("Name: " + owner.getName());
+        System.out.println("SSN: " + owner.getSsn());
+        System.out.println("Phone-number: " + owner.getContactNBR());
+        System.out.println("Address: " + owner.getAddress());
+        System.out.println("Username: " + owner.getUserName());
+        System.out.println("Password: " + owner.getPassword());
+        System.out.println();
 
     }
 
