@@ -14,6 +14,7 @@ public class HotelLogic {
     public HotelLogic(Scanner scan) {
         this.scan = scan;
         load();
+        //createTestInfo();
     }
 
     // Login user and check for user type
@@ -134,7 +135,7 @@ public class HotelLogic {
                     break;
                 }
                 case 3: {
-
+                    viewAvailableRoomDate();
                     break;
                 }
                 case 4: {
@@ -319,7 +320,9 @@ public class HotelLogic {
                             continue;
                         }
                         switch (choice) {
+
                             case 1: {
+                                viewBookings();
                                 break;
                             }
                             case 2: {
@@ -337,6 +340,7 @@ public class HotelLogic {
                     }
                 }
                 case 4: {
+
                     break;
                 }
                 case 5: {
@@ -349,6 +353,7 @@ public class HotelLogic {
             }
         }
     }
+
 
     //Booking methods
 
@@ -373,14 +378,37 @@ public class HotelLogic {
         }
         System.out.println("Enter room number:");
         int roomNbr = scan.nextInt();
-        System.out.println("Enter price:");
-        double price = scan.nextDouble();
+        //System.out.println("Enter price:");
+        int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000*60*60*24));
+
+        Room temp = null;
+        for(Room r: rooms){
+            if(r.getRommNumber() == roomNbr){
+                temp = r;
+            }
+        }
+
+        double price = 0;
+        if(temp != null) {
+            price = temp.getPricePerNight() * nbrOfDays;
+        }
+
+        //double price = scan.nextDouble();
         Booking newBooking = new Booking(checkinDate, checkoutDate, roomNbr);
         newBooking.setTotalPrice(price);
         owner.addCustomerBookings(newBooking.getBookId());
         books.add(newBooking);
         ReadWrite rw = new ReadWrite();
         rw.write(newBooking.getBookId(), checkinDate, checkoutDate, roomNbr);
+
+        /*
+        Denna ska in i view bookin, price per night är auto.
+        Print kan användas för att visa kund pris per natt och totalpris för bokning och bekräftelse
+
+        System.out.printf("%.2f", newBooking.getTotalPrice());
+        System.out.println();
+        System.out.printf("%.2f", temp.getPricePerNight());
+*/
     }
 
     private void editBooking(Customer owner) {
@@ -461,6 +489,19 @@ public class HotelLogic {
                     break;
                 }
             }
+        }
+    }
+
+    private void viewBookings(){
+
+
+        if(!books.isEmpty()){
+        for(Booking b: books) {
+            System.out.println(b.getBookId());
+            System.out.println(b.getRoomNbr());
+            System.out.println(b.getCheckinDate());
+            System.out.println(b.getCheckoutDate());
+        }
         }
     }
 
@@ -888,6 +929,42 @@ public class HotelLogic {
         rw.saveRooms(rooms);
     }
 
+    // det som saknas är att välja rum för bokning, alternativt hur många rum som ska bokas
+    private void viewAvailableRoomDate(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            // Datum för Kundens önskemål om ledigt rum, hårdkodat just nu,
+            // ska vara input
+            Date tempStart = dateFormat.parse("2020-12-19");
+            Date tempEnd = dateFormat.parse("2020-12-23");
+
+        LinkedList<Integer> roomNbr = new LinkedList<>();
+
+        for(Booking b:books){
+
+            if(!(tempStart.after(b.getCheckinDate()) && (tempEnd.after(b.getCheckinDate())) ||
+                    (tempStart.before(b.getCheckoutDate()) && tempEnd.after(b.getCheckoutDate())) ||
+                    (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate())))){
+                roomNbr.add(b.getRoomNbr());
+            }
+        }
+
+        Room temp;
+        int test;
+        for(int i = 0; i<rooms.size(); i++){
+            temp = rooms.get(i);
+            test = temp.getRommNumber();
+            // Skriver ut rumsnummer om rum ej är bokat (dvs tillgängliga rum)
+            // här krävs lite snyggare print om rums info,
+            if(!roomNbr.contains(test)){
+                System.out.println(test);
+            }
+        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
