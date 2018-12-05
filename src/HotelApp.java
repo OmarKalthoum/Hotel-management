@@ -15,7 +15,7 @@ public class HotelApp {
         String option;
         while (true) {
 
-            System.out.print("*** Welcome to Hotel California! ***\n\n" +
+            System.out.print("\n*** Welcome to Hotel California! ***\n\n" +
                     "Please choose an option from the menu:\n" +
                     "1. Login User\n" +
                     "2. Show Hotel Information\n" +

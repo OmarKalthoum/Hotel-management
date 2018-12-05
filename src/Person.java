@@ -49,7 +49,7 @@ public class Person implements Serializable {
     }
 
     protected void setContactNBR(String contactNBR) {
-        this.telephonNumber = telephonNumber;
+        this.telephonNumber = contactNBR;
     }
 
     protected String getUserName() {
