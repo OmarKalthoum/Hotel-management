@@ -544,12 +544,13 @@ public class HotelLogic {
         for (int i = 0; i < rooms.size(); i++) {
             if (counter == 1) {
                 System.out.println("Listing all registered rooms at Hotel California\n");
-                System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                System.out.println("Index:\tRoom\tBeds\tPrice/Night\tBalcony\n");
                 counter++;
             }
             temp = rooms.get(i);
             System.out.println(
-                    (temp.getRommNumber() + 1 + "\t\t" +
+                    (i+1) + "\t\t" +
+                            (temp.getRommNumber() + 1 + "\t\t" +
                             rooms.get(i).getNumberOfBeds() + "\t\t" +
                             df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                             rooms.get(i).isHasBalcony()));

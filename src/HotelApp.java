@@ -30,7 +30,6 @@ public class HotelApp {
                 continue;
             }
 
-
             switch (option) {
                 case "1":
                     try {
@@ -51,7 +50,6 @@ public class HotelApp {
         }
     }
 
-
     public void showHotelInfo() {
 
         System.out.println("\n        Welcome to the Hotel California!\n" +
@@ -60,6 +58,5 @@ public class HotelApp {
         System.out.println();
 
     }
-
 }
 
