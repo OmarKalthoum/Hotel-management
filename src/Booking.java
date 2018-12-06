@@ -3,19 +3,19 @@ import java.util.Date;
 
 public class Booking implements Serializable {
 
-    private final int bookId;
+    private final int bookId = 0;
     private Date checkinDate;
     private Date checkoutDate;
     private double totalPrice;
     private boolean isCanceled;
     private int roomNbr;
-    private static int counter = 0;
+
 
     public Booking(Date checkinDate, Date checkoutDate, int roomNbr){
         this.setCheckinDate(checkinDate);
         this.setCheckoutDate(checkoutDate);
         this.roomNbr = roomNbr;
-        bookId = counter++;
+
     }
 
     public int getRoomNbr() {
