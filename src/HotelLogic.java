@@ -119,9 +119,11 @@ public class HotelLogic {
 
                         switch (choice) {
                             case 1: {
+                                checkIn();
                                 break;
                             }
                             case 2: {
+                                checkOut();
                                 break;
                             }
                             case 3: {
@@ -409,8 +411,6 @@ public class HotelLogic {
             ReadWrite rw = new ReadWrite();
             rw.write(bookId, checkinDate, checkoutDate, temp.getRommNumber());
             System.out.println("Thank you for choosing our hotel!");
-
-
         }
     }
 
@@ -890,6 +890,46 @@ public class HotelLogic {
 
     }
 
+    private void checkIn() {
+        boolean count = false;
+        System.out.println("Enter booking-id:");
+        int bookingID = scan.nextInt();
+
+
+        for (Booking b : books) {
+            if (b.getBookId() == bookingID) {
+                b.setActualCheckIn();
+                System.out.println("Success mf! Check-in registered: " +b.getActualCheckIn());
+                count = true;
+                break;
+            }
+        }
+        if (!count) {
+            System.out.println("Error can't find!");
+        }
+    }
+
+    private void checkOut() {
+        boolean count = false;
+        System.out.println("Enter booking-id:");
+        int bookingID = scan.nextInt();
+
+        for (Booking b : books) {
+            if (b.getBookId() != bookingID) {
+
+            } else {
+                b.getActualCheckOut();
+                System.out.println("Success mf! Checkout registered: " +b.getActualCheckOut());
+                count = true;
+                break;
+            }
+        }
+        if (!count) {
+            System.out.println("Error can't find!");
+        }
+
+    }
+
     //Other methods
 
     private void load() {
@@ -920,31 +960,31 @@ public class HotelLogic {
             }
         }
 
-            Room temp;
-            int counter = 1;
-            DecimalFormat df = new DecimalFormat("#.##");
-            for (int i = 0; i < rooms.size(); i++) {
-                temp = rooms.get(i);
+        Room temp;
+        int counter = 1;
+        DecimalFormat df = new DecimalFormat("#.##");
+        for (int i = 0; i < rooms.size(); i++) {
+            temp = rooms.get(i);
 
-                if (!roomNbrs.contains(temp.getRommNumber())) {
-                    if (counter == 1) {
-                        System.out.println("Listing all registered rooms at Hotel California\n");
-                        System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
-                        counter++;
-                    }
-
-                    System.out.println(
-                                    temp.getRommNumber() + 1 + "\t\t" +
-                                            rooms.get(i).getNumberOfBeds() + "\t\t" +
-                                            df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
-                                            rooms.get(i).isHasBalcony());
+            if (!roomNbrs.contains(temp.getRommNumber())) {
+                if (counter == 1) {
+                    System.out.println("Listing all registered rooms at Hotel California\n");
+                    System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                    counter++;
                 }
-            }
-            if (counter == 1) {
-                System.out.println("There are nona available rooms at Hotel California!");
+
+                System.out.println(
+                        temp.getRommNumber() + 1 + "\t\t" +
+                                rooms.get(i).getNumberOfBeds() + "\t\t" +
+                                df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
+                                rooms.get(i).isHasBalcony());
             }
         }
+        if (counter == 1) {
+            System.out.println("There are nona available rooms at Hotel California!");
+        }
     }
+}
 
 
 
