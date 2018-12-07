@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Booking implements Serializable {
 
-    private final int bookId = 0;
+    private final int bookId;
     private Date checkinDate;
     private Date checkoutDate;
     private double totalPrice;
@@ -13,10 +13,11 @@ public class Booking implements Serializable {
     private Date actualCheckIn;
 
 
-    public Booking(Date checkinDate, Date checkoutDate, int roomNbr){
+    public Booking(Date checkinDate, Date checkoutDate, int roomNbr,int bookId){
         this.setCheckinDate(checkinDate);
         this.setCheckoutDate(checkoutDate);
         this.roomNbr = roomNbr;
+        this.bookId = bookId;
     }
 
     public int getRoomNbr() {

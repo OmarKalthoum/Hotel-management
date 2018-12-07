@@ -404,12 +404,12 @@ public class HotelLogic {
         String choice = scan.nextLine();
 
         if (choice.equalsIgnoreCase("y")) {
-            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber());
+            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), books.size()+1);
             newBooking.setTotalPrice(price);
-            owner.addCustomerBookings(books.size() + 1);
+            owner.addCustomerBookings(newBooking.getBookId());
             books.add(newBooking);
-            ReadWrite rw = new ReadWrite();
-            rw.write(bookId, checkinDate, checkoutDate, temp.getRommNumber());
+
+            new ReadWrite().write(bookId, checkinDate, checkoutDate, temp.getRommNumber());
             System.out.println("Thank you for choosing our hotel!");
         }
     }
@@ -777,7 +777,7 @@ public class HotelLogic {
         }
     }
 
-    private void editCustomer() {
+    private void editCustomer()  {
         for (Person customer : users) {
 
             if (customer.getClass().equals(Customer.class)) {
@@ -895,7 +895,6 @@ public class HotelLogic {
         System.out.println("Enter booking-id:");
         int bookingID = scan.nextInt();
 
-
         for (Booking b : books) {
             if (b.getBookId() == bookingID) {
                 b.setActualCheckIn();
@@ -915,10 +914,8 @@ public class HotelLogic {
         int bookingID = scan.nextInt();
 
         for (Booking b : books) {
-            if (b.getBookId() != bookingID) {
-
-            } else {
-                b.getActualCheckOut();
+            if (b.getBookId() == bookingID) {
+                b.setActualCheckOut();
                 System.out.println("Success mf! Checkout registered: " +b.getActualCheckOut());
                 count = true;
                 break;
@@ -927,7 +924,6 @@ public class HotelLogic {
         if (!count) {
             System.out.println("Error can't find!");
         }
-
     }
 
     //Other methods
@@ -984,6 +980,40 @@ public class HotelLogic {
             System.out.println("There are nona available rooms at Hotel California!");
         }
     }
+
+    private void createTestInfo() {
+        /* create a bunch of users, employees, rooms & stuff in
+            order to check functionality that edits data*/
+
+        Employee emp1 = new Employee("999999-9999", "MyHomieThaEmployee", "EmployeTown @ da EmployeHouse 99"
+                , "077-7777777", "xxx"
+                , "xxx", 1, "Top Dawgh");
+
+        users.add(emp1);
+
+        Customer cust1 = new Customer("121212-1212", "Goldmember James", "who gives a ***"
+                , "070-121212121", "yyy"
+                , "yyy");
+        users.add(cust1);
+
+        Customer cust2 = new Customer("999999-9999", "Hans Eklund", "tjenagatan 1827 198287 Härnösand"
+                , "0777-777777", "Kajsasasa"
+                , "yyy");
+        users.add(cust2);
+
+
+        double ppn;
+        Random rand = new Random();
+        for (int i = 0; i < 10; i++) {
+            ppn = 299 + (399) * rand.nextDouble();
+            Room room = new Room(i, rand.nextInt(4) + 1, rand.nextBoolean(), ppn);
+            rooms.add(room);
+        }
+
+        save();
+
+    }
+
 }
 
 
