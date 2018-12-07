@@ -7,15 +7,16 @@ public class Booking implements Serializable {
     private Date checkinDate;
     private Date checkoutDate;
     private double totalPrice;
-    private boolean isCanceled;
+    private boolean isCanceled = false;
     private int roomNbr;
+    private Date actualCheckOut;
+    private Date actualCheckIn;
 
 
     public Booking(Date checkinDate, Date checkoutDate, int roomNbr){
         this.setCheckinDate(checkinDate);
         this.setCheckoutDate(checkoutDate);
         this.roomNbr = roomNbr;
-
     }
 
     public int getRoomNbr() {
@@ -58,8 +59,25 @@ public class Booking implements Serializable {
         return isCanceled;
     }
 
-    protected void setCanceled(boolean canceled) {
-        isCanceled = canceled;
+    protected void setCanceled() {
+        isCanceled = true;
     }
 
+    public Date getActualCheckOut() {
+        return actualCheckOut;
+    }
+
+    public void setActualCheckOut() {
+        this.actualCheckOut  = new Date();
+        this.actualCheckOut.setTime(System.currentTimeMillis());
+    }
+
+    public Date getActualCheckIn() {
+        return actualCheckIn;
+    }
+
+    public void setActualCheckIn() {
+        this.actualCheckIn = new Date();
+        this.actualCheckIn.setTime(System.currentTimeMillis());
+    }
 }

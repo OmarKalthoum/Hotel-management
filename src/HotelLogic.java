@@ -5,12 +5,11 @@ import java.text.SimpleDateFormat;
 public class HotelLogic {
 
     private String userName, passWord;
-    private Date checkinDate, checkoutDate;
     private Scanner scan;
     private LinkedList<Person> users = new LinkedList<>();
     private LinkedList<Booking> books = new LinkedList<>();
     private LinkedList<Room> rooms = new LinkedList<>();
-    private int roomNbr = 0;
+    //private int roomNbr = 0;
 
     public HotelLogic(Scanner scan) {
         this.scan = scan;
@@ -137,7 +136,8 @@ public class HotelLogic {
                     break;
                 }
                 case 3: {
-                    viewAvailableRoomDate();
+
+                    //viewAvailableRoomDate();
                     break;
                 }
                 case 4: {
@@ -146,9 +146,7 @@ public class HotelLogic {
                         System.out.print("\n" +
                                 "[1] View customer information\n" +
                                 "[2] Edit customer information\n" +
-                                "[3] View current booking\n" +
-                                "[4] View booking history\n" +
-                                "[5] Back to the main menu\n\n" +
+                                "[3] Back to the main menu\n\n" +
                                 "Your choice: ");
                         choice = scan.nextInt();
                         scan.nextLine();
@@ -162,12 +160,6 @@ public class HotelLogic {
                                 break;
                             }
                             case 3: {
-                                break;
-                            }
-                            case 4: {
-                                break;
-                            }
-                            case 5: {
                                 choice = -4;
                                 break;
                             }
@@ -360,70 +352,72 @@ public class HotelLogic {
     //Booking methods
 
     private void addNewBooking(Customer owner) {
-        while (true) {
 
+        Date checkoutDate = null;
+        Date checkinDate = null;
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
-            String date = scan.nextLine();
-            try {
-                checkinDate = dateFormat.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
+        System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
+        String date = scan.nextLine();
+        try {
+            checkinDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
+        date = scan.nextLine();
+        try {
+            checkoutDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        viewAvailableRoomDate(checkinDate, checkoutDate);
+        System.out.print("Enter RoomNumbers: ");
+        int roomNumber = scan.nextInt()-1;
+        scan.nextLine();
+        int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        Room temp = null;
+        for (Room r : rooms) {
+            if (r.getRommNumber() == roomNumber) {
+                temp = r;
             }
-            System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
-            date = scan.nextLine();
-            try {
-                checkoutDate = dateFormat.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            viewAvailableRoomDate();
-            System.out.print("Enter room index: ");
-            roomNbr = scan.nextInt();
-            scan.nextLine();
-            int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
+        }
 
-            Room temp = null;
-            for (Room r : rooms) {
-                if (r.getRommNumber() == roomNbr) {
-                    temp = r;
-                }
-            }
+        double price = 0;
+        if (temp != null) {
+            price = temp.getPricePerNight() * nbrOfDays;
+        }
+        int bookId = (books.size() + 1);
 
-            double price = 0;
-            if (temp != null) {
-                price = temp.getPricePerNight() * nbrOfDays;
-            }
-            int bookId = (books.size() + 1);
+        System.out.println("\n\t***Confirmation***");
+        System.out.println("Your booking id is: " + bookId);
+        System.out.println("Thr room that you chose has the number: " + (temp.getRommNumber()+1));
+        System.out.println("Your check in will be at: " + checkinDate);
+        System.out.println("Your check out will be at: " + checkoutDate);
+        System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
+        System.out.printf(" and it costs for the whole period %.2f", price);
+        System.out.print("\nAll information are correct (Y/N)? ");
+        String choice = scan.nextLine();
 
-            System.out.println("\n\t***Confirmation***");
-            System.out.println("Your booking id is: " + bookId);
-            System.out.println("Thr room that you chose has the number: " + (temp.getRommNumber() + 1));
-            System.out.println("Your check in will be at: " + checkinDate);
-            System.out.println("Your check out will be at: " + checkoutDate);
-            System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
-            System.out.printf(" and it costs for the whole period %.2f", price);
-            System.out.print("\nAll information are correct (Y/N)? ");
-            String choice = scan.nextLine();
+        if (choice.equalsIgnoreCase("y")) {
+            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber());
+            newBooking.setTotalPrice(price);
+            owner.addCustomerBookings(books.size() + 1);
+            books.add(newBooking);
+            ReadWrite rw = new ReadWrite();
+            rw.write(bookId, checkinDate, checkoutDate, temp.getRommNumber());
+            System.out.println("Thank you for choosing our hotel!");
 
-            if (choice.equalsIgnoreCase("y")) {
-                Booking newBooking = new Booking(checkinDate, checkoutDate, roomNbr);
-                newBooking.setTotalPrice(price);
-                owner.addCustomerBookings(books.size() + 1);
-                books.add(newBooking);
-                ReadWrite rw = new ReadWrite();
-                rw.write(bookId, checkinDate, checkoutDate, roomNbr + 1);
-                System.out.println("Thank you for choosing our hotel!");
-                break;
-            } else {
-                System.out.println("Please try again!");
-            }
+
         }
     }
 
     private void editBooking(Customer owner) {
+        Date checkinDate = null;
+        Date checkoutDate = null;
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
         int bookId;
@@ -482,10 +476,10 @@ public class HotelLogic {
                     break;
                 }
                 case 4: {
-                    if (books.get(bookId).isCanceled() == true) {
-                        books.get(bookId).setCanceled(false);
+                    if (books.get(bookId).isCanceled()) {
+                        books.get(bookId).setCanceled();
                     } else {
-                        books.get(bookId).setCanceled(true);
+                        books.get(bookId).setCanceled();
                     }
                     System.out.println("Changed status!");
                     break;
@@ -506,12 +500,18 @@ public class HotelLogic {
 
     private void viewBookings() {
 
-      /*  for (Booking b : books) {
+        for (Booking b : books) {
             System.out.println(b.getBookId());
             System.out.println(b.getRoomNbr());
             System.out.println(b.getCheckinDate());
             System.out.println(b.getCheckoutDate());
-        }*/
+
+            /*
+            Så här kan man kalla på checkin och skriva ut
+            b.setActualCheckIn();
+            System.out.println(b.getActualCheckIn());
+            */
+        }
     }
 
 
@@ -906,50 +906,46 @@ public class HotelLogic {
         rw.saveRooms(rooms);
     }
 
-
-    private void viewAvailableRoomDate() {
-
-        Date tempStart = checkinDate;
-        Date tempEnd = checkoutDate;
+    private void viewAvailableRoomDate(Date tempStart, Date tempEnd) {
 
         LinkedList<Integer> roomNbrs = new LinkedList<>();
 
         for (Booking b : books) {
 
-            if (tempStart.equals(b.getCheckinDate()) && tempEnd.equals(b.getCheckoutDate()) && !roomNbrs.contains(roomNbr) ||
-                    (tempStart.after(b.getCheckinDate())) && ((tempEnd.before(b.getCheckoutDate()) || tempEnd.equals(b.getCheckoutDate()))
-                            && !roomNbrs.contains(roomNbr)) ||
-                    ((tempStart.before(b.getCheckinDate()) || tempStart.equals(b.getCheckinDate()))
-                            && tempEnd.before(b.getCheckoutDate()) && !roomNbrs.contains(roomNbr)))
-            {
+            if ((!(tempStart.after(b.getCheckinDate()) && tempEnd.after(b.getCheckinDate())) ||
+                    (tempStart.before(b.getCheckoutDate()) && tempEnd.after(b.getCheckoutDate())) ||
+                    (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate()))) ||
+                    (tempStart.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate()))){
                 roomNbrs.add(b.getRoomNbr());
             }
         }
 
-        Room temp;
-        int counter = 1;
-        for (int i = 0; i < rooms.size(); i++) {
-            temp = rooms.get(i);
+            Room temp;
+            int counter = 1;
+            DecimalFormat df = new DecimalFormat("#.##");
+            for (int i = 0; i < rooms.size(); i++) {
+                temp = rooms.get(i);
 
-            if (!roomNbrs.contains(rooms.get(i).getRommNumber())) {
-                if (counter == 1) {
-                    System.out.println("Listing all registered rooms at Hotel California\n");
-                    System.out.println("Index:\tRoom\tBeds\tPrice/Night\tBalcony\n");
-                    counter++;
+                if (!roomNbrs.contains(temp.getRommNumber())) {
+                    if (counter == 1) {
+                        System.out.println("Listing all registered rooms at Hotel California\n");
+                        System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                        counter++;
+                    }
+
+                    System.out.println(
+                                    temp.getRommNumber() + 1 + "\t\t" +
+                                            rooms.get(i).getNumberOfBeds() + "\t\t" +
+                                            df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
+                                            rooms.get(i).isHasBalcony());
                 }
-                DecimalFormat df = new DecimalFormat("#.##");
-                System.out.println(
-                        (i) + "\t\t" +
-                                (temp.getRommNumber() + 1 + "\t\t" +
-                                        rooms.get(i).getNumberOfBeds() + "\t\t" +
-                                        df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
-                                        rooms.get(i).isHasBalcony()));
+            }
+            if (counter == 1) {
+                System.out.println("There are nona available rooms at Hotel California!");
             }
         }
-        if (counter == 1) {
-            System.out.println("There are nona available rooms at Hotel California!");
-        }
     }
-}
+
+
 
 
