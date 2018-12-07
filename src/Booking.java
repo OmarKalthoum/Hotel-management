@@ -14,8 +14,8 @@ public class Booking implements Serializable {
 
 
     public Booking(Date checkinDate, Date checkoutDate, int roomNbr,int bookId){
-        this.setCheckinDate(checkinDate);
-        this.setCheckoutDate(checkoutDate);
+        this.checkinDate = checkinDate;
+        this.checkoutDate = checkoutDate;
         this.roomNbr = roomNbr;
         this.bookId = bookId;
     }

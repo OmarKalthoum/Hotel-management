@@ -350,11 +350,11 @@ public class HotelLogic {
         }
     }
 
-
     //Booking methods
 
     private void addNewBooking(Customer owner) {
 
+        LinkedList<Integer> list;
         Date checkoutDate = null;
         Date checkinDate = null;
 
@@ -365,7 +365,9 @@ public class HotelLogic {
         try {
             checkinDate = dateFormat.parse(date);
         } catch (ParseException e) {
+
             e.printStackTrace();
+
         }
         System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
         date = scan.nextLine();
@@ -374,10 +376,20 @@ public class HotelLogic {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        viewAvailableRoomDate(checkinDate, checkoutDate);
-        System.out.print("Enter RoomNumbers: ");
-        int roomNumber = scan.nextInt()-1;
-        scan.nextLine();
+        list = viewAvailableRoomDate(checkinDate, checkoutDate);
+        int roomNumber = -1;
+            while(true) {
+                System.out.print("Enter RoomNumbers: ");
+                roomNumber = scan.nextInt() - 1;
+                scan.nextLine();
+
+                if(list !=null && !list.contains(roomNumber)){
+                    break;
+                }else{
+                    System.out.println("Room not available for the given Dates");
+                }
+            }
+
         int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
 
         Room temp = null;
@@ -415,25 +427,33 @@ public class HotelLogic {
     }
 
     private void editBooking(Customer owner) {
-        Date checkinDate = null;
-        Date checkoutDate = null;
-
+        Date CheckDate = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
         int bookId;
         int choice = 0;
-        int price;
-        int roomNbr;
+        Booking booking = null;
+
         System.out.println("Enter booking id:");
         bookId = scan.nextInt();
+
+        for(int i = 0; i<books.size();i++){
+            booking = books.get(i);
+            if(booking.getBookId()==bookId){
+                break;
+            }
+        }
+
+        if(booking == null){
+            System.err.println("Booking ID is not found in database");
+            return;
+        }
+
         while (choice != -1) {
             System.out.print("\n" +
                     "[1] Check in date\n" +
                     "[2] Check out date\n" +
-                    "[3] Total price\n" +
-                    "[4] Status \n" +
-                    "[5] Room number \n" +
-                    "[6] Back to menu \n" +
+                    "[3] Back to menu \n" +
                     "Your choice: ");
             try {
                 choice = scan.nextInt();
@@ -444,53 +464,37 @@ public class HotelLogic {
             }
             switch (choice) {
                 case 1: {
-                    //Error handling date = ""
+                    System.out.println("Current check in date: " + booking.getCheckinDate());
                     scan.nextLine();
                     System.out.println("Enter new check in date:");
                     date = scan.nextLine();
+
                     try {
-                        checkinDate = dateFormat.parse(date);
+                        CheckDate = dateFormat.parse(date);
+
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        System.err.println("Thats not a valid date");
+                        //e.printStackTrace();
+                    }finally {
+                            booking.setCheckinDate(CheckDate);
                     }
-                    books.get(bookId).setCheckinDate(checkinDate);
                     break;
                 }
+
                 case 2: {
                     //Error handling date = ""
                     date = scan.nextLine();
                     System.out.println("Enter new check out date:");
                     date = scan.nextLine();
                     try {
-                        checkoutDate = dateFormat.parse(date);
+                        CheckDate = dateFormat.parse(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    books.get(bookId).setCheckoutDate(checkoutDate);
+                    books.get(bookId).setCheckoutDate(CheckDate);
                     break;
                 }
                 case 3: {
-                    System.out.println("Enter total price:");
-                    price = scan.nextInt();
-                    books.get(bookId).setTotalPrice(price);
-                    break;
-                }
-                case 4: {
-                    if (books.get(bookId).isCanceled()) {
-                        books.get(bookId).setCanceled();
-                    } else {
-                        books.get(bookId).setCanceled();
-                    }
-                    System.out.println("Changed status!");
-                    break;
-                }
-                case 5: {
-                    System.out.println("Enter new room number:");
-                    roomNbr = scan.nextInt();
-                    books.get(bookId).setRoomNbr(roomNbr);
-                    break;
-                }
-                case 6: {
                     choice = -1;
                     break;
                 }
@@ -513,7 +517,6 @@ public class HotelLogic {
             */
         }
     }
-
 
     //Room methods
 
@@ -942,7 +945,7 @@ public class HotelLogic {
         rw.saveRooms(rooms);
     }
 
-    private void viewAvailableRoomDate(Date tempStart, Date tempEnd) {
+    private LinkedList<Integer> viewAvailableRoomDate(Date tempStart, Date tempEnd) {
 
         LinkedList<Integer> roomNbrs = new LinkedList<>();
 
@@ -978,7 +981,9 @@ public class HotelLogic {
         }
         if (counter == 1) {
             System.out.println("There are nona available rooms at Hotel California!");
+            return null;
         }
+        return roomNbrs;
     }
 
     private void createTestInfo() {
