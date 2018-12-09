@@ -28,7 +28,8 @@ public class HotelLogic {
             if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
                 checkLogIn++;
                 if (user.getClass().equals(Employee.class)) {
-                    employeeMenu();
+                    Employee emp = (Employee) user;
+                    employeeMenu(emp);
                     break;
                 } else if (user.getClass().equals(Customer.class)) {
                     Customer owner = (Customer) user;
@@ -70,7 +71,8 @@ public class HotelLogic {
                                 "[2] Edit booking\n" +
                                 "[3] View bookings\n" +
                                 "[4] View booking history\n" +
-                                "[5] Back to the main menu\n\n" +
+                                "[5] Print Booking Information\n" +
+                                "[6] Back to the main menu\n\n" +
                                 "Your choice: ");
 
                         while (!scan.hasNextInt()) {
@@ -97,6 +99,19 @@ public class HotelLogic {
                                 break;
                             }
                             case 5: {
+                                System.out.println("Enter Booking ID");
+                                int bookId = -1;
+                                try{
+                                    bookId = scan.nextInt();
+                                }catch(InputMismatchException e){
+                                    System.err.println("Input not acceptable");
+                                }finally{
+                                    viewBookingById(bookId, true, owner);
+                                }
+
+                                break;
+                            }
+                            case 6: {
                                 choice = -2;
                                 break;
                             }
@@ -183,7 +198,7 @@ public class HotelLogic {
 
     }
 
-    private void employeeMenu() {
+    private void employeeMenu(Employee user) {
         int choice = 0;
         while (choice != -1) {
 
@@ -326,7 +341,7 @@ public class HotelLogic {
                                 }catch(InputMismatchException e){
                                     System.err.println("Input not a number");
                                 }finally{
-                                    viewBookingById(bookId);
+                                    viewBookingById(bookId, false, user);
                                 }
                                 break;
                             }
@@ -335,7 +350,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 3: {
-                                viewAllBookingsFromToday();
+                                viewAllBookingsFromToday(user);
                                 break;
                             }
                             case 4: {
@@ -467,7 +482,6 @@ public class HotelLogic {
             System.out.print("\nAll information are correct (Y/N)? ");
             String choice = scan.nextLine();
 
-
             // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
             if (choice.equalsIgnoreCase("y")) {
                 Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), lastBookId);
@@ -476,6 +490,12 @@ public class HotelLogic {
                 books.add(newBooking);
 
                 new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
+
+                System.out.println("Would you like us to print this information? Y/N ?");
+                if(scan.nextLine().equalsIgnoreCase("y")){
+                    viewBookingById(bookId, true, owner);
+                }
+
                 System.out.println("Thank you for choosing our hotel!");
             }
         }
@@ -647,17 +667,17 @@ public class HotelLogic {
         for(Booking b: books){
             if(customerBookings.contains(b.getBookId())){
                     if(allHistory) {
-                        viewBookingById(b.getBookId());
+                        viewBookingById(b.getBookId(), false, user);
                     }else{
                         if(b.getCheckinDate().after(date)){
-                            viewBookingById(b.getBookId());
+                            viewBookingById(b.getBookId(), false, user);
                         }
                     }
                 }
             }
         }
 
-    private void viewBookingById(int bookingId){
+    private void viewBookingById(int bookingId, boolean print, Person user){
 
         boolean noBookingFound = true;
 
@@ -669,21 +689,24 @@ public class HotelLogic {
                 System.out.println("Room Number: " + b.getRoomNbr());
                 System.out.printf("Total Price: %.2f\n", b.getTotalPrice());
                 noBookingFound = false;
+
+                if (print){
+                    new ReadWrite().printBooking(b, (Customer) user);
+                }
             }
         }
 
         if(noBookingFound){
             System.out.println("\n No Booking Found with bookingId " + bookingId);
         }
-
     }
 
-    private void viewAllBookingsFromToday(){
+    private void viewAllBookingsFromToday(Person user){
         Date date = new Date(System.currentTimeMillis());
 
         for(Booking b:books){
             if(b.getCheckinDate().after(date)){
-                viewBookingById(b.getBookId());
+                viewBookingById(b.getBookId(), false, user);
             }
         }
     }
@@ -1289,6 +1312,8 @@ public class HotelLogic {
 
         return null;
     }
+
+
 
 }
 
