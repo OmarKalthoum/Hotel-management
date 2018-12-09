@@ -139,7 +139,6 @@ public class HotelLogic {
                 }
                 case 3: {
 
-                    //viewAvailableRoomDate();
                     break;
                 }
                 case 4: {
@@ -583,11 +582,10 @@ public class HotelLogic {
     private void viewBookings() {
         if (books.size() > 0) {
             System.out.println("\tListing all the registered bookings at Hotel California\n");
-            System.out.println("Index\t\tBookID\t\tRoomNumber\t\t\tCheck-in\t\t\t\t\t\t\t\tCheckout\n");
+            System.out.println("BookID\t\tRoomNumber\t\t\tCheck-in\t\t\t\t\t\t\t\tCheckout\n");
         }
 
         for (int i = 0; i < books.size(); i++) {
-            System.out.print((i + 1) + "\t\t\t");
             System.out.print(books.get(i).getBookId() + "\t\t\t");
             System.out.print(books.get(i).getRoomNbr() + "\t\t\t\t\t");
             System.out.print(books.get(i).getCheckinDate() + "\t\t\t");
@@ -610,7 +608,13 @@ public class HotelLogic {
             if (choice == 0) {
                 return;
             } else if (choice < books.size() || choice == books.size()) {
-                books.remove(choice - 1);
+
+                for(Booking b:books){
+                    if(b.getBookId() == choice){
+                        books.remove(b);
+                    }
+                }
+
             } else {
                 System.out.println("Something went wrong, please try later!");
             }
