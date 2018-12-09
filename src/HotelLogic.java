@@ -12,8 +12,8 @@ public class HotelLogic {
 
     public HotelLogic(Scanner scan) {
         this.scan = scan;
-        load();
-        //createTestInfo();
+        //load();
+        createTestInfo();
     }
 
     // Login user and check for user type
@@ -356,15 +356,18 @@ public class HotelLogic {
     private void addNewBooking(Customer owner) {
 
         LinkedList<Integer> list;
-        Date checkoutDate = null;
-        Date checkinDate = null;
-        String date = "";
-        System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
+        Date checkoutDate;
+        Date checkinDate;
+        String date;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         // Enter check in date and try parse, if bad input return to previous menu
-        System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
+        System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
         date = scan.nextLine();
+
+        if(date.equalsIgnoreCase("0")){
+            return;
+        }
 
         try {
             checkinDate = dateFormat.parse(date);
@@ -375,8 +378,12 @@ public class HotelLogic {
         }
 
         // Enter check out date and try parse, if bad input return to previous menu
-        System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
+        System.out.println("Enter checkout date (Format: yyyy-mm-dd) or 0 to abort:");
         date = scan.nextLine();
+
+        if(date.equalsIgnoreCase("0")){
+            return;
+        }
 
         try {
             checkoutDate = dateFormat.parse(date);
@@ -384,103 +391,81 @@ public class HotelLogic {
             //e.printStackTrace();
             System.out.println("Date Input incorrect");
             return;
-        while (true) {
-            date = scan.nextLine();
-            if (!date.equals("0")) {
-                try {
-                    checkinDate = dateFormat.parse(date);
-                    break;
-                } catch (ParseException e) {
-                    System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
-                }
-            } else if (date.equals("0")) {
-                return;
-            }
         }
 
-        System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
-        while (true) {
-            date = scan.nextLine();
+            // Check if check out date is before check in date or date not entered, return to previous menu if dates are bad
             try {
-                checkoutDate = dateFormat.parse(date);
-                break;
-            } catch (ParseException e) {
-                System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
-            }
-        }
-
-        // Check if check out date is before check in date or date not entered, return to previous menu if dates are bad
-        try {
-            if (checkinDate.after(checkoutDate)) {
-                System.err.println("You have entered a check out date that is before check in- Please try again");
+                if (checkinDate.after(checkoutDate)) {
+                    System.err.println("You have entered a check out date that is before check in- Please try again");
+                    return;
+                }
+            } catch (NullPointerException e) {
+                System.err.println("Date was not entered");
                 return;
             }
-        }catch(NullPointerException e){
-            System.err.println("Date was not entered");
-            return;
-        }
 
-        int bookId = (books.size() + 1);
+            // List available rooms, input from user, check input against booked rooms
+            list = viewAvailableRoomDate(checkinDate, checkoutDate, true, -1);
+            int roomNumber = -1;
+            while (true) {
+                System.out.print("Enter RoomNumbers: ");
+                roomNumber = scan.nextInt();
+                scan.nextLine();
 
-        // List available rooms, input from user, check input against booked rooms
-        list = viewAvailableRoomDate(checkinDate, checkoutDate, true, bookId);
-        int roomNumber = -1;
-        while (true) {
-            System.out.print("Enter RoomNumbers: ");
-            roomNumber = scan.nextInt();
-            scan.nextLine();
-
-            if (list != null && !list.contains(roomNumber)) {
-                break;
-            } else {
-                System.out.println("Room not available for the given Dates");
+                if (list != null && !list.contains(roomNumber)) {
+                    break;
+                } else {
+                    System.out.println("Room not available for the given Dates");
+                }
             }
-        }
 
             // evaluate days between check in and check out
-        int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
+            int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
 
             // find room for current booking
-        Room temp = null;
-        for (Room r : rooms) {
-            if (r.getRommNumber() == roomNumber) {
-                temp = r;
+            Room temp = null;
+            for (Room r : rooms) {
+                if (r.getRommNumber() == roomNumber) {
+                    temp = r;
+                }
             }
-        }
 
-        // calculate totalprice
-        double price = 0;
-        if (temp != null) {
-            price = temp.getPricePerNight() * nbrOfDays;
-        }
-
-
-        // Print confirmation info
-        System.out.println("\n\t***Confirmation***");
-        System.out.println("Your booking id is: " + bookId);
-        System.out.println("Thr room that you chose has the number: " + temp.getRommNumber());
-        System.out.println("Your check in will be at: " + checkinDate);
-        System.out.println("Your check out will be at: " + checkoutDate);
-        System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
-        System.out.printf(" and it costs for the whole period %.2f", price);
-        System.out.print("\nAll information are correct (Y/N)? ");
-        String choice = scan.nextLine();
+            // calculate totalprice
+            double price = 0;
+            if (temp != null) {
+                price = temp.getPricePerNight() * nbrOfDays;
+            }
 
         int lastBookId = 0;
-        if(!books.isEmpty()){
+        if (!books.isEmpty()) {
             lastBookId = books.getLast().getBookId();
         }
-        // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
-        if (choice.equalsIgnoreCase("y")) {
-            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(),lastBookId);
-            newBooking.setTotalPrice(price);
-            owner.addCustomerBookings(newBooking.getBookId());
-            books.add(newBooking);
 
-            new ReadWrite().write(bookId, checkinDate, checkoutDate, temp.getRommNumber(), false);
-            System.out.println("Thank you for choosing our hotel!");
+        int bookId =(lastBookId+1);
+
+            // Print confirmation info
+            System.out.println("\n\t***Confirmation***");
+            System.out.println("Your booking id is: " + bookId);
+            System.out.println("Thr room that you chose has the number: " + temp.getRommNumber());
+            System.out.println("Your check in will be at: " + checkinDate);
+            System.out.println("Your check out will be at: " + checkoutDate);
+            System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
+            System.out.printf(" and it costs for the whole period %.2f", price);
+            System.out.print("\nAll information are correct (Y/N)? ");
+            String choice = scan.nextLine();
+
+
+            // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
+            if (choice.equalsIgnoreCase("y")) {
+                Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), lastBookId);
+                newBooking.setTotalPrice(price);
+                owner.addCustomerBookings(newBooking.getBookId());
+                books.add(newBooking);
+
+                new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
+                System.out.println("Thank you for choosing our hotel!");
+            }
         }
-    }
 
     private void editBooking(Customer owner) {
         Date CheckDate = null;
@@ -616,7 +601,6 @@ public class HotelLogic {
             System.out.println(b.getActualCheckIn());
             */
     }
-
 
     private void caneclBooking() {
         viewBookings();
@@ -813,7 +797,7 @@ public class HotelLogic {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        viewAvailableRoomDate(checkinDate, checkoutDate);
+        viewAvailableRoomDate(checkinDate, checkoutDate, false, -1);
 
     }
 
@@ -1174,18 +1158,9 @@ public class HotelLogic {
 
         try {
             for (Booking b : books) {
-
-                /*
-                if (((tempStart.after(b.getCheckinDate()) && tempEnd.after(b.getCheckinDate())) ||
-                        (tempStart.before(b.getCheckoutDate()) && tempEnd.after(b.getCheckoutDate())) ||
-                        (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate()))) ||
-                        (tempStart.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate()))) {
-                    */
-
                     if((tempStart.after(b.getCheckinDate()) && tempStart.before(b.getCheckoutDate())) ||
                             (tempEnd.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate())) ||
                             (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate()))){
-
                     if(b.getBookId() != bookId) {
                         roomNbrs.add(b.getRoomNbr());
                     }
