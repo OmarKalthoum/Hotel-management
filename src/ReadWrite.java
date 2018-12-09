@@ -7,13 +7,16 @@ import java.util.LinkedList;
 public class ReadWrite {
 
 
-    public void write(int bookId, Date checkinDate, Date checkoutDate, int roomNbr) {
+    public void write(int bookId, Date checkinDate, Date checkoutDate, int roomNbr, boolean update) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             //Chooses file
             PrintWriter pw = new PrintWriter(new FileWriter("Booking_LOGG.txt", true));
             //Print information to text file
             pw.println("---------------------------------------------------------------------------");
+            if(update){
+                pw.println("\t***** Updated By Customer *****");
+            }
             pw.println("|Booking Id: " + bookId + "|Check In: " + dateFormat.format(checkinDate) + "|Check Out: " + dateFormat.format(checkoutDate) + "|Room Number: " + roomNbr + "|");
             pw.println("---------------------------------------------------------------------------");
             pw.close();

@@ -11,13 +11,16 @@ public class Booking implements Serializable {
     private int roomNbr;
     private Date actualCheckOut;
     private Date actualCheckIn;
+    private static int counter = 1;
 
 
-    public Booking(Date checkinDate, Date checkoutDate, int roomNbr,int bookId){
+    public Booking(Date checkinDate, Date checkoutDate, int roomNbr, int lastBookingIdUsed){
         this.checkinDate = checkinDate;
         this.checkoutDate = checkoutDate;
         this.roomNbr = roomNbr;
-        this.bookId = bookId;
+        this.counter = lastBookingIdUsed+1;
+        this.bookId = counter;
+        counter++;
     }
 
     public int getRoomNbr() {
@@ -81,4 +84,5 @@ public class Booking implements Serializable {
         this.actualCheckIn = new Date();
         this.actualCheckIn.setTime(System.currentTimeMillis());
     }
+
 }
