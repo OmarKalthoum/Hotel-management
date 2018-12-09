@@ -305,7 +305,9 @@ public class HotelLogic {
                         System.out.print("\n" +
                                 "[1] Search for a specific booking\n" +
                                 "[2] Cancel a booking\n" +
-                                "[3] Back to the main menu\n\n" +
+                                "[3] View All Bookings (Not historic include)\n" +
+                                "[4] Back to the main menu\n\n" +
+
                                 "Your choice: ");
                         try {
                             choice = scan.nextInt();
@@ -317,7 +319,15 @@ public class HotelLogic {
                         switch (choice) {
 
                             case 1: {
-                                viewBookings();
+                                System.out.println("Enter Booking ID");
+                                int bookId = -1;
+                                try{
+                                    bookId = scan.nextInt();
+                                }catch(InputMismatchException e){
+                                    System.err.println("Input not a number");
+                                }finally{
+                                    viewBookingById(bookId);
+                                }
                                 break;
                             }
                             case 2: {
@@ -325,6 +335,10 @@ public class HotelLogic {
                                 break;
                             }
                             case 3: {
+                                viewAllBookingsFromToday();
+                                break;
+                            }
+                            case 4: {
                                 choice = -4;
                                 break;
                             }
@@ -336,7 +350,7 @@ public class HotelLogic {
                     }
                 }
                 case 4: {
-
+                        customerMenu(findCustomer());
                     break;
                 }
                 case 5: {
@@ -662,6 +676,16 @@ public class HotelLogic {
             System.out.println("\n No Booking Found with bookingId " + bookingId);
         }
 
+    }
+
+    private void viewAllBookingsFromToday(){
+        Date date = new Date(System.currentTimeMillis());
+
+        for(Booking b:books){
+            if(b.getCheckinDate().after(date)){
+                viewBookingById(b.getBookId());
+            }
+        }
     }
 
     //Room methods
@@ -1237,7 +1261,34 @@ public class HotelLogic {
 
     }
 
+    private Customer findCustomer(){
 
+        String choice;
+
+        scan.nextLine();
+        System.out.println("Enter Name, SSN or TelephoneNumber:");
+        String SearchParam = scan.nextLine();
+
+        for(Person p: users){
+
+            if((p.getName().equalsIgnoreCase(SearchParam)) ||
+                    (p.getSsn().equalsIgnoreCase(SearchParam)) ||
+                    (p.getContactNBR().equalsIgnoreCase(SearchParam)) ||
+                    (p.getUserName().equalsIgnoreCase(SearchParam))){
+                viewCurrentCustomer((Customer)p);
+
+                System.out.println("Customer found, Correct Y/N?");
+
+                if((scan.nextLine()).equalsIgnoreCase("y")){
+                    return (Customer) p;
+                }
+            }
+
+        }
+        System.out.println("Could not find any users with this information");
+
+        return null;
+    }
 
 }
 
