@@ -14,9 +14,7 @@ public class HotelApp {
         hotelCL = new HotelLogic(scan);
         String option;
         while (true) {
-
             System.out.print("\n*** Welcome to Hotel California! ***\n\n" +
-                    "Please choose an option from the menu:\n" +
                     "1. Login User\n" +
                     "2. Show Hotel Information\n" +
                     "3. Exit System\n\n" +
@@ -34,6 +32,7 @@ public class HotelApp {
                 case "1":
                     try {
                         hotelCL.loginUser();
+                        break;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

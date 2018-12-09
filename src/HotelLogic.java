@@ -485,12 +485,13 @@ public class HotelLogic {
             System.out.print("\nAll information are correct (Y/N)? ");
             String choice = scan.nextLine();
 
-            // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
-            if (choice.equalsIgnoreCase("y")) {
-                Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), lastBookId);
-                newBooking.setTotalPrice(price);
-                owner.addCustomerBookings(newBooking.getBookId());
-                books.add(newBooking);
+
+        // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
+        if (choice.equalsIgnoreCase("y")) {
+            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), lastBookId);
+            newBooking.setTotalPrice(price);
+            owner.addCustomerBookings(newBooking.getBookId());
+            books.add(newBooking);
 
                 new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
 
@@ -820,7 +821,7 @@ public class HotelLogic {
             temp = rooms.get(i);
             System.out.println(
                     (i + 1) + "\t\t" +
-                            (temp.getRommNumber() + 1 + "\t\t" +
+                            (temp.getRommNumber() + "\t\t" +
                                     rooms.get(i).getNumberOfBeds() + "\t\t" +
                                     df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
                                     rooms.get(i).isHasBalcony()));
@@ -1289,23 +1290,22 @@ public class HotelLogic {
 
     private Customer findCustomer(){
 
-        String choice;
-
         scan.nextLine();
         System.out.println("Enter Name, SSN or TelephoneNumber:");
         String SearchParam = scan.nextLine();
 
         for(Person p: users){
 
-            if((p.getName().equalsIgnoreCase(SearchParam)) ||
+            if ((p.getName().equalsIgnoreCase(SearchParam)) ||
                     (p.getSsn().equalsIgnoreCase(SearchParam)) ||
                     (p.getContactNBR().equalsIgnoreCase(SearchParam)) ||
-                    (p.getUserName().equalsIgnoreCase(SearchParam))){
-                viewCurrentCustomer((Customer)p);
+                    (p.getUserName().equalsIgnoreCase(SearchParam))) {
+
+                viewCurrentCustomer((Customer) p);
 
                 System.out.println("Customer found, Correct Y/N?");
 
-                if((scan.nextLine()).equalsIgnoreCase("y")){
+                if ((scan.nextLine()).equalsIgnoreCase("y")) {
                     return (Customer) p;
                 }
             }
