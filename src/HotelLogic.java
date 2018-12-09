@@ -365,7 +365,10 @@ public class HotelLogic {
                     }
                 }
                 case 4: {
-                        customerMenu(findCustomer());
+                        Customer cust = (Customer) findCustomer();
+                        if(cust !=null){
+                            customerMenu(cust);
+                        }
                     break;
                 }
                 case 5: {
