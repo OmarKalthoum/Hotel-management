@@ -119,11 +119,11 @@ public class HotelLogic {
 
                         switch (choice) {
                             case 1: {
-                                checkIn();
+                                checkIn(owner);
                                 break;
                             }
                             case 2: {
-                                checkOut();
+                                checkOut(owner);
                                 break;
                             }
                             case 3: {
@@ -235,7 +235,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 4: {
-                                viewJustAvailableRooms();
+                                viewAvailableRoomByEmployee();
                                 break;
                             }
                             case 5: {
@@ -322,6 +322,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 2: {
+                                caneclBooking();
                                 break;
                             }
                             case 3: {
@@ -357,38 +358,46 @@ public class HotelLogic {
         LinkedList<Integer> list;
         Date checkoutDate = null;
         Date checkinDate = null;
-
+        String date = "";
+        System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        System.out.println("Enter checkin date (Format: yyyy-mm-dd):");
-        String date = scan.nextLine();
-        try {
-            checkinDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-
-            e.printStackTrace();
-
+        while (true) {
+            date = scan.nextLine();
+            if (!date.equals("0")) {
+                try {
+                    checkinDate = dateFormat.parse(date);
+                    break;
+                } catch (ParseException e) {
+                    System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
+                }
+            } else if (date.equals("0")) {
+                return;
+            }
         }
-        System.out.println("Enter checkout date (Format: yyyy-mm-dd):");
-        date = scan.nextLine();
-        try {
-            checkoutDate = dateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+        System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
+        while (true) {
+            date = scan.nextLine();
+            try {
+                checkoutDate = dateFormat.parse(date);
+                break;
+            } catch (ParseException e) {
+                System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
+            }
         }
         list = viewAvailableRoomDate(checkinDate, checkoutDate);
         int roomNumber = -1;
-            while(true) {
-                System.out.print("Enter RoomNumbers: ");
-                roomNumber = scan.nextInt() - 1;
-                scan.nextLine();
+        while (true) {
+            System.out.print("Enter RoomNumbers: ");
+            roomNumber = scan.nextInt() - 1;
+            scan.nextLine();
 
-                if(list !=null && !list.contains(roomNumber)){
-                    break;
-                }else{
-                    System.out.println("Room not available for the given Dates");
-                }
+            if (list != null && !list.contains(roomNumber)) {
+                break;
+            } else {
+                System.out.println("Room not available for the given Dates");
             }
+        }
 
         int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -407,16 +416,16 @@ public class HotelLogic {
 
         System.out.println("\n\t***Confirmation***");
         System.out.println("Your booking id is: " + bookId);
-        System.out.println("Thr room that you chose has the number: " + (temp.getRommNumber()+1));
-        System.out.println("Your check in will be at: " + checkinDate);
-        System.out.println("Your check out will be at: " + checkoutDate);
+        System.out.println("The room that you chose has the number: " + (temp.getRommNumber() + 1));
+        System.out.println("Your checking-in will be at: " + checkinDate);
+        System.out.println("Your checking-out will be at: " + checkoutDate);
         System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
         System.out.printf(" and it costs for the whole period %.2f", price);
         System.out.print("\nAll information are correct (Y/N)? ");
         String choice = scan.nextLine();
 
         if (choice.equalsIgnoreCase("y")) {
-            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), books.size()+1);
+            Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), books.size() + 1);
             newBooking.setTotalPrice(price);
             owner.addCustomerBookings(newBooking.getBookId());
             books.add(newBooking);
@@ -437,14 +446,14 @@ public class HotelLogic {
         System.out.println("Enter booking id:");
         bookId = scan.nextInt();
 
-        for(int i = 0; i<books.size();i++){
+        for (int i = 0; i < books.size(); i++) {
             booking = books.get(i);
-            if(booking.getBookId()==bookId){
+            if (booking.getBookId() == bookId) {
                 break;
             }
         }
 
-        if(booking == null){
+        if (booking == null) {
             System.err.println("Booking ID is not found in database");
             return;
         }
@@ -475,8 +484,8 @@ public class HotelLogic {
                     } catch (ParseException e) {
                         System.err.println("Thats not a valid date");
                         //e.printStackTrace();
-                    }finally {
-                            booking.setCheckinDate(CheckDate);
+                    } finally {
+                        booking.setCheckinDate(CheckDate);
                     }
                     break;
                 }
@@ -503,19 +512,45 @@ public class HotelLogic {
     }
 
     private void viewBookings() {
+        if (books.size() > 0) {
+            System.out.println("\tListing all the registered bookings at Hotel California\n");
+            System.out.println("Index\t\tBookID\t\tRoomNumber\t\t\tCheck-in\t\t\t\t\t\t\t\tCheckout\n");
+        }
 
-        for (Booking b : books) {
-            System.out.println(b.getBookId());
-            System.out.println(b.getRoomNbr());
-            System.out.println(b.getCheckinDate());
-            System.out.println(b.getCheckoutDate());
+        for (int i = 0; i < books.size(); i++) {
+            System.out.print((i + 1) + "\t\t\t");
+            System.out.print(books.get(i).getBookId() + "\t\t\t");
+            System.out.print(books.get(i).getRoomNbr() + "\t\t\t\t\t");
+            System.out.print(books.get(i).getCheckinDate() + "\t\t\t");
+            System.out.print(books.get(i).getCheckoutDate() + "\t\t");
+            System.out.println();
 
+        }
             /*
             Så här kan man kalla på checkin och skriva ut
             b.setActualCheckIn();
             System.out.println(b.getActualCheckIn());
             */
+    }
+
+
+    private void caneclBooking() {
+        viewBookings();
+        if (books.size() > 0) {
+            System.out.print("\nChoose the booking that you want to delete or just 0 to abort: ");
+            int choice = scan.nextInt();
+            if (choice == 0) {
+                return;
+            } else if (choice < books.size() || choice == books.size()) {
+                books.remove(choice - 1);
+            } else {
+                System.out.println("Something went wrong, please try later!");
+            }
+        } else {
+            System.out.println("There are none bookings to cancel!");
         }
+
+
     }
 
     //Room methods
@@ -525,7 +560,7 @@ public class HotelLogic {
         boolean hasBalcony = false;
         int roomNumber = rooms.size() + 1;
         System.out.println("\nAdding a new Room: ");
-        System.out.println("The room number is gonna be : " + roomNumber);
+        System.out.println("\nThe room number is gonna be : " + roomNumber);
 
         System.out.print("Enter the number of beds: ");
         int bedsQuantity = 0;
@@ -543,7 +578,7 @@ public class HotelLogic {
         if (scan.nextLine().equalsIgnoreCase("y")) {
             hasBalcony = true;
         }
-        System.out.print("How much costs the room per night? ");
+        System.out.print("How much does the room cost per night? ");
 
         double cost = 0;
         while (true) {
@@ -555,8 +590,28 @@ public class HotelLogic {
                 scan.next();
             }
         }
-        rooms.add(new Room(roomNumber - 1, bedsQuantity, hasBalcony, cost));
-        System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
+        scan.nextLine();
+        System.out.println("\n\t***Confirmation***");
+        System.out.println("The room number is: " + roomNumber);
+        System.out.println("The room has " + bedsQuantity + " beds");
+        if (hasBalcony) {
+            System.out.println("And has a balcony");
+        } else {
+            System.out.println("And has not a balcony");
+
+        }
+
+        System.out.println("The room costs per night: " + cost);
+        System.out.print("\nAll information are correct (Y/N)? ");
+        String choice = scan.nextLine();
+
+        if (choice.equalsIgnoreCase("y")) {
+            rooms.add(new Room(roomNumber - 1, bedsQuantity, hasBalcony, cost));
+            System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
+        } else {
+            System.out.println("Please try again!");
+        }
+
 
     }
 
@@ -614,27 +669,29 @@ public class HotelLogic {
         }
     }
 
-    private void viewJustAvailableRooms() {
-        int counter = 1;
+    private void viewAvailableRoomByEmployee() {
+        Date checkoutDate = null;
+        Date checkinDate = null;
 
-        for (int i = 0; i < rooms.size(); i++) {
-            if (!rooms.get(i).isBooked()) {
-                if (counter == 1) {
-                    System.out.println("Listing all available rooms at Hotel California\n");
-                    System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
-                    counter++;
-                }
-                DecimalFormat df = new DecimalFormat("#.##");
-                System.out.println(
-                        i + 1 + "\t\t" +
-                                rooms.get(i).getNumberOfBeds() + "\t\t" +
-                                df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
-                                rooms.get(i).isHasBalcony());
-            }
+        scan.nextLine();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        System.out.println("Enter check-in date (Format: yyyy-mm-dd):");
+        String date = scan.nextLine();
+        try {
+            checkinDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        if (counter == 1) {
-            System.out.println("There are nona available rooms at Hotel California!");
+        System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
+        date = scan.nextLine();
+        try {
+            checkoutDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        viewAvailableRoomDate(checkinDate, checkoutDate);
+
     }
 
     private void editRoom() {
@@ -712,10 +769,25 @@ public class HotelLogic {
         String userName = scan.nextLine();
         System.out.print("Enter your password: ");
         String password = scan.nextLine();
-        Customer customer = new Customer(ssn, name, address, phoneNumber, userName, password);
-        users.add(customer);
-        System.out.println("Customer-account created! ");
-        System.out.println();
+
+        System.out.println("\n\t***Confirmation***");
+        System.out.println("Your your full name is: " + name);
+        System.out.println("Your social security-number is: " + ssn);
+        System.out.println("Your phone-number is: " + phoneNumber);
+        System.out.println("Your address is: " + address);
+        System.out.println("Your username is: " + userName);
+        System.out.println("Your password is: " + password);
+        System.out.print("\nAll information are correct (Y/N)? ");
+        String choice = scan.nextLine();
+
+        if (choice.equalsIgnoreCase("y")) {
+            Customer customer = new Customer(ssn, name, address, phoneNumber, userName, password);
+            users.add(customer);
+            System.out.println("\n**Customer-account created**\nThank you for using out hotel!");
+            System.out.println("To login in your account, please use your username and password");
+        } else {
+            System.out.println("Please try again!");
+        }
 
     }
 
@@ -748,11 +820,11 @@ public class HotelLogic {
     }
 
     private void removeCustomer() {
-        int counter = 1;
+        boolean counter = false;
         for (Person customer : users) {
 
             if (customer.getClass().equals(Customer.class)) {
-                counter++;
+                counter = true;
                 viewAllCustomers();
                 int removeCustomer;
                 System.out.print("Choose the customer number that you want to delete or 0 to abort: ");
@@ -774,13 +846,13 @@ public class HotelLogic {
                 }
             }
         }
-        if (counter == 1) {
+        if (!counter) {
             System.out.println("There are none registered customer to delete!");
 
         }
     }
 
-    private void editCustomer()  {
+    private void editCustomer() {
         for (Person customer : users) {
 
             if (customer.getClass().equals(Customer.class)) {
@@ -883,7 +955,7 @@ public class HotelLogic {
 
     private void viewCurrentCustomer(Customer owner) {
 
-        System.out.println("Name: " + owner.getName());
+        System.out.println("\nName: " + owner.getName());
         System.out.println("SSN: " + owner.getSsn());
         System.out.println("Phone-number: " + owner.getContactNBR());
         System.out.println("Address: " + owner.getAddress());
@@ -893,39 +965,67 @@ public class HotelLogic {
 
     }
 
-    private void checkIn() {
+    private void checkIn(Customer owner) {
         boolean count = false;
-        System.out.println("Enter booking-id:");
-        int bookingID = scan.nextInt();
+        int bookingID = 0;
+        System.out.print("Enter booking-id: ");
+        try {
+            bookingID = scan.nextInt();
+        } catch (Exception e) {
+            System.out.println("\nWrong input");
+            count = true;
+            scan.next();
+        }
 
         for (Booking b : books) {
-            if (b.getBookId() == bookingID) {
-                b.setActualCheckIn();
-                System.out.println("Success mf! Check-in registered: " +b.getActualCheckIn());
-                count = true;
-                break;
+            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
+                if (b.getActualCheckIn() == null) {
+                    b.setActualCheckIn();
+                    System.out.println("Success! Check-in registered at: " + b.getActualCheckIn());
+                    count = true;
+                    break;
+                } else {
+                    System.out.println("You can not check-in more than one time!");
+                }
+
             }
+
         }
         if (!count) {
-            System.out.println("Error can't find!");
+            System.out.println("The booking-id couldn't find");
         }
     }
 
-    private void checkOut() {
+    private void checkOut(Customer owner) {
         boolean count = false;
-        System.out.println("Enter booking-id:");
-        int bookingID = scan.nextInt();
+        int bookingID = 0;
+        System.out.print("Enter booking-id: ");
+        try {
+            bookingID = scan.nextInt();
+        } catch (Exception e) {
+            System.out.print("\nWrong input!\n");
+            count = true;
+            scan.next();
+        }
 
         for (Booking b : books) {
-            if (b.getBookId() == bookingID) {
-                b.setActualCheckOut();
-                System.out.println("Success mf! Checkout registered: " +b.getActualCheckOut());
-                count = true;
-                break;
+            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
+                if (b.getActualCheckIn() != null) {
+                    b.setActualCheckOut();
+                    System.out.println("Success! Checkout registered at: " + b.getActualCheckOut());
+                    count = true;
+                    break;
+                } else {
+                    System.out.println("\nUnable to check-out");
+                    System.out.println("Probably because you did not check-in yet\nPlease contact the customer service for more information!");
+                    count = true;
+                    break;
+                }
+
             }
         }
         if (!count) {
-            System.out.println("Error can't find!");
+            System.out.println("The booking-id couldn't find");
         }
     }
 
@@ -954,22 +1054,22 @@ public class HotelLogic {
             if ((!(tempStart.after(b.getCheckinDate()) && tempEnd.after(b.getCheckinDate())) ||
                     (tempStart.before(b.getCheckoutDate()) && tempEnd.after(b.getCheckoutDate())) ||
                     (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate()))) ||
-                    (tempStart.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate()))){
+                    (tempStart.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate()))) {
                 roomNbrs.add(b.getRoomNbr());
             }
         }
 
         Room temp;
-        int counter = 1;
+        boolean counter = false;
         DecimalFormat df = new DecimalFormat("#.##");
         for (int i = 0; i < rooms.size(); i++) {
             temp = rooms.get(i);
 
             if (!roomNbrs.contains(temp.getRommNumber())) {
-                if (counter == 1) {
-                    System.out.println("Listing all registered rooms at Hotel California\n");
+                if (!counter) {
+                    System.out.println("Listing all registered available rooms at Hotel California\n");
                     System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
-                    counter++;
+                    counter = true;
                 }
 
                 System.out.println(
@@ -979,8 +1079,8 @@ public class HotelLogic {
                                 rooms.get(i).isHasBalcony());
             }
         }
-        if (counter == 1) {
-            System.out.println("There are nona available rooms at Hotel California!");
+        if (!counter) {
+            System.out.println("There are none available rooms at Hotel California!");
             return null;
         }
         return roomNbrs;
