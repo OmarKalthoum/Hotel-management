@@ -12,8 +12,8 @@ public class HotelLogic {
 
     public HotelLogic(Scanner scan) {
         this.scan = scan;
-        //load();
-        createTestInfo();
+        load();
+        //createTestInfo();
     }
 
     // Login user and check for user type
