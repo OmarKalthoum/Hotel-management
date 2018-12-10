@@ -154,7 +154,7 @@ public class HotelLogic {
                     break;
                 }
                 case 3: {
-
+                    viewAvailableRoomByUser();
                     break;
                 }
                 case 4: {
@@ -252,7 +252,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 4: {
-                                viewAvailableRoomByEmployee();
+                                viewAvailableRoomByUser();
                                 break;
                             }
                             case 5: {
@@ -325,7 +325,6 @@ public class HotelLogic {
                                 "[2] Cancel a booking\n" +
                                 "[3] View All Bookings (Not historic include)\n" +
                                 "[4] Back to the main menu\n\n" +
-
                                 "Your choice: ");
                         try {
                             choice = scan.nextInt();
@@ -334,6 +333,7 @@ public class HotelLogic {
                             scan.next();
                             continue;
                         }
+
                         switch (choice) {
 
                             case 1: {
@@ -364,8 +364,9 @@ public class HotelLogic {
                                 break;
                             }
                         }
-                        break;
+
                     }
+                    break;
                 }
                 case 4: {
                         Customer cust = (Customer) findCustomer();
@@ -645,34 +646,35 @@ public class HotelLogic {
     private void caneclBooking() {
         viewBookings();
         if (books.size() > 0) {
-            System.out.print("\nChoose the booking that you want to delete or just 0 to abort: ");
-            int choice = scan.nextInt();
-            if (choice == 0) {
-                return;
-            } else if (choice < books.size() || choice == books.size()) {
-
                 try {
+                    System.out.print("\nChoose the booking that you want to delete or just 0 to abort: ");
+                    int choice = scan.nextInt();
+                    if (choice == 0) {
+                        return;
+                    }
 
                     for (Booking b : books) {
                         if (b.getBookId() == choice) {
                             books.remove(b);
+                            System.out.println("Booking Removed");
                         }
                     }
 
                 }catch(ConcurrentModificationException e){
-
                     System.err.println("Error removing booking");
+
+                }catch(InputMismatchException e){
+                    System.err.println("Wrong input");
+                    scan.nextLine();
                 }
 
-            } else {
-                System.out.println("Something went wrong, please try later!");
-            }
-        } else {
-            System.out.println("There are none bookings to cancel!");
+            }else{
+            System.out.println("There are no bookings to show");
+        }
         }
 
 
-    }
+
 
     private void viewBookingHistoryForUser(Customer user, boolean allHistory){
 
@@ -842,7 +844,7 @@ public class HotelLogic {
         }
     }
 
-    private void viewAvailableRoomByEmployee() {
+    private void viewAvailableRoomByUser() {
         Date checkoutDate = null;
         Date checkinDate = null;
 
@@ -863,7 +865,7 @@ public class HotelLogic {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        viewAvailableRoomDate(checkinDate, checkoutDate, false, -1);
+        viewAvailableRoomDate(checkinDate, checkoutDate, true, 0);
 
     }
 
@@ -1233,6 +1235,7 @@ public class HotelLogic {
                 }
             }
         }catch(NullPointerException e){
+            System.out.println("Error getting booknumbers");
             return null;
         }
 
