@@ -423,7 +423,7 @@ public class HotelLogic {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         // Enter check in date and try parse, if bad input return to previous menu
-        System.out.println("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort:");
+        System.out.print("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort: ");
         date = scan.nextLine();
 
         if (date.equalsIgnoreCase("0")) {
@@ -433,13 +433,13 @@ public class HotelLogic {
         try {
             checkinDate = dateFormat.parse(date);
         } catch (ParseException e) {
-            System.err.println("Date input incorrect");
+            System.out.println("\nDate input incorrect");
             System.out.println();
             return;
         }
 
         // Enter check out date and try parse, if bad input return to previous menu
-        System.out.println("Enter checkout date (Format: yyyy-mm-dd) or 0 to abort:");
+        System.out.print("Enter checkout date (Format: yyyy-mm-dd) or 0 to abort: ");
         date = scan.nextLine();
 
         if (date.equalsIgnoreCase("0")) {
@@ -449,7 +449,7 @@ public class HotelLogic {
         try {
             checkoutDate = dateFormat.parse(date);
         } catch (ParseException e) {
-            System.err.println("Date Input incorrect");
+            System.out.println("\nDate Input incorrect");
             return;
         }
 
@@ -524,7 +524,7 @@ public class HotelLogic {
 
             new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
 
-            System.out.println("Would you like us to print this information? Y/N ?");
+            System.out.print("Would you like us to print this information? Y/N ? ");
             if (scan.nextLine().equalsIgnoreCase("y")) {
                 viewBookingById(bookId, true, owner);
             }
@@ -546,7 +546,9 @@ public class HotelLogic {
 
         // hitta bokning via id i listan
         for (Booking book : books) {
-            if (book.getBookId() == bookId) booking = book;
+            if (book.getBookId() == bookId && owner.getCustomerBookings().contains(bookId)){
+                booking = book;
+            }
         }
 
         // Om bokningen inte finns - return från metod
@@ -707,7 +709,6 @@ public class HotelLogic {
             System.out.println("There are no bookings to show");
         }
     }
-
 
     private void viewBookingHistoryForUser(Customer user, boolean allHistory) {
 
@@ -1216,19 +1217,17 @@ public class HotelLogic {
             if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
                 if (b.getActualCheckIn() == null) {
                     b.setActualCheckIn();
-                    System.out.println("Success! Check-in registered at: " + b.getActualCheckIn());
+                    System.out.println("\nSuccess! Check-in registered at: " + b.getActualCheckIn());
                     count = true;
                     break;
                 } else {
-                    System.out.println("You can not check-in more than one time!");
+                    System.out.println("\nYou can not check-in more than one time!");
                     return;
                 }
-
             }
-
         }
         if (!count) {
-            System.out.println("The booking-id couldn't find!");
+            System.out.println("\nThe booking-id couldn't find!");
         }
     }
 
@@ -1249,12 +1248,19 @@ public class HotelLogic {
             if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
                 if (b.getActualCheckIn() != null && b.getActualCheckOut() == null) {
                     b.setActualCheckOut();
-                    System.out.println("Success! Checkout registered at: " + b.getActualCheckOut());
+                    System.out.println("\nSuccess! Checkout registered at: " + b.getActualCheckOut());
                     count = true;
                     break;
-                } else {
-                    System.out.println("\nUnable to check-out");
-                    System.out.println("Probably because you did not check-in yet or you already checked out\nPlease contact the customer service for more information!");
+                } else if (b.getActualCheckIn() == null){
+                    System.out.println("\nYou have not checked in yet!\nplease try after you have check in!");
+                    count = true;
+                    break;
+                }else if (b.getActualCheckOut() != null){
+                    System.out.println("\nYou can not check-out more than one time!");
+                    count = true;
+                    break;
+                }else {
+                    System.out.println("\nSomething went wrong\nUnable to check-out");
                     count = true;
                     break;
                 }

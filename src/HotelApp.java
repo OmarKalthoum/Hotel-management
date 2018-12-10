@@ -50,6 +50,7 @@ public class HotelApp {
                 }
                 default: {
                     System.out.println("Please choose a number from the menu!");
+                    break;
                 }
 
             }
