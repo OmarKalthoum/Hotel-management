@@ -39,7 +39,7 @@ public class HotelLogic {
             }
         }
         if (checkLogIn == 1) {
-            System.out.println("Login Failed\nPlease try again");
+            System.out.println("\n\nLogin Failed\nPlease try again");
 
         }
     }
@@ -57,11 +57,14 @@ public class HotelLogic {
                     "[5] Exit customer mode\n\n" +
                     "Your choice: ");
 
-            while (!scan.hasNextInt()) {
-                scan.next();
-            }
+            try {
+                choice = scan.nextInt();
 
-            choice = scan.nextInt();
+            } catch (Exception e) {
+                System.out.println("Please choose a number from the menu");
+                scan.next();
+                continue;
+            }
 
             switch (choice) {
                 case 1: {
@@ -75,13 +78,14 @@ public class HotelLogic {
                                 "[5] Print Booking Information\n" +
                                 "[6] Back to the main menu\n\n" +
                                 "Your choice: ");
-
-                        while (!scan.hasNextInt()) {
+                        try {
+                            choice = scan.nextInt();
+                            scan.nextLine();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu");
                             scan.next();
+                            continue;
                         }
-
-                        choice = scan.nextInt();
-                        scan.nextLine();
                         switch (choice) {
                             case 1: {
                                 addNewBooking(owner);
@@ -117,6 +121,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu! ");
                                 break;
                             }
                         }
@@ -131,7 +136,14 @@ public class HotelLogic {
                                 "[2] Check out\n" +
                                 "[3] Back to the main menu\n\n" +
                                 "Your choice:  ");
-                        choice = scan.nextInt();
+                        try {
+                            choice = scan.nextInt();
+                            scan.nextLine();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu!");
+                            scan.next();
+                            continue;
+                        }
 
                         switch (choice) {
                             case 1: {
@@ -147,6 +159,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu ");
                                 break;
                             }
                         }
@@ -165,8 +178,14 @@ public class HotelLogic {
                                 "[2] Edit customer information\n" +
                                 "[3] Back to the main menu\n\n" +
                                 "Your choice: ");
-                        choice = scan.nextInt();
-                        scan.nextLine();
+                        try {
+                            choice = scan.nextInt();
+                            scan.nextLine();
+                        } catch (Exception e) {
+                            System.out.println("Please choose a number from the menu ");
+                            scan.next();
+                            continue;
+                        }
                         switch (choice) {
                             case 1: {
                                 viewCurrentCustomer(owner);
@@ -181,6 +200,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu ");
                                 break;
                             }
                         }
@@ -193,6 +213,7 @@ public class HotelLogic {
                     break;
                 }
                 default: {
+                    System.out.println("Please choose a number from the menu ");
                     break;
                 }
             }
@@ -311,6 +332,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu");
                                 break;
                             }
                         }
@@ -362,6 +384,7 @@ public class HotelLogic {
                                 break;
                             }
                             default: {
+                                System.out.println("Please choose a number from the menu");
                                 break;
                             }
                         }
@@ -382,6 +405,7 @@ public class HotelLogic {
                     break;
                 }
                 default: {
+                    System.out.println("Please choose a number from the menu ");
                     break;
                 }
             }
@@ -527,7 +551,7 @@ public class HotelLogic {
 
         // Om bokningen inte finns - return från metod
         if (booking == null) {
-            System.err.println("\nBooking ID is not found in database");
+            System.out.println("\nBooking ID is not found in database");
             return;
         }
         System.out.println("***Booking Information***");
@@ -564,7 +588,7 @@ public class HotelLogic {
                         if (list != null && !list.contains(booking.getRoomNbr())) {
                             if (CheckDate.after(booking.getCheckoutDate()) || CheckDate.equals(booking.getCheckoutDate())) {
                                 System.out.println();
-                                System.err.println("Check in can not be after or same day as check out");
+                                System.out.println("Check in can not be after or same day as check out");
                                 System.out.println();
                                 return;
                             }
@@ -734,7 +758,7 @@ public class HotelLogic {
         }
 
         if (noBookingFound) {
-            System.err.println("No Booking Found with bookingId: " + bookingId);
+            System.out.println("No Booking Found with bookingId: " + bookingId);
         }
     }
 
@@ -868,6 +892,8 @@ public class HotelLogic {
         Date checkoutDate = null;
         Date checkinDate = null;
 
+        Date currentDate = new Date();
+
         scan.nextLine();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -875,6 +901,10 @@ public class HotelLogic {
         String date = scan.nextLine();
         try {
             checkinDate = dateFormat.parse(date);
+            if (checkinDate.before(currentDate)){
+                System.out.println("Can not choose a date in the past!");
+                return;
+            }
         } catch (ParseException e) {
             System.err.println("Wrong Input!");
             return;
@@ -883,6 +913,13 @@ public class HotelLogic {
         date = scan.nextLine();
         try {
             checkoutDate = dateFormat.parse(date);
+            if (checkoutDate.before(checkinDate) ){
+                System.out.println("Can not choose a date in the past! ");
+                return;
+            } else if(checkoutDate.equals(checkinDate)){
+                System.out.println("\nThe difference between check-in/out must at least be one night\nPlease try again!");
+                return;
+            }
         } catch (ParseException e) {
             System.err.println("Wrong Input!");
             return;
@@ -1168,6 +1205,7 @@ public class HotelLogic {
         System.out.print("Enter booking-id: ");
         try {
             bookingID = scan.nextInt();
+            scan.nextLine();
         } catch (Exception e) {
             System.out.println("\nWrong input");
             count = true;
@@ -1183,13 +1221,14 @@ public class HotelLogic {
                     break;
                 } else {
                     System.out.println("You can not check-in more than one time!");
+                    return;
                 }
 
             }
 
         }
         if (!count) {
-            System.out.println("The booking-id couldn't find");
+            System.out.println("The booking-id couldn't find!");
         }
     }
 
@@ -1199,6 +1238,7 @@ public class HotelLogic {
         System.out.print("Enter booking-id: ");
         try {
             bookingID = scan.nextInt();
+            scan.nextLine();
         } catch (Exception e) {
             System.out.print("\nWrong input!\n");
             count = true;
@@ -1207,18 +1247,17 @@ public class HotelLogic {
 
         for (Booking b : books) {
             if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
-                if (b.getActualCheckIn() != null) {
+                if (b.getActualCheckIn() != null && b.getActualCheckOut() == null) {
                     b.setActualCheckOut();
                     System.out.println("Success! Checkout registered at: " + b.getActualCheckOut());
                     count = true;
                     break;
                 } else {
                     System.out.println("\nUnable to check-out");
-                    System.out.println("Probably because you did not check-in yet\nPlease contact the customer service for more information!");
+                    System.out.println("Probably because you did not check-in yet or you already checked out\nPlease contact the customer service for more information!");
                     count = true;
                     break;
                 }
-
             }
         }
         if (!count) {
@@ -1270,7 +1309,6 @@ public class HotelLogic {
             if (!roomNbrs.contains(temp.getRommNumber())) {
                 if (!counter && print) {
                     System.out.println("Listing all registered available rooms at Hotel California\n");
-                    System.out.println("Listing all registered rooms at Hotel California\n");
                     System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
                     counter = true;
                 }

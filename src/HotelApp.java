@@ -29,7 +29,7 @@ public class HotelApp {
             }
 
             switch (option) {
-                case "1":
+                case "1": {
                     try {
                         hotelCL.loginUser();
                         break;
@@ -37,14 +37,21 @@ public class HotelApp {
                         e.printStackTrace();
                     }
                     break;
-                case "2":
+                }
+                case "2": {
                     showHotelInfo();
                     break;
+                }
 
-                case "3":
+                case "3": {
                     hotelCL.save();
                     System.exit(0);
                     break;
+                }
+                default: {
+                    System.out.println("Please choose a number from the menu!");
+                }
+
             }
         }
     }
