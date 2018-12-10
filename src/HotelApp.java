@@ -11,8 +11,9 @@ public class HotelApp {
     }
 
     public void mainMenu() {
-        hotelCL = new HotelLogic(scan);
+        hotelCL = new HotelLogic();
         String option;
+
         while (true) {
             System.out.print("\n*** Welcome to Hotel California! ***\n\n" +
                     "1. Login User\n" +
@@ -24,7 +25,6 @@ public class HotelApp {
                 option = scan.nextLine();
             } catch (Exception e) {
                 System.out.println("Please choose a number from the menu");
-                scan.next();
                 continue;
             }
 
