@@ -10,8 +10,8 @@ public class HotelLogic {
     private LinkedList<Booking> books = new LinkedList<>();
     private LinkedList<Room> rooms = new LinkedList<>();
 
-    public HotelLogic(Scanner scan) {
-        this.scan = scan;
+    public HotelLogic() {
+        this.scan = new Scanner(System.in);
         load();
         //createTestInfo();
     }
@@ -62,6 +62,7 @@ public class HotelLogic {
             }
 
             choice = scan.nextInt();
+
             switch (choice) {
                 case 1: {
                     while (choice != -2) {
@@ -187,6 +188,7 @@ public class HotelLogic {
                     break;
                 }
                 case 5: {
+                    scan.nextLine();
                     choice = -1;
                     break;
                 }
@@ -211,6 +213,7 @@ public class HotelLogic {
                     "Your choice: ");
             try {
                 choice = scan.nextInt();
+
             } catch (Exception e) {
                 System.out.println("Please choose a number from the menu");
                 scan.next();
@@ -372,6 +375,7 @@ public class HotelLogic {
                     break;
                 }
                 case 5: {
+                    scan.nextLine();
                     choice = -1;
                     break;
                 }
@@ -647,10 +651,17 @@ public class HotelLogic {
                 return;
             } else if (choice < books.size() || choice == books.size()) {
 
-                for(Booking b:books){
-                    if(b.getBookId() == choice){
-                        books.remove(b);
+                try {
+
+                    for (Booking b : books) {
+                        if (b.getBookId() == choice) {
+                            books.remove(b);
+                        }
                     }
+
+                }catch(ConcurrentModificationException e){
+
+                    System.err.println("Error removing booking");
                 }
 
             } else {
