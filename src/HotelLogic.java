@@ -546,7 +546,7 @@ public class HotelLogic {
 
         // hitta bokning via id i listan
         for (Booking book : books) {
-            if (book.getBookId() == bookId && owner.getCustomerBookings().contains(bookId)){
+            if (book.getBookId() == bookId && owner.getCustomerBookings().contains(bookId)) {
                 booking = book;
             }
         }
@@ -902,7 +902,7 @@ public class HotelLogic {
         String date = scan.nextLine();
         try {
             checkinDate = dateFormat.parse(date);
-            if (checkinDate.before(currentDate)){
+            if (checkinDate.before(currentDate)) {
                 System.out.println("Can not choose a date in the past!");
                 return;
             }
@@ -914,10 +914,10 @@ public class HotelLogic {
         date = scan.nextLine();
         try {
             checkoutDate = dateFormat.parse(date);
-            if (checkoutDate.before(checkinDate) ){
+            if (checkoutDate.before(checkinDate)) {
                 System.out.println("Can not choose a date in the past! ");
                 return;
-            } else if(checkoutDate.equals(checkinDate)){
+            } else if (checkoutDate.equals(checkinDate)) {
                 System.out.println("\nThe difference between check-in/out must at least be one night\nPlease try again!");
                 return;
             }
@@ -1000,8 +1000,24 @@ public class HotelLogic {
         String phoneNumber = scan.nextLine();
         System.out.print("Enter your address: ");
         String address = scan.nextLine();
-        System.out.print("Enter your username: ");
-        String userName = scan.nextLine();
+        boolean run = false;
+        String userName = "";
+        while (!run) {
+            System.out.print("Enter your username: ");
+            userName = scan.nextLine();
+            for (Person p : users) {
+                if (p.getClass().equals(Customer.class)) {
+                    if (p.getUserName().equals(userName)) {
+                        System.out.println("The username is already used. Please try another one!");
+                        break;
+                    } else {
+                        run = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         System.out.print("Enter your password: ");
         String password = scan.nextLine();
 
@@ -1251,15 +1267,15 @@ public class HotelLogic {
                     System.out.println("\nSuccess! Checkout registered at: " + b.getActualCheckOut());
                     count = true;
                     break;
-                } else if (b.getActualCheckIn() == null){
+                } else if (b.getActualCheckIn() == null) {
                     System.out.println("\nYou have not checked in yet!\nplease try after you have check in!");
                     count = true;
                     break;
-                }else if (b.getActualCheckOut() != null){
+                } else if (b.getActualCheckOut() != null) {
                     System.out.println("\nYou can not check-out more than one time!");
                     count = true;
                     break;
-                }else {
+                } else {
                     System.out.println("\nSomething went wrong\nUnable to check-out");
                     count = true;
                     break;
@@ -1371,15 +1387,14 @@ public class HotelLogic {
     private Customer findCustomer() {
 
         scan.nextLine();
-        System.out.print("Enter Name, SSN, TelephoneNumber or UserName: ");
+        System.out.print("Enter SSN, TelephoneNumber or UserName: ");
         String SearchParam = scan.nextLine();
 
         for (Person p : users) {
 
-            if ((p.getName().equalsIgnoreCase(SearchParam)) ||
-                    (p.getSsn().equalsIgnoreCase(SearchParam)) ||
-                    (p.getContactNBR().equalsIgnoreCase(SearchParam)) ||
-                    (p.getUserName().equalsIgnoreCase(SearchParam))) {
+            if ((p.getSsn().equals(SearchParam)) ||
+                    (p.getContactNBR().equals(SearchParam)) ||
+                    (p.getUserName().equals(SearchParam))) {
 
                 if (p.getClass().equals(Customer.class)) {
                     viewCurrentCustomer((Customer) p);
