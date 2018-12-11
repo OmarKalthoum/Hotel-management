@@ -421,6 +421,7 @@ public class HotelLogic {
         Date checkinDate;
         String date;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = new Date();
 
         // Enter check in date and try parse, if bad input return to previous menu
         System.out.print("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort: ");
@@ -432,6 +433,11 @@ public class HotelLogic {
 
         try {
             checkinDate = dateFormat.parse(date);
+            if (checkinDate.before(currentDate)) {
+                System.out.println("Can not choose a date in the past!");
+                return;
+            }
+
         } catch (ParseException e) {
             System.out.println("\nDate input incorrect");
             System.out.println();
@@ -445,32 +451,37 @@ public class HotelLogic {
         if (date.equalsIgnoreCase("0")) {
             return;
         }
-
         try {
             checkoutDate = dateFormat.parse(date);
+            if (checkoutDate.before(checkinDate)) {
+                System.out.println("\nCan not check out before check-in date");
+                return;
+            } else if (checkoutDate.equals(checkinDate)) {
+                System.out.println("\nThe difference between check-in/out must at least be one night\nPlease try again!");
+                return;
+            }
         } catch (ParseException e) {
             System.out.println("\nDate Input incorrect");
             return;
         }
 
-        // Check if check out date is before check in date or date not entered, return to previous menu if dates are bad
-        try {
-            if (checkinDate.after(checkoutDate)) {
-                System.err.println("You have entered a check out date that is before check in- Please try again");
-                return;
-            }
-        } catch (NullPointerException e) {
-            System.err.println("Date was not entered");
-            return;
-        }
 
         // List available rooms, input from user, check input against booked rooms
         list = viewAvailableRoomDate(checkinDate, checkoutDate, true, -1);
         int roomNumber = -1;
         while (true) {
-            System.out.print("Enter RoomNumbers: ");
-            roomNumber = scan.nextInt();
-            scan.nextLine();
+            System.out.print("\nEnter RoomNumbers or 0 to abort: ");
+            try{
+                roomNumber = scan.nextInt();
+                scan.nextLine();
+            }catch (Exception e){
+                System.out.println("\nWrong input!\nPlease try again");
+                return;
+            }
+            if (roomNumber == 0){
+                System.out.println("\nExiting add booking!");
+                return;
+            }
 
             if (list != null && !list.contains(roomNumber)) {
                 break;
