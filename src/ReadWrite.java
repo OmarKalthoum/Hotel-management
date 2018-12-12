@@ -33,9 +33,9 @@ public class ReadWrite {
             PrintWriter pw = new PrintWriter(new FileWriter(filename, true));
 
             pw.println("----------------------------------------------------------------------");
-            pw.println("*** *** *** Your Booking Information from Hotel Califormia *** *** ***");
+            pw.println("*** *** *** Your Booking Information from Hotel California *** *** ***");
             pw.println("----------------------------------------------------------------------");
-            pw.println(" Beloved Customer, we are very pleased that you have choosen our hotel");
+            pw.println(" Beloved Customer, we are very pleased that you have chosen our hotel");
             pw.println(" You will find all details about your booking below");
             pw.println(" See you soon and we hope you will enjoy staying with us");
             pw.println("\n Booking ID: " + booking.getBookId());
@@ -45,13 +45,13 @@ public class ReadWrite {
             pw.println(" Price in Total:  " + booking.getTotalPrice() + "\n");
             pw.println("   --- --- --- --- --- Your Personal Information --- --- --- --- ---");
             pw.println(" Mr/Mrs: " + user.getName());
-            pw.println(" Adress: " + user.getAddress());
+            pw.println(" Address: " + user.getAddress());
             pw.println(" TFN: " + user.getContactNBR());
             pw.println(" Personal ID: " + user.getSsn());
             pw.println("\n --------------------------------------------------------------------");
             pw.println("\n             *** *** *** Hotel Disclaimer *** *** ***");
             pw.println(" We are very glad that you have chosen Hotel California");
-            pw.println(" Due to musical refrences we can not quarantee that checking out from ");
+            pw.println(" Due to musical references we can not quarantine that checking out from ");
             pw.println(" hotel will result in you leaving the hotel. ");
             pw.println(" If you do not check out we will arrange that for you free of charge");
             pw.println(" If you have any questions you can contact us at 555-Eagles-RIP-OFF");

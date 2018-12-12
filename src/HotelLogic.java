@@ -17,6 +17,7 @@ public class HotelLogic {
     }
 
     // Login user and check for user type
+
     protected void loginUser() {
 
         System.out.print("UserName: ");
@@ -43,6 +44,7 @@ public class HotelLogic {
 
         }
     }
+
 
     // Customer & employee menu
 
@@ -104,14 +106,20 @@ public class HotelLogic {
                                 break;
                             }
                             case 5: {
-                                System.out.println("Enter Booking ID");
+                                System.out.print("Enter Booking ID: ");
                                 int bookId = -1;
                                 try {
                                     bookId = scan.nextInt();
                                 } catch (InputMismatchException e) {
-                                    System.err.println("Input not acceptable");
+                                    System.out.println("Input not acceptable");
                                 } finally {
-                                    viewBookingById(bookId, true, owner);
+                                    if (owner.getCustomerBookings().contains(bookId)){
+                                        viewBookingById(bookId, true, owner);
+                                    }
+                                    else {
+                                        System.out.println("None booking is registered in your name with booking id: " + bookId);
+                                    }
+
                                 }
 
                                 break;
@@ -364,7 +372,7 @@ public class HotelLogic {
                                 try {
                                     bookId = scan.nextInt();
                                 } catch (InputMismatchException e) {
-                                    System.err.println("Input not a number\n");
+                                    System.out.println("Input not a number\n");
                                 } finally {
                                     scan.nextLine();
                                     viewBookingById(bookId, false, user);
@@ -372,7 +380,7 @@ public class HotelLogic {
                                 break;
                             }
                             case 2: {
-                                caneclBooking();
+                                cancelBooking();
                                 break;
                             }
                             case 3: {
@@ -412,6 +420,7 @@ public class HotelLogic {
         }
     }
 
+
     //Booking methods
 
     private void addNewBooking(Customer owner) {
@@ -423,8 +432,8 @@ public class HotelLogic {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         boolean checkDate;
 
-        do{
-            checkDate  = false;
+        do {
+            checkDate = false;
             // Enter check in date and try parse, if bad input return to previous menu
             System.out.print("Enter check-in date (Format: yyyy-mm-dd) or 0 to abort: ");
             date = scan.nextLine();
@@ -442,17 +451,17 @@ public class HotelLogic {
             }
 
             if (!checkinDate.after(new Date(System.currentTimeMillis()))) {
-                System.err.println("Check in date cannot be before today");
+                System.out.println("Check in date cannot be before today");
                 System.out.println();
                 checkDate = true;
             }
-        }while(checkDate);
+        } while (checkDate);
 
 
         do {
             checkDate = false;
             // Enter check out date and try parse, if bad input return to previous menu
-            System.out.print("Enter checkout date (Format: yyyy-mm-dd) or 0 to abort: ");
+            System.out.print("Enter check-out date (Format: yyyy-mm-dd) or 0 to abort: ");
             date = scan.nextLine();
 
             if (date.equalsIgnoreCase("0")) {
@@ -471,38 +480,38 @@ public class HotelLogic {
             // Check if check out date is before check in date or date not entered, return to previous menu if dates are bad
             try {
                 if (checkoutDate.before(checkinDate)) {
-                    System.err.println("You have entered a check out date that is before check in- Please try again\n");
+                    System.out.println("You have entered a check out date that is before check in- Please try again\n");
                     System.out.println();
                     checkDate = true;
-                }else if(checkinDate.equals(checkoutDate)){
+                } else if (checkinDate.equals(checkoutDate)) {
                     System.out.println("Check Out has to be at least the day after check In\n");
                     checkDate = true;
-                }else if(checkoutDate.before(new Date(System.currentTimeMillis()))){
-                    System.err.println("Check out has to be at least tomorrow\n");
+                } else if (checkoutDate.before(new Date(System.currentTimeMillis()))) {
+                    System.out.println("Check out has to be at least tomorrow\n");
                     System.out.println();
                     checkDate = true;
                 }
             } catch (NullPointerException e) {
-                System.err.println("Date was not entered\n");
+                System.out.println("Date was not entered\n");
                 checkDate = true;
             }
-        }while(checkDate);
+        } while (checkDate);
 
         // List available rooms, input from user, check input against booked rooms
         list = viewAvailableRoomDate(checkinDate, checkoutDate, true, -1);
         int roomNumber = -1;
         while (true) {
             System.out.print("\nEnter RoomNumbers or 0 to abort: ");
-            try{
+            try {
                 roomNumber = scan.nextInt();
                 scan.nextLine();
-            }catch(InputMismatchException e){
-                System.err.println("Entered roomnumber not a number, please try again\n");
+            } catch (InputMismatchException e) {
+                System.out.println("Entered roomnumber not a number, please try again\n");
                 scan.next();
                 return;
             }
 
-            if(roomNumber == 0){
+            if (roomNumber == 0) {
                 return;
             }
 
@@ -556,10 +565,9 @@ public class HotelLogic {
             owner.addCustomerBookings(newBooking.getBookId());
             books.add(newBooking);
 
-            new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
-
             System.out.print("Would you like us to print this information? Y/N ? ");
             if (scan.nextLine().equalsIgnoreCase("y")) {
+                new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
                 viewBookingById(bookId, true, owner);
             }
 
@@ -617,20 +625,19 @@ public class HotelLogic {
                     try {
                         CheckDate = dateFormat.parse(date);
                     } catch (ParseException e) {
-                        System.err.println("\nThats not a valid date\n\n");
-                        //e.printStackTrace();
+                        System.out.println("\nThat's not a valid date\n\n");
                     } finally {
                         LinkedList<Integer> list = viewAvailableRoomDate(CheckDate, booking.getCheckoutDate(), false, booking.getBookId());
                         if (list != null && !list.contains(booking.getRoomNbr())) {
-                                if (!checkDates(CheckDate, booking.getCheckoutDate())) {
-                                    System.out.println();
-                                    System.out.println("Choice of Date not possible");
-                                    System.out.println("Check in has be before CheckOut");
-                                    System.out.println("Check-in can NOT same day as Check out (1 night minimum stay)");
-                                    System.out.println("Check in/out can NOT be before today");
-                                    System.out.println();
-                                    return;
-                                }
+                            if (!checkDates(CheckDate, booking.getCheckoutDate())) {
+                                System.out.println();
+                                System.out.println("Choice of Date not possible ");
+                                System.out.println("Check in has be before CheckOut");
+                                System.out.println("Check-in can NOT same day as Check out (1 night minimum stay)");
+                                System.out.println("Check in/out can NOT be before today");
+                                System.out.println();
+                                return;
+                            }
                             booking.setCheckinDate(CheckDate);
                             updateTotalpriceBooking(booking);
                             viewBookingById(bookId, false, owner);
@@ -646,13 +653,12 @@ public class HotelLogic {
                 case 2: {
                     System.out.println("Current check out date: " + booking.getCheckoutDate());
                     scan.nextLine();
-                    System.out.println("Enter new check out date:");
+                    System.out.print("Enter new check out date: ");
                     date = scan.nextLine();
                     try {
                         CheckDate = dateFormat.parse(date);
                     } catch (ParseException e) {
-                        System.err.println("Thats not a valid date");
-                        //e.printStackTrace();
+                        System.out.println("That's not a valid date");
                     } finally {
                         LinkedList<Integer> list = viewAvailableRoomDate(booking.getCheckinDate(), CheckDate, false, bookId);
                         if (list != null && !list.contains(booking.getRoomNbr())) {
@@ -693,7 +699,7 @@ public class HotelLogic {
                             }
                         }
                     } catch (ConcurrentModificationException e) {
-                        System.err.println("Error");
+                        System.out.println("Error");
                         continue;
                     }
 
@@ -716,8 +722,16 @@ public class HotelLogic {
         for (int i = 0; i < books.size(); i++) {
             System.out.print(books.get(i).getBookId() + "\t\t\t");
             System.out.print(books.get(i).getRoomNbr() + "\t\t\t\t\t");
-            System.out.print(books.get(i).getCheckinDate() + "\t\t\t");
-            System.out.print(books.get(i).getCheckoutDate() + "\t\t");
+            if (books.get(i).getActualCheckIn() != null){
+                System.out.print(books.get(i).getActualCheckIn() + "\t\t\t");
+            }else {
+                System.out.print(books.get(i).getCheckinDate() + "\t\t\t");
+            }
+            if (books.get(i).getActualCheckOut() !=null){
+                System.out.print(books.get(i).getActualCheckOut() + "\t\t");
+            }else {
+                System.out.print(books.get(i).getCheckoutDate() + "\t\t");
+            }
             System.out.println();
 
         }
@@ -728,7 +742,7 @@ public class HotelLogic {
             */
     }
 
-    private void caneclBooking() {
+    private void cancelBooking() {
         viewBookings();
         if (books.size() > 0) {
             try {
@@ -749,10 +763,10 @@ public class HotelLogic {
                 }
 
             } catch (ConcurrentModificationException e) {
-                System.err.println();
+                System.out.println();
 
             } catch (InputMismatchException e) {
-                System.err.println("Wrong input");
+                System.out.println("Wrong input");
                 scan.nextLine();
             }
 
@@ -824,6 +838,78 @@ public class HotelLogic {
         }
     }
 
+    private void checkIn(Customer owner) {
+        boolean count = false;
+        int bookingID = 0;
+        System.out.print("Enter booking-id: ");
+        try {
+            bookingID = scan.nextInt();
+            scan.nextLine();
+        } catch (Exception e) {
+            System.out.println("\nWrong input");
+            count = true;
+            scan.next();
+        }
+
+        for (Booking b : books) {
+            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
+                if (b.getActualCheckIn() == null) {
+                    b.setActualCheckIn();
+                    System.out.println("\nSuccess! Check-in registered at: " + b.getActualCheckIn());
+                    count = true;
+                    break;
+                } else {
+                    System.out.println("\nYou can not check-in more than one time!");
+                    return;
+                }
+            }
+        }
+        if (!count) {
+            System.out.println("\nThe booking-id couldn't find!");
+        }
+    }
+
+    private void checkOut(Customer owner) {
+        boolean count = false;
+        int bookingID = 0;
+        System.out.print("Enter booking-id: ");
+        try {
+            bookingID = scan.nextInt();
+            scan.nextLine();
+        } catch (Exception e) {
+            System.out.print("\nWrong input!\n");
+            count = true;
+            scan.next();
+        }
+
+        for (Booking b : books) {
+            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
+                if (b.getActualCheckIn() != null && b.getActualCheckOut() == null) {
+                    b.setActualCheckOut();
+                    System.out.println("\nSuccess! Checkout registered at: " + b.getActualCheckOut());
+                    count = true;
+                    break;
+                } else if (b.getActualCheckIn() == null) {
+                    System.out.println("\nYou have not checked in yet!\nplease try after you have check in!");
+                    count = true;
+                    break;
+                } else if (b.getActualCheckOut() != null) {
+                    System.out.println("\nYou can not check-out more than one time!");
+                    count = true;
+                    break;
+                } else {
+                    System.out.println("\nSomething went wrong\nUnable to check-out");
+                    count = true;
+                    break;
+                }
+            }
+        }
+        if (!count) {
+            System.out.println("The booking-id couldn't find");
+        }
+    }
+
+
     //Room methods
 
     private void addNewRoom() {
@@ -869,7 +955,6 @@ public class HotelLogic {
             System.out.println("And has a balcony");
         } else {
             System.out.println("And has not a balcony");
-
         }
 
         System.out.println("The room costs per night: " + cost);
@@ -877,7 +962,7 @@ public class HotelLogic {
         String choice = scan.nextLine();
 
         if (choice.equalsIgnoreCase("y")) {
-            rooms.add(new Room(roomNumber - 1, bedsQuantity, hasBalcony, cost));
+            rooms.add(new Room(roomNumber, bedsQuantity, hasBalcony, cost));
             System.out.println("A new room with the number " + roomNumber + " has now been added to the hotel");
         } else {
             System.out.println("Please try again!");
@@ -949,7 +1034,7 @@ public class HotelLogic {
         scan.nextLine();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        System.out.println("Enter check-in date (Format: yyyy-mm-dd):");
+        System.out.print("Enter check-in date (Format: yyyy-mm-dd): ");
         String date = scan.nextLine();
         try {
             checkinDate = dateFormat.parse(date);
@@ -958,22 +1043,22 @@ public class HotelLogic {
                 return;
             }
         } catch (ParseException e) {
-            System.err.println("Wrong Input!");
+            System.out.println("Wrong Input!");
             return;
         }
-        System.out.println("Enter check-out date (Format: yyyy-mm-dd):");
+        System.out.print("Enter check-out date (Format: yyyy-mm-dd): ");
         date = scan.nextLine();
         try {
             checkoutDate = dateFormat.parse(date);
             if (checkoutDate.before(checkinDate)) {
-                System.out.println("Can not choose a date in the past! ");
+                System.out.println("Can not choose a date before the check-in date! ");
                 return;
             } else if (checkoutDate.equals(checkinDate)) {
                 System.out.println("\nThe difference between check-in/out must at least be one night\nPlease try again!");
                 return;
             }
         } catch (ParseException e) {
-            System.err.println("Wrong Input!");
+            System.out.println("Wrong Input!");
             return;
         }
         viewAvailableRoomDate(checkinDate, checkoutDate, true, 0);
@@ -1039,31 +1124,108 @@ public class HotelLogic {
 
     }
 
+    private LinkedList<Integer> viewAvailableRoomDate(Date tempStart, Date tempEnd, boolean print, int bookId) {
+
+        LinkedList<Integer> roomNbrs = new LinkedList<>();
+
+        try {
+            for (Booking b : books) {
+                if ((tempStart.after(b.getCheckinDate()) && tempStart.before(b.getCheckoutDate())) ||
+                        (tempEnd.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate())) ||
+                        (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate())) ||
+                        (tempStart.equals(b.getCheckinDate()) && tempEnd.equals(b.getCheckoutDate()))) {
+                    if (b.getBookId() != bookId) {
+                        roomNbrs.add(b.getRoomNbr());
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Error getting booknumbers");
+            return null;
+        }
+
+        Room temp;
+        boolean counter = false;
+        DecimalFormat df = new DecimalFormat("#.##");
+        for (int i = 0; i < rooms.size(); i++) {
+            temp = rooms.get(i);
+
+            if (!roomNbrs.contains(temp.getRommNumber())) {
+                if (!counter && print) {
+                    System.out.println("Listing all registered available rooms at Hotel California\n");
+                    System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
+                    counter = true;
+                }
+
+                if (print) {
+                    System.out.println(
+                            temp.getRommNumber() + "\t\t" +
+                                    rooms.get(i).getNumberOfBeds() + "\t\t" +
+                                    df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
+                                    rooms.get(i).isHasBalcony());
+                }
+            }
+        }
+        if (!counter && print) {
+            System.out.println("There are nona available rooms at Hotel California!");
+            return null;
+        }
+        return roomNbrs;
+    }
+
+
     //Customer methods
 
     private void addNewCustomer() {
         scan.nextLine();
         System.out.print("Enter your full name: ");
         String name = scan.nextLine();
-        System.out.print("Enter your social security-number: ");
-        String ssn = scan.nextLine();
+        String ssn = "";
+        boolean run = false;
+        while (!run) {
+            System.out.print("Enter your 10 digits social security-number(xxxxxx-xxxx): ");
+            ssn = scan.nextLine();
+            if (ssn.equalsIgnoreCase("0")) {
+                return;
+            }
+            if (!ssn.matches("\\d{6}-\\d{4}")) {
+                System.out.println("\nPlease write your social security-number in this format\nxxxxxx-xxxx\n");
+                continue;
+            }
+            for (Person p : users) {
+                if (p.getClass().equals(Customer.class)) {
+                    if (p.getSsn().equals(ssn)) {
+                        System.out.println("\nThe social security-number is already used. Please try another one or 0 to abort!\n");
+                        run = false;
+                        break;
+                    } else {
+                        run = true;
+                    }
+                }
+            }
+        }
         System.out.print("Enter your phone-number: ");
         String phoneNumber = scan.nextLine();
         System.out.print("Enter your address: ");
         String address = scan.nextLine();
-        boolean run = false;
+
         String userName = "";
+        run = false;
         while (!run) {
             System.out.print("Enter your username: ");
             userName = scan.nextLine();
             for (Person p : users) {
                 if (p.getClass().equals(Customer.class)) {
                     if (p.getUserName().equals(userName)) {
-                        System.out.println("The username is already used. Please try another one!");
+                        System.out.println("The username is already used. Please try another one or 0 to abort!");
+                        run = false;
                         break;
+                    } else if (userName.equalsIgnoreCase("0")) {
+                        return;
+                    } else if (userName.equals("")) {
+
                     } else {
                         run = true;
-                        break;
                     }
                 }
             }
@@ -1071,7 +1233,6 @@ public class HotelLogic {
 
         System.out.print("Enter your password: ");
         String password = scan.nextLine();
-
         System.out.println("\n\t***Confirmation***");
         System.out.println("Your your full name is: " + name);
         System.out.println("Your social security-number is: " + ssn);
@@ -1085,7 +1246,7 @@ public class HotelLogic {
         if (choice.equalsIgnoreCase("y")) {
             Customer customer = new Customer(ssn, name, address, phoneNumber, userName, password);
             users.add(customer);
-            System.out.println("\n**Customer-account created**\nThank you for using out hotel!");
+            System.out.println("\n\n**Customer-account created**\nThank you for using out hotel!");
             System.out.println("To login in your account, please use your username and password");
         } else {
             System.out.println("Please try again!");
@@ -1182,10 +1343,16 @@ public class HotelLogic {
                         users.get(customerNumber).setName(name);
                     }
 
-                    System.out.print("Enter your social security-number or 0 to go the next step: ");
+                    System.out.print("Enter your social security-number (xxxxxx-xxxx) or 0 to go the next step: ");
                     String ssn = scan.nextLine();
                     if (!ssn.equalsIgnoreCase("0")) {
-                        users.get(customerNumber).setSsn(ssn);
+                        if (ssn.matches("\\d{6}-\\d{4}")){
+                            users.get(customerNumber).setSsn(ssn);
+                        } else {
+                            System.out.println("The ssn must be in this format (xxxxxx-xxxx)\nplease try again");
+                            return;
+                        }
+
                     }
 
                     System.out.print("Enter your phone-number or 0 to go the next step: ");
@@ -1267,76 +1434,6 @@ public class HotelLogic {
 
     }
 
-    private void checkIn(Customer owner) {
-        boolean count = false;
-        int bookingID = 0;
-        System.out.print("Enter booking-id: ");
-        try {
-            bookingID = scan.nextInt();
-            scan.nextLine();
-        } catch (Exception e) {
-            System.out.println("\nWrong input");
-            count = true;
-            scan.next();
-        }
-
-        for (Booking b : books) {
-            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
-                if (b.getActualCheckIn() == null) {
-                    b.setActualCheckIn();
-                    System.out.println("\nSuccess! Check-in registered at: " + b.getActualCheckIn());
-                    count = true;
-                    break;
-                } else {
-                    System.out.println("\nYou can not check-in more than one time!");
-                    return;
-                }
-            }
-        }
-        if (!count) {
-            System.out.println("\nThe booking-id couldn't find!");
-        }
-    }
-
-    private void checkOut(Customer owner) {
-        boolean count = false;
-        int bookingID = 0;
-        System.out.print("Enter booking-id: ");
-        try {
-            bookingID = scan.nextInt();
-            scan.nextLine();
-        } catch (Exception e) {
-            System.out.print("\nWrong input!\n");
-            count = true;
-            scan.next();
-        }
-
-        for (Booking b : books) {
-            if (owner.getCustomerBookings().contains(bookingID) && b.getBookId() == bookingID) {
-                if (b.getActualCheckIn() != null && b.getActualCheckOut() == null) {
-                    b.setActualCheckOut();
-                    System.out.println("\nSuccess! Checkout registered at: " + b.getActualCheckOut());
-                    count = true;
-                    break;
-                } else if (b.getActualCheckIn() == null) {
-                    System.out.println("\nYou have not checked in yet!\nplease try after you have check in!");
-                    count = true;
-                    break;
-                } else if (b.getActualCheckOut() != null) {
-                    System.out.println("\nYou can not check-out more than one time!");
-                    count = true;
-                    break;
-                } else {
-                    System.out.println("\nSomething went wrong\nUnable to check-out");
-                    count = true;
-                    break;
-                }
-            }
-        }
-        if (!count) {
-            System.out.println("The booking-id couldn't find");
-        }
-    }
 
     //Other methods
 
@@ -1352,54 +1449,6 @@ public class HotelLogic {
         rw.saveUsers(users);
         rw.saveBookings(books);
         rw.saveRooms(rooms);
-    }
-
-    private LinkedList<Integer> viewAvailableRoomDate(Date tempStart, Date tempEnd, boolean print, int bookId) {
-
-        LinkedList<Integer> roomNbrs = new LinkedList<>();
-
-        try {
-            for (Booking b : books) {
-                if ((tempStart.after(b.getCheckinDate()) && tempStart.before(b.getCheckoutDate())) ||
-                        (tempEnd.after(b.getCheckinDate()) && tempEnd.before(b.getCheckoutDate())) ||
-                        (tempStart.before(b.getCheckinDate()) && tempEnd.after(b.getCheckoutDate()))) {
-                    if (b.getBookId() != bookId) {
-                        roomNbrs.add(b.getRoomNbr());
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Error getting booknumbers");
-            return null;
-        }
-
-        Room temp;
-        boolean counter = false;
-        DecimalFormat df = new DecimalFormat("#.##");
-        for (int i = 0; i < rooms.size(); i++) {
-            temp = rooms.get(i);
-
-            if (!roomNbrs.contains(temp.getRommNumber())) {
-                if (!counter && print) {
-                    System.out.println("Listing all registered available rooms at Hotel California\n");
-                    System.out.println("Room\tBeds\tPrice/Night\tBalcony\n");
-                    counter = true;
-                }
-
-                if (print) {
-                    System.out.println(
-                            temp.getRommNumber() + "\t\t" +
-                                    rooms.get(i).getNumberOfBeds() + "\t\t" +
-                                    df.format(rooms.get(i).getPricePerNight()) + "\t\t" +
-                                    rooms.get(i).isHasBalcony());
-                }
-            }
-        }
-        if (!counter && print) {
-            System.out.println("There are nona available rooms at Hotel California!");
-            return null;
-        }
-        return roomNbrs;
     }
 
     private void createTestInfo() {
@@ -1438,15 +1487,13 @@ public class HotelLogic {
     private Customer findCustomer() {
 
         scan.nextLine();
-        System.out.print("Enter Name, SSN, TelephoneNumber or UserName: ");
+        System.out.print("Enter SSN, TelephoneNumber or UserName: ");
         String SearchParam = scan.nextLine();
 
         for (Person p : users) {
-
-            if ((p.getName().equalsIgnoreCase(SearchParam)) ||
-                    (p.getSsn().equalsIgnoreCase(SearchParam)) ||
-                    (p.getContactNBR().equalsIgnoreCase(SearchParam)) ||
-                    (p.getUserName().equalsIgnoreCase(SearchParam))) {
+            if ((p.getSsn().equalsIgnoreCase(SearchParam)) ||
+                    (p.getContactNBR().equals(SearchParam)) ||
+                    (p.getUserName().equals(SearchParam))) {
 
                 if (p.getClass().equals(Customer.class)) {
                     viewCurrentCustomer((Customer) p);
@@ -1469,11 +1516,11 @@ public class HotelLogic {
         return null;
     }
 
-    private void updateTotalpriceBooking(Booking booking){
+    private void updateTotalpriceBooking(Booking booking) {
         int nbrOfDays = (int) ((booking.getCheckoutDate().getTime() - booking.getCheckinDate().getTime()) / (1000 * 60 * 60 * 24));
 
-        for (Room r: rooms){
-            if(r.getRommNumber() == booking.getRoomNbr()){
+        for (Room r : rooms) {
+            if (r.getRommNumber() == booking.getRoomNbr()) {
                 booking.setTotalPrice((r.getPricePerNight() * nbrOfDays));
             }
         }
@@ -1481,13 +1528,13 @@ public class HotelLogic {
 
     }
 
-    private boolean checkDates(Date checkIn, Date checkOut){
+    private boolean checkDates(Date checkIn, Date checkOut) {
 
-        if(checkOut.before(checkIn) || checkOut.equals(checkIn) ||
-           checkIn.before(new Date (System.currentTimeMillis())) ||
-           checkOut.before(new Date(System.currentTimeMillis())) ){
+        if (checkOut.before(checkIn) || checkOut.equals(checkIn) ||
+                checkIn.before(new Date(System.currentTimeMillis())) ||
+                checkOut.before(new Date(System.currentTimeMillis()))) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
