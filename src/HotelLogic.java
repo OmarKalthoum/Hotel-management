@@ -564,10 +564,9 @@ public class HotelLogic {
             newBooking.setTotalPrice(price);
             owner.addCustomerBookings(newBooking.getBookId());
             books.add(newBooking);
-
+            new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
             System.out.print("Would you like us to print this information? Y/N ? ");
             if (scan.nextLine().equalsIgnoreCase("y")) {
-                new ReadWrite().write(newBooking.getBookId(), checkinDate, checkoutDate, temp.getRommNumber(), false);
                 viewBookingById(bookId, true, owner);
             }
 
