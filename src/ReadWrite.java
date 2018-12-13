@@ -56,6 +56,7 @@ public class ReadWrite {
             pw.println(" If you do not check out we will arrange that for you free of charge");
             pw.println(" If you have any questions you can contact us at 555-Eagles-RIP-OFF");
             pw.println(" Have nice day!");
+            pw.flush();
             pw.close();
         } catch (IOException e) {
             e.printStackTrace();

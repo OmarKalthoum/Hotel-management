@@ -625,15 +625,13 @@ public class HotelLogic {
                         CheckDate = dateFormat.parse(date);
                     } catch (ParseException e) {
                         System.out.println("\nThat's not a valid date\n\n");
-                    } finally {
+                        return;
+                    }
                         LinkedList<Integer> list = viewAvailableRoomDate(CheckDate, booking.getCheckoutDate(), false, booking.getBookId());
                         if (list != null && !list.contains(booking.getRoomNbr())) {
                             if (!checkDates(CheckDate, booking.getCheckoutDate())) {
                                 System.out.println();
                                 System.out.println("Choice of Date not possible ");
-                                System.out.println("Check in has be before CheckOut");
-                                System.out.println("Check-in can NOT same day as Check out (1 night minimum stay)");
-                                System.out.println("Check in/out can NOT be before today");
                                 System.out.println();
                                 return;
                             }
@@ -645,7 +643,7 @@ public class HotelLogic {
                             System.out.println("This room is not available for this date");
                             viewAvailableRoomDate(CheckDate, booking.getCheckoutDate(), true, booking.getBookId());
                         }
-                    }
+
                     break;
                 }
 
@@ -658,15 +656,13 @@ public class HotelLogic {
                         CheckDate = dateFormat.parse(date);
                     } catch (ParseException e) {
                         System.out.println("That's not a valid date");
-                    } finally {
+                        return;
+                    }
                         LinkedList<Integer> list = viewAvailableRoomDate(booking.getCheckinDate(), CheckDate, false, bookId);
                         if (list != null && !list.contains(booking.getRoomNbr())) {
                             if (!checkDates(booking.getCheckinDate(), CheckDate)) {
                                 System.out.println();
                                 System.out.println("Choice of Date not possible");
-                                System.out.println("Check in has be before CheckOut");
-                                System.out.println("Check-in can NOT same day as Check out (1 night minimum stay)");
-                                System.out.println("Check in/out can NOT be before today");
                                 System.out.println();
                                 return;
                             }
@@ -681,7 +677,7 @@ public class HotelLogic {
                         }
                     }
                     break;
-                }
+
 
                 case 3:
                     scan.nextLine();
@@ -1529,7 +1525,8 @@ public class HotelLogic {
 
     private boolean checkDates(Date checkIn, Date checkOut) {
 
-        if (checkOut.before(checkIn) || checkOut.equals(checkIn) ||
+        if (checkOut.before(checkIn) ||
+                checkOut.equals(checkIn) ||
                 checkIn.before(new Date(System.currentTimeMillis())) ||
                 checkOut.before(new Date(System.currentTimeMillis()))) {
             return false;
@@ -1537,7 +1534,6 @@ public class HotelLogic {
             return true;
         }
     }
-
 
 }
 
