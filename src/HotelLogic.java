@@ -2,9 +2,8 @@ import java.text.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-public class HotelLogic {
+class HotelLogic {
 
-    private String userName, passWord;
     private Scanner scan;
     private LinkedList<Person> users = new LinkedList<>();
     private LinkedList<Booking> books = new LinkedList<>();
@@ -21,9 +20,9 @@ public class HotelLogic {
     protected void loginUser() {
 
         System.out.print("UserName: ");
-        userName = scan.nextLine();
+        String userName = scan.nextLine();
         System.out.print("PassWord: ");
-        passWord = scan.nextLine();
+        String passWord = scan.nextLine();
         int checkLogIn = 1;
         for (Person user : users) {
             if (user.getUserName().equals(userName) && user.getPassword().equals(passWord)) {
@@ -56,7 +55,7 @@ public class HotelLogic {
                     "[2] Check in / Check out\n" +
                     "[3] View available rooms\n" +
                     "[4] Customer information\n" +
-                    "[5] Exit customer mode\n\n" +
+                    "[5] Exit customer mode(Save changes)\n\n" +
                     "Your choice: ");
 
             try {
@@ -217,6 +216,8 @@ public class HotelLogic {
                 }
                 case 5: {
                     scan.nextLine();
+                    save();
+                    System.out.println("Your changes are now saved");
                     choice = -1;
                     break;
                 }
@@ -238,7 +239,7 @@ public class HotelLogic {
                     "[2] Customer options\n" +
                     "[3] Bookings\n" +
                     "[4] Customer menu administration\n" +
-                    "[5] Exit employee mode\n\n" +
+                    "[5] Exit employee mode(Save changes)\n\n" +
                     "Your choice: ");
             try {
                 choice = scan.nextInt();
@@ -396,7 +397,6 @@ public class HotelLogic {
                                 break;
                             }
                         }
-
                     }
                     break;
                 }
@@ -409,6 +409,8 @@ public class HotelLogic {
                 }
                 case 5: {
                     scan.nextLine();
+                    save();
+                    System.out.println("Your changes are now saved");
                     choice = -1;
                     break;
                 }
@@ -426,8 +428,8 @@ public class HotelLogic {
     private void addNewBooking(Customer owner) {
 
         LinkedList<Integer> list;
-        Date checkoutDate = null;
-        Date checkinDate = null;
+        Date checkoutDate;
+        Date checkinDate;
         String date;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         boolean checkDate;
@@ -499,7 +501,7 @@ public class HotelLogic {
 
         // List available rooms, input from user, check input against booked rooms
         list = viewAvailableRoomDate(checkinDate, checkoutDate, true, -1);
-        int roomNumber = -1;
+        int roomNumber;
         while (true) {
             System.out.print("\nEnter RoomNumbers or 0 to abort: ");
             try {
@@ -534,9 +536,11 @@ public class HotelLogic {
         }
 
         // calculate totalprice
-        double price = 0;
+        double price;
         if (temp != null) {
             price = temp.getPricePerNight() * nbrOfDays;
+        }else{
+            return;
         }
 
         int lastBookId = 0;
@@ -575,7 +579,7 @@ public class HotelLogic {
     }
 
     private void editBooking(Customer owner) {
-        Date CheckDate = null;
+        Date CheckDate;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date;
         int bookId;
@@ -804,7 +808,7 @@ public class HotelLogic {
                 System.out.println("Check Out: " + b.getCheckoutDate());
                 if (b.getActualCheckIn() != null && b.getCheckoutDate() != null) {
                     System.out.println("Actual Check-in date: " + b.getActualCheckIn());
-                    System.out.println("Actual Check-out date: " + b.getCheckoutDate());
+                    System.out.println("Actual Check-out date: " + b.getActualCheckOut());
                 } else {
                     System.out.println("No actual Check In/Out is registered!");
                 }
@@ -915,7 +919,7 @@ public class HotelLogic {
         System.out.println("\nThe room number is gonna be : " + roomNumber);
 
         System.out.print("Enter the number of beds: ");
-        int bedsQuantity = 0;
+        int bedsQuantity;
         while (true) {
             try {
                 bedsQuantity = scan.nextInt();
@@ -932,7 +936,7 @@ public class HotelLogic {
         }
         System.out.print("How much does the room cost per night? ");
 
-        double cost = 0;
+        double cost;
         while (true) {
             try {
                 cost = scan.nextDouble();
