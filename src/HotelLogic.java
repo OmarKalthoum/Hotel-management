@@ -112,13 +112,11 @@ class HotelLogic {
                                 } catch (InputMismatchException e) {
                                     System.out.println("Input not acceptable");
                                 } finally {
-                                    if (owner.getCustomerBookings().contains(bookId)){
+                                    if (owner.getCustomerBookings().contains(bookId)) {
                                         viewBookingById(bookId, true, owner);
-                                    }
-                                    else {
+                                    } else {
                                         System.out.println("None booking is registered in your name with booking id: " + bookId);
                                     }
-
                                 }
 
                                 break;
@@ -428,6 +426,7 @@ class HotelLogic {
     private void addNewBooking(Customer owner) {
 
         LinkedList<Integer> list;
+        LinkedList<Integer> totalRooms = new LinkedList<Integer>();
         Date checkoutDate;
         Date checkinDate;
         String date;
@@ -518,6 +517,12 @@ class HotelLogic {
             }
 
             if (list != null && !list.contains(roomNumber) && roomNumber > 0) {
+                System.out.println("Room with number: " + roomNumber + " has been added to your booking!");
+                totalRooms.add(roomNumber);
+                System.out.println("\nAdd more rooms to booking (Y/N)?");
+                if(scan.nextLine().equalsIgnoreCase("y")){
+                    continue;
+                }
                 break;
             } else {
                 System.out.println("Room not available for the given Dates");
@@ -528,19 +533,33 @@ class HotelLogic {
         int nbrOfDays = (int) ((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
 
         // find room for current booking
-        Room temp = null;
-        for (Room r : rooms) {
-            if (r.getRommNumber() == roomNumber) {
-                temp = r;
+        LinkedList<Room> temp = new LinkedList<Room>();
+        for(int number : totalRooms) {
+           for (Room r : rooms) {
+               if (r.getRommNumber() == number) {
+                   temp.add(r);
+               }
+           }
+       }
+
+        // calculate totalprice
+        double price = 0;
+        for(Room r : temp) {
+            if (r != null) {
+                price = price + (r.getPricePerNight() * nbrOfDays);
+            } else {
+                return;
             }
         }
 
-        // calculate totalprice
-        double price;
-        if (temp != null) {
-            price = temp.getPricePerNight() * nbrOfDays;
-        }else{
-            return;
+        // calculate price per day
+        double priceday = 0;
+        for(Room r : temp){
+            if(r != null){
+                priceday = priceday + r.getPricePerNight();
+            }else {
+                return;
+            }
         }
 
         int lastBookId = 0;
@@ -553,17 +572,17 @@ class HotelLogic {
         // Print confirmation info
         System.out.println("\n\t***Confirmation***");
         System.out.println("Your booking id is: " + bookId);
-        System.out.println("Thr room that you chose has the number: " + temp.getRommNumber());
+        System.out.println("The room's that you chose has the number: " + totalRooms);
         System.out.println("Your check in will be at: " + checkinDate);
         System.out.println("Your check out will be at: " + checkoutDate);
-        System.out.printf("The room that you chose costs per day %.2f", temp.getPricePerNight());
+        System.out.printf("The room that you chose costs per day %.2f", priceday);
         System.out.printf(" and it costs for the whole period %.2f", price);
         System.out.print("\nAll information are correct (Y/N)? ");
         String choice = scan.nextLine();
 
 
         // check input for confirmation and create new booking, print in logg and add booking to customer list of bookings
-        if (choice.equalsIgnoreCase("y")) {
+        /**if (choice.equalsIgnoreCase("y")) {
             Booking newBooking = new Booking(checkinDate, checkoutDate, temp.getRommNumber(), lastBookId);
             newBooking.setTotalPrice(price);
             owner.addCustomerBookings(newBooking.getBookId());
@@ -575,7 +594,7 @@ class HotelLogic {
             }
 
             System.out.println("Thank you for choosing our hotel!");
-        }
+        }**/
     }
 
     private void editBooking(Customer owner) {
@@ -589,14 +608,14 @@ class HotelLogic {
         System.out.print("Enter booking id: ");
         bookId = scan.nextInt();
 
-        // hitta bokning via id i listan
+        // Find booking with id from list.
         for (Booking book : books) {
             if (book.getBookId() == bookId && owner.getCustomerBookings().contains(bookId)) {
                 booking = book;
             }
         }
 
-        // Om bokningen inte finns - return från metod
+        // If booking not exist - return from method.
         if (booking == null) {
             System.out.println("\nBooking ID is not found in database");
             return;
@@ -721,14 +740,14 @@ class HotelLogic {
         for (int i = 0; i < books.size(); i++) {
             System.out.print(books.get(i).getBookId() + "\t\t\t");
             System.out.print(books.get(i).getRoomNbr() + "\t\t\t\t\t");
-            if (books.get(i).getActualCheckIn() != null){
+            if (books.get(i).getActualCheckIn() != null) {
                 System.out.print(books.get(i).getActualCheckIn() + "\t\t\t");
-            }else {
+            } else {
                 System.out.print(books.get(i).getCheckinDate() + "\t\t\t");
             }
-            if (books.get(i).getActualCheckOut() !=null){
+            if (books.get(i).getActualCheckOut() != null) {
                 System.out.print(books.get(i).getActualCheckOut() + "\t\t");
-            }else {
+            } else {
                 System.out.print(books.get(i).getCheckoutDate() + "\t\t");
             }
             System.out.println();
@@ -1315,6 +1334,7 @@ class HotelLogic {
     }
 
     private void editCustomer() {
+        boolean run = false;
         for (Person customer : users) {
 
             if (customer.getClass().equals(Customer.class)) {
@@ -1341,51 +1361,69 @@ class HotelLogic {
                     if (!name.equalsIgnoreCase("0")) {
                         users.get(customerNumber).setName(name);
                     }
+                    while (!run) {
+                        System.out.print("Enter your social security-number (xxxxxx-xxxx) or 0 to go the next step: ");
+                        String ssn = scan.nextLine();
+                        int check = 0;
 
-                    System.out.print("Enter your social security-number (xxxxxx-xxxx) or 0 to go the next step: ");
-                    String ssn = scan.nextLine();
-                    if (!ssn.equalsIgnoreCase("0")) {
-                        if (ssn.matches("\\d{6}-\\d{4}")){
-                            users.get(customerNumber).setSsn(ssn);
+                        if (ssn.equalsIgnoreCase("0")) {
+                            //run = true;
+                            break;
                         } else {
-                            System.out.println("The ssn must be in this format (xxxxxx-xxxx)\nplease try again");
-                            return;
+                            for (Person p : users) {
+                                if (p.getSsn().equalsIgnoreCase(ssn)) {
+                                    check = 1;
+                                }
+                            }
+                            switch (check) {
+                                case 1:
+                                    check = 1;
+                                    System.out.println("Entered security-number allready used!");
+                                    run = false;
+                                    break;
+                                case 2:
+                                    check = 0;
+                                    run = true;
+                                    break;
+                            }
+                            if (ssn.matches("\\d{6}-\\d{4}")) {
+                                users.get(customerNumber).setSsn(ssn);
+                            }
                         }
-
                     }
 
-                    System.out.print("Enter your phone-number or 0 to go the next step: ");
-                    String number = scan.nextLine();
-                    if (!number.equalsIgnoreCase("0")) {
-                        users.get(customerNumber).setContactNBR(number);
-                    }
-
-                    System.out.print("Enter your address or 0 to go the next step: ");
-                    String address = scan.nextLine();
-                    if (!address.equalsIgnoreCase("0")) {
-                        users.get(customerNumber).setAddress(address);
-                    }
-
-                    System.out.print("Enter your username or 0 to go the next step: ");
-                    String userName = scan.nextLine();
-                    if (!userName.equalsIgnoreCase("0")) {
-                        users.get(customerNumber).setUserName(userName);
-                    }
-
-                    System.out.print("Enter your password or 0 to go the next step: ");
-                    String password = scan.nextLine();
-                    if (!password.equalsIgnoreCase("0")) {
-                        users.get(customerNumber).setPassword(password);
-                    }
-                    System.out.println("\nCustomer's information are now updated");
-                    break;
+                System.out.print("Enter your phone-number or 0 to go the next step: ");
+                String number = scan.nextLine();
+                if (!number.equalsIgnoreCase("0")) {
+                    users.get(customerNumber).setContactNBR(number);
                 }
-            } else {
-                System.out.println("There are none registered customer to edit! ");
-            }
-        }
 
+                System.out.print("Enter your address or 0 to go the next step: ");
+                String address = scan.nextLine();
+                if (!address.equalsIgnoreCase("0")) {
+                    users.get(customerNumber).setAddress(address);
+                }
+
+                System.out.print("Enter your username or 0 to go the next step: ");
+                String userName = scan.nextLine();
+                if (!userName.equalsIgnoreCase("0")) {
+                    users.get(customerNumber).setUserName(userName);
+                }
+
+                System.out.print("Enter your password or 0 to go the next step: ");
+                String password = scan.nextLine();
+                if (!password.equalsIgnoreCase("0")) {
+                    users.get(customerNumber).setPassword(password);
+                }
+                System.out.println("\nCustomer's information are now updated");
+                break;
+            }
+        } else{
+            System.out.println("There are none registered customer to edit! ");
+        }
     }
+
+}
 
     private void editCustomerByCustomer(Customer owner) {
 

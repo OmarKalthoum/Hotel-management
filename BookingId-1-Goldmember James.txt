@@ -1,0 +1,28 @@
+----------------------------------------------------------------------
+*** *** *** Your Booking Information from Hotel California *** *** ***
+----------------------------------------------------------------------
+ Beloved Customer, we are very pleased that you have chosen our hotel
+ You will find all details about your booking below
+ See you soon and we hope you will enjoy staying with us
+
+ Booking ID: 1
+ Check in Date: 2020-12-12
+ Check Out Date: 2020-12-20
+ Room Number: 1
+ Price in Total:  4308.99174914897
+
+   --- --- --- --- --- Your Personal Information --- --- --- --- ---
+ Mr/Mrs: Goldmember James
+ Address: Skolgatan 24
+ TFN: 070-121212121
+ Personal ID: 121212-1212
+
+ --------------------------------------------------------------------
+
+             *** *** *** Hotel Disclaimer *** *** ***
+ We are very glad that you have chosen Hotel California
+ Due to musical references we can not quarantine that checking out from 
+ hotel will result in you leaving the hotel. 
+ If you do not check out we will arrange that for you free of charge
+ If you have any questions you can contact us at 555-Eagles-RIP-OFF
+ Have nice day!
